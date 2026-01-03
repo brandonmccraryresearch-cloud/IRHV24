@@ -144,15 +144,14 @@ jobs:
             for notebook in notebooks/*.ipynb; do
               if [ -f "$notebook" ]; then
                 echo "Executing: $notebook"
-                jupyter nbconvert --to notebook --execute --inplace \
+                basename_nb="$(basename "$notebook")"
+                jupyter nbconvert --to notebook --execute \
                   --ExecutePreprocessor.timeout=3600 \
+                  --output-dir outputs/notebooks \
                   "$notebook" || echo "Warning: $notebook had issues"
                 
-                # Copy executed notebook to outputs
-                cp "$notebook" outputs/notebooks/
-                
                 # Export to HTML for easy viewing
-                jupyter nbconvert --to html "$notebook" --output-dir outputs/reports/
+                jupyter nbconvert --to html "outputs/notebooks/$basename_nb" --output-dir outputs/reports/
               fi
             done
           else
@@ -160,11 +159,12 @@ jobs:
             notebook="notebooks/${SECTION}.ipynb"
             if [ -f "$notebook" ]; then
               echo "Executing: $notebook"
-              jupyter nbconvert --to notebook --execute --inplace \
+              basename_nb="$(basename "$notebook")"
+              jupyter nbconvert --to notebook --execute \
                 --ExecutePreprocessor.timeout=3600 \
+                --output-dir outputs/notebooks \
                 "$notebook"
-              cp "$notebook" outputs/notebooks/
-              jupyter nbconvert --to html "$notebook" --output-dir outputs/reports/
+              jupyter nbconvert --to html "outputs/notebooks/$basename_nb" --output-dir outputs/reports/
             else
               echo "Notebook not found: $notebook"
               echo "Available notebooks:"
@@ -251,14 +251,32 @@ jobs:
           activate-environment: irh-compute
           environment-file: environment.yml
           use-mamba: true
+
+      - name: Create Output Directories
+        run: |
+          mkdir -p outputs/notebooks
+          mkdir -p outputs/figures
+          mkdir -p outputs/data
+          mkdir -p outputs/reports
       
       - name: Run ${{ matrix.notebook }}
         run: |
           notebook="notebooks/${{ matrix.notebook }}.ipynb"
           if [ -f "$notebook" ]; then
-            jupyter nbconvert --to notebook --execute --inplace \
+            basename_nb="$(basename "$notebook")"
+            jupyter nbconvert --to notebook --execute \
               --ExecutePreprocessor.timeout=3600 \
+              --output-dir outputs/notebooks \
               "$notebook"
+            jupyter nbconvert --to html "outputs/notebooks/$basename_nb" --output-dir outputs/reports/
           else
             echo "Notebook not found: $notebook (will be created)"
           fi
+
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: irh-notebook-${{ matrix.notebook }}-${{ github.run_number }}
+          path: outputs/
+          retention-days: 90

@@ -63,8 +63,6 @@ See [docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md](docs/GITHUB_ACTIONS_COM
 
 ---
 
----
-
 # **Critical Review: Intrinsic Resonance Holography (IRH) v25.0**
 
 ## **1. Ontological Assessment: The Vibrational Primitive**

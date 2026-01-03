@@ -83,13 +83,17 @@ dependencies:
 Use `mamba` instead of `conda` for 10-100x faster dependency resolution:
 
 ```yaml
-- uses: conda-incubator/setup-miniconda@v3
+# Pin to a specific commit SHA for supply chain security
+# Check https://github.com/conda-incubator/setup-miniconda/releases for latest
+- uses: conda-incubator/setup-miniconda@a4260408e20b96e80095f42ff7f1a15b27dd94ca  # v3.1.0
   with:
-    miniforge-version: latest
+    miniforge-version: "24.7.1-0"  # Pin to specific version
     activate-environment: irh-compute
     environment-file: environment.yml
     use-mamba: true
 ```
+
+> **Security Note:** Always pin third-party GitHub Actions to immutable commit SHAs rather than version tags to protect against supply chain attacks. Verify the SHA corresponds to a trusted release.
 
 ---
 
@@ -320,10 +324,14 @@ For intensive numerical work, enable CUDA:
 ```yaml
 runs-on: ubuntu-latest
 steps:
-  - uses: Jimver/cuda-toolkit@v0.2.11
+  # Pin to commit SHA for supply chain security
+  # Verify SHA at https://github.com/Jimver/cuda-toolkit/releases
+  - uses: Jimver/cuda-toolkit@dc581bfeb6c52f0c3484b7d63c2ba4297bea8af0  # v0.2.11
     with:
       cuda: '12.1.0'
 ```
+
+> **Security Note:** Third-party actions with write permissions pose supply chain risks. Pin to commit SHAs and verify the downloaded CUDA artifacts. Consider using official NVIDIA actions or manual installation for production workflows.
 
 ### 9.2 Parallel Notebook Execution
 
