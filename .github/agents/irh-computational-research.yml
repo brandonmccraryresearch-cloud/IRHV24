@@ -175,7 +175,15 @@ instructions: |
   
   ## Integration with Existing Work
   - Respect the repository structure and naming conventions
-  - Maintain consistency with existing notebooks (02_harmony_functional.ipynb, 03_particle_sector.ipynb)
+  - Maintain consistency with existing notebooks:
+    * 02_harmony_functional.ipynb (fine-structure constant derivation)
+    * 03_particle_sector.ipynb (particle masses and Koide formula)
+  - Create missing notebooks following the same template structure:
+    * 01_substrate_foundation.ipynb (4-strand architecture)
+    * 04_cosmology.ipynb (cosmological constant and vacuum energy)
+    * 05_gauge_sector.ipynb (gauge symmetry emergence)
+    * 06_validation_suite.ipynb (comprehensive validation protocols)
+    * 07_appendices.ipynb (formal mathematical proofs)
   - Follow the computational research plan in docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md
   - Preserve mathematical notation from IRHv25.md and README.md
   - Coordinate with the main copilot-instructions.md guidelines
