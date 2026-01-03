@@ -4,6 +4,62 @@ This review evaluates the theory against the criteria of **mathematical consiste
 
 ---
 
+## 📊 Computational Validation Framework
+
+This repository includes a complete computational validation suite for the IRH theoretical framework.
+
+### Quick Start
+
+```bash
+# Run the computational validation workflow manually from GitHub Actions
+# Or locally with Anaconda:
+conda env create -f environment.yml
+conda activate irh-compute
+jupyter lab
+```
+
+### Repository Structure
+
+```
+IRHV24/
+├── IRHv25.md                          # Full theoretical framework (v25 & v26)
+├── environment.yml                     # Conda environment specification
+├── docs/
+│   └── GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md
+├── notebooks/
+│   ├── 02_harmony_functional.ipynb    # α derivation validation
+│   └── 03_particle_sector.ipynb       # Koide formula validation
+└── .github/workflows/
+    └── irh-compute.yml                # GitHub Actions workflow
+```
+
+### Notebook-Theory Correlation
+
+| Notebook | Theory Section | Key Computations |
+|----------|---------------|------------------|
+| `02_harmony_functional.ipynb` | §1-2 (α derivation) | Hopf fibration, 24-cell, Casimir-Weyl |
+| `03_particle_sector.ipynb` | §3 (Koide formula) | Circulant matrices, eigenvalues |
+
+### Running Computations
+
+**Via GitHub Actions:**
+1. Go to **Actions** tab → **IRH Computational Validation**
+2. Click **Run workflow**
+3. Select section and precision level
+4. Download artifacts when complete
+
+**Locally:**
+```bash
+cd notebooks
+jupyter nbconvert --execute --inplace 02_harmony_functional.ipynb
+```
+
+See [docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md](docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md) for detailed documentation.
+
+---
+
+---
+
 # **Critical Review: Intrinsic Resonance Holography (IRH) v25.0**
 
 ## **1. Ontological Assessment: The Vibrational Primitive**
