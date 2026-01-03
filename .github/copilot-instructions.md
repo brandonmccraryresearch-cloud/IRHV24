@@ -9,7 +9,9 @@ This repository contains research and documentation on **Intrinsic Resonance Hol
 - **Primary Content**: Theoretical physics documentation in Markdown format
 - **Focus Areas**: Mathematical physics, unified field theory, quantum mechanics, cosmology
 - **Documentation Style**: Academic/research paper format with extensive mathematical equations
-- **Current Versions**: IRHv25.md contains version 25.0 and 26.0 of the theory
+- **Current Versions**: 
+  - IRHv25.md contains the complete v25.0 theory
+  - README.md contains a critical review of v25.0, the complete v26.0 theory, and a critical review of v26.0
 - **Repository Naming**: The repository is named "IRHV24" but contains documentation for v25.0 and v26.0 of the theory, representing the evolution of the theoretical framework
 
 ## Guidelines for Copilot
@@ -65,7 +67,7 @@ This repository contains research and documentation on **Intrinsic Resonance Hol
 
 ### Special Considerations
 
-1. **Version Control**: The theory has multiple versions (v25.0, v26.0). Be careful not to conflate different versions or their specific claims.
+1. **Version Control**: The theory has multiple versions (v25.0 in IRHv25.md; v26.0 in README.md). Be careful not to conflate different versions or their specific claims. Changes to v25.0 should be made in IRHv25.md, changes to v26.0 should be made in README.md.
 
 2. **Mathematical Coherence**: Equations and derivations build on each other. Changes in one section may require updates in related sections.
 
@@ -77,14 +79,14 @@ This repository contains research and documentation on **Intrinsic Resonance Hol
 
 ```
 /
-├── README.md          # Critical review of IRH v25.0 (formal peer-review style assessment)
-├── IRHv25.md          # Main theoretical documentation (comprehensive v25.0 and v26.0 framework)
+├── README.md          # Critical review of v25.0, complete v26.0 theory, and critical review of v26.0
+├── IRHv25.md          # Complete v25.0 theory documentation
 ├── LICENSE            # Repository license
 └── .github/
     └── copilot-instructions.md  # This file
 ```
 
-**Note**: README.md contains a formal critical review and assessment of the theory, not a typical project readme. IRHv25.md contains the actual theoretical framework and derivations.
+**Note**: README.md serves a dual purpose - it contains formal critical reviews of both versions AND the complete v26.0 theory documentation. IRHv25.md contains the v25.0 theory framework and derivations.
 
 ## Getting Started for Copilot Tasks
 
@@ -115,11 +117,23 @@ When assigned a task:
 
 ## Additional Resources
 
-For understanding the theoretical framework, refer to:
+For understanding the theoretical framework:
+
+**v25.0 Theory (in IRHv25.md):**
 - Section 1: Ontological Foundation and 4-strand architecture
 - Section 2: Mathematical engine and fine-structure constant derivation
 - Section 3: Particle sector and harmonic crystallization
 - Appendices: Formal derivations and topological proofs
+
+**v26.0 Theory (in README.md):**
+- Section 1: Purification of the fine-structure constant
+- Section 2: Topological derivation of color charge
+- Section 3: The Koide formula as a vibrational eigenvalue problem
+- Section 4: Vacuum energy and instantonic suppression
+
+**Critical Reviews (in README.md):**
+- Critical review of v25.0 (first section)
+- Critical review of v26.0 (final section)
 
 ---
 
