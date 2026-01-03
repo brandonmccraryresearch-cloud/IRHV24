@@ -2,8 +2,10 @@
 # Intrinsic Resonance Holography v26.0 - Specialized Computational Agent
 
 name: irh-computational-research
+
 display_name: IRH Computational Research Expert
-description: |
+
+description:
   Expert custom agent specialized in running GitHub Actions workflows, developing Jupyter notebooks,
   and executing scientific computations for the Intrinsic Resonance Holography (IRH) theoretical framework.
   
