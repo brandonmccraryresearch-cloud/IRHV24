@@ -56,7 +56,7 @@ IRHV24/
 **Locally:**
 ```bash
 cd notebooks
-jupyter nbconvert --execute --inplace 02_harmony_functional.ipynb
+jupyter nbconvert --execute --to notebook --output-dir='../outputs/notebooks' 02_harmony_functional.ipynb
 ```
 
 See [docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md](docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md) for detailed documentation.
