@@ -101,7 +101,7 @@ When assigned a task:
 
 ## Common Patterns
 
-- **Section Headers**: Use markdown headers (`#`, `##`, `###`, etc.) with bold formatting for main titles
+- **Section Headers**: Use markdown headers (`#`, `##`, `###`, etc.) combined with bold formatting for titles (e.g., `# **Title**`, `## **Subtitle**`)
 - **Equations**: Use `$$...$$` for display equations and `$...$` for inline math
 - **Lists**: Use markdown lists with clear hierarchical structure
 - **Emphasis**: Use `**bold**` for key terms, `*italic*` for emphasis
