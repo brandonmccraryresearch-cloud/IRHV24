@@ -221,7 +221,7 @@ examples:
   - task: "Run the IRH workflow for section 2 (harmony functional)"
     approach: |
       1. Review the computational plan and existing notebook
-      2. Trigger workflow via workflow_dispatch with section='02_harmony_functional'
+      2. Trigger workflow via workflow_dispatch with section: '02_harmony_functional'
       3. Monitor execution and check for errors
       4. Download and review artifacts
       5. Validate outputs against experimental α value
