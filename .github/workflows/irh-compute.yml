@@ -26,8 +26,8 @@ on:
           - '07_appendices'
       precision:
         description: 'Numerical precision level'
-        required: false
-        default: 'standard'
+        required: true
+        default: ult: 'high'
         type: choice
         options:
           - 'standard'
@@ -50,8 +50,8 @@ on:
 
 # Permissions required for artifact upload and content access
 permissions:
-  contents: read
-  actions: read
+  contents: write
+  actions: write
   pull-requests: write
 
 # Environment variables for Python execution
