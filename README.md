@@ -4,6 +4,65 @@ This review evaluates the theory against the criteria of **mathematical consiste
 
 ---
 
+## 📊 Computational Validation Framework
+
+This repository includes a complete computational validation suite for the IRH theoretical framework.
+
+### Quick Start
+
+```bash
+# Run the computational validation workflow manually from GitHub Actions
+# Or locally with Anaconda:
+conda env create -f environment.yml
+conda activate irh-compute
+jupyter lab
+```
+
+### Repository Structure
+
+```
+IRHV24/
+├── IRHv25.md                          # Full theoretical framework (v25 & v26)
+├── environment.yml                     # Conda environment specification
+├── docs/
+│   └── GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md
+├── notebooks/
+│   ├── 02_harmony_functional.ipynb    # α derivation validation (implemented)
+│   └── 03_particle_sector.ipynb       # Koide formula validation (implemented)
+└── .github/workflows/
+    └── irh-compute.yml                # GitHub Actions workflow
+```
+
+### Notebook-Theory Correlation
+
+| Notebook | Theory Section | Key Computations | Status |
+|----------|---------------|------------------|--------|
+| `01_substrate_foundation.ipynb` | §1 (Ontological Foundation) | 4-strand stability, N=4 derivation | 🔲 Planned |
+| `02_harmony_functional.ipynb` | §1-2 (α derivation) | Hopf fibration, 24-cell, Casimir-Weyl | ✅ Implemented |
+| `03_particle_sector.ipynb` | §3 (Koide formula) | Circulant matrices, eigenvalues | ✅ Implemented |
+| `04_cosmology.ipynb` | §4 (Cosmology) | Λ derivation, dark matter ratio | 🔲 Planned |
+| `05_gauge_sector.ipynb` | §5 (Gauge Sector) | SU(3)×SU(2)×U(1) emergence | 🔲 Planned |
+| `06_validation_suite.ipynb` | §6 (Validation) | Tier 1-3 protocols | 🔲 Planned |
+| `07_appendices.ipynb` | Appendices A-E | Formal derivations | 🔲 Planned |
+
+### Running Computations
+
+**Via GitHub Actions:**
+1. Go to **Actions** tab → **IRH Computational Validation**
+2. Click **Run workflow**
+3. Select section and precision level
+4. Download artifacts when complete
+
+**Locally:**
+```bash
+cd notebooks
+jupyter nbconvert --execute --to notebook --output-dir='../outputs/notebooks' 02_harmony_functional.ipynb
+```
+
+See [docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md](docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md) for detailed documentation.
+
+---
+
 # **Critical Review: Intrinsic Resonance Holography (IRH) v25.0**
 
 ## **1. Ontological Assessment: The Vibrational Primitive**
