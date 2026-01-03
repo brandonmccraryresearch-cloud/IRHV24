@@ -10,6 +10,7 @@ This repository contains research and documentation on **Intrinsic Resonance Hol
 - **Focus Areas**: Mathematical physics, unified field theory, quantum mechanics, cosmology
 - **Documentation Style**: Academic/research paper format with extensive mathematical equations
 - **Current Versions**: IRHv25.md contains version 25.0 and 26.0 of the theory
+- **Repository Naming**: The repository is named "IRHV24" but contains documentation for v25.0 and v26.0 of the theory, representing the evolution of the theoretical framework
 
 ## Guidelines for Copilot
 
@@ -76,12 +77,14 @@ This repository contains research and documentation on **Intrinsic Resonance Hol
 
 ```
 /
-├── README.md          # Project introduction and overview
-├── IRHv25.md          # Main theoretical documentation (v25.0 and v26.0)
+├── README.md          # Critical review of IRH v25.0 (formal peer-review style assessment)
+├── IRHv25.md          # Main theoretical documentation (comprehensive v25.0 and v26.0 framework)
 ├── LICENSE            # Repository license
 └── .github/
     └── copilot-instructions.md  # This file
 ```
+
+**Note**: README.md contains a formal critical review and assessment of the theory, not a typical project readme. IRHv25.md contains the actual theoretical framework and derivations.
 
 ## Getting Started for Copilot Tasks
 
