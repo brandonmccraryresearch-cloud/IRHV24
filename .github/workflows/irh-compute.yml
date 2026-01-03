@@ -224,7 +224,6 @@ jobs:
     name: Parallel Notebook Execution
     runs-on: ubuntu-latest
     if: github.event.inputs.section == 'all' && github.event_name == 'workflow_dispatch'
-    needs: validate
     timeout-minutes: 120
     
     strategy:
