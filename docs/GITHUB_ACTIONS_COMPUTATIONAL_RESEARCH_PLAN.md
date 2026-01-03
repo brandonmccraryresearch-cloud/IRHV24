@@ -74,8 +74,8 @@ dependencies:
   - networkx>=3.1      # Graph theory for CRN simulations
   - scikit-learn>=1.3  # ML for pattern recognition
   - pip:
-    - qutip>=5.0       # Quantum toolbox for braid group calculations
-    - spherical>=1.0   # Spherical harmonics (Hopf fibration)
+    - qutip>=5.0                 # Quantum toolbox for braid group calculations
+    - spherical-functions>=2022.4.5  # Spherical harmonics (Hopf fibration)
 ```
 
 ### 2.3 Mamba Solver (Recommended)
