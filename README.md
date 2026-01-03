@@ -27,18 +27,23 @@ IRHV24/
 ├── docs/
 │   └── GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md
 ├── notebooks/
-│   ├── 02_harmony_functional.ipynb    # α derivation validation
-│   └── 03_particle_sector.ipynb       # Koide formula validation
+│   ├── 02_harmony_functional.ipynb    # α derivation validation (implemented)
+│   └── 03_particle_sector.ipynb       # Koide formula validation (implemented)
 └── .github/workflows/
     └── irh-compute.yml                # GitHub Actions workflow
 ```
 
 ### Notebook-Theory Correlation
 
-| Notebook | Theory Section | Key Computations |
-|----------|---------------|------------------|
-| `02_harmony_functional.ipynb` | §1-2 (α derivation) | Hopf fibration, 24-cell, Casimir-Weyl |
-| `03_particle_sector.ipynb` | §3 (Koide formula) | Circulant matrices, eigenvalues |
+| Notebook | Theory Section | Key Computations | Status |
+|----------|---------------|------------------|--------|
+| `01_substrate_foundation.ipynb` | §1 (Ontological Foundation) | 4-strand stability, N=4 derivation | 🔲 Planned |
+| `02_harmony_functional.ipynb` | §1-2 (α derivation) | Hopf fibration, 24-cell, Casimir-Weyl | ✅ Implemented |
+| `03_particle_sector.ipynb` | §3 (Koide formula) | Circulant matrices, eigenvalues | ✅ Implemented |
+| `04_cosmology.ipynb` | §4 (Cosmology) | Λ derivation, dark matter ratio | 🔲 Planned |
+| `05_gauge_sector.ipynb` | §5 (Gauge Sector) | SU(3)×SU(2)×U(1) emergence | 🔲 Planned |
+| `06_validation_suite.ipynb` | §6 (Validation) | Tier 1-3 protocols | 🔲 Planned |
+| `07_appendices.ipynb` | Appendices A-E | Formal derivations | 🔲 Planned |
 
 ### Running Computations
 
