@@ -48,9 +48,9 @@ on:
   schedule:
     - cron: '0 0 * * 0'  # Every Sunday at midnight UTC
 
-# Permissions required for artifact upload and content writing
+# Permissions required for artifact upload and content access
 permissions:
-  contents: write
+  contents: read
   actions: read
   pull-requests: write
 
