@@ -176,7 +176,7 @@ jobs:
       - name: Generate Validation Report
         if: always()
         run: |
-          cat > outputs/reports/validation_summary.md << 'EOF'
+          cat > outputs/reports/validation_summary.md << EOF
           # IRH Computational Validation Report
           
           **Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
