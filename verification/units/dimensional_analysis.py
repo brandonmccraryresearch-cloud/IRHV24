@@ -145,7 +145,7 @@ def audit_hopf_fibration_to_alpha():
     print("=" * 80)
     
     # Step 1: Hopf fibration volume ratio (dimensionless)
-    hopf_ratio = Q_(np.pi**2 / 3, 'dimensionless')
+    hopf_ratio = Q_(np.pi**2 / 6, 'dimensionless')
     print(f"Hopf ratio Vol(S⁷)/Vol(S³): {hopf_ratio.dimensionality}")
     
     # Step 2: 24-cell vertices (dimensionless count)
