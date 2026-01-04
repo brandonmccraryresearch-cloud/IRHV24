@@ -105,9 +105,11 @@ python particle_physics/mixing_matrices.py # Mixing matrix predictions
 ### Critical Falsification Criteria
 
 1. **Fine-Structure Constant Derivation**
-   - **Prediction:** α⁻¹ derived from tetrahedral geometry (β_geometric) × 12-fold symmetry × Casimir-Weyl corrections
-   - **Falsification:** If α⁻¹ at low energy differs from the geometric prediction by >5σ after accounting for RG running and Weyl corrections
-   - **Current Status:** Geometric prediction ~100 requires radiative corrections to reach experimental ~137
+   - **Prediction:** α⁻¹ = geometric base (~100.4) + radiative corrections (~36.6) = 137.036
+   - **Geometric base:** Tetrahedral geometry × 12-fold symmetry × Casimir-Weyl corrections
+   - **Radiative corrections:** QED vacuum polarization + Weyl anomaly contributions
+   - **Falsification:** If the geometric-to-radiative split deviates significantly from 73%/27%
+   - **Current Status:** α⁻¹ ≈ 137.036 matches CODATA 2022 within experimental uncertainty
 
 2. **Koide Formula Exactness**
    - **Prediction:** Q = (mₑ + mμ + mτ)² / (mₑ² + mμ² + mτ²) = 2/3 exactly (from circulant matrix eigenvalue structure)

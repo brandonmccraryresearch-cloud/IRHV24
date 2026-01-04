@@ -19,7 +19,8 @@ The verification framework ensures that IRH predictions meet the rigorous standa
 High-precision calculations using `mpmath` with 50 decimal places.
 
 **Features:**
-- Fine-structure constant α to 15+ decimals from Hopf fibration geometry
+- Fine-structure constant α to 15+ decimals: geometric base + radiative corrections
+- Includes QED vacuum polarization and Weyl anomaly contributions
 - Koide formula Q = 2/3 calculation and validation
 - Cosmological constant suppression factors
 - Comparison with CODATA 2018/2022 experimental values

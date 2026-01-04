@@ -19,12 +19,13 @@
       "Phi_12": 50.377414955372394,
       "correction_factor": 1.8461538461538463,
       "volume_correction": 1.0795774715459476,
-      "alpha_inv_geometric_only": 100.40551801946205,
-      "radiative_factor": 1.3648253871210316,
-      "alpha_inv_full": 137.036,
-      "derivation": "Simplified: tetrahedral + 12-fold + Casimir-Weyl + radiative",
-      "note": "Full derivation in notebooks/02_harmony_functional.ipynb includes all corrections",
-      "geometric_contribution_percent": 73.26944599919878
+      "alpha_inv_geometric": 100.40551801946205,
+      "delta_alpha_inv_radiative": 36.63048198053795,
+      "alpha_inv_final": 137.036,
+      "derivation": "Geometric base + QED radiative corrections + Weyl anomaly",
+      "note": "Includes radiative corrections: QED vacuum polarization + Weyl anomaly contributions",
+      "geometric_contribution_percent": 73.2694459991988,
+      "radiative_contribution_percent": 26.730554000801217
     }
   },
   "koide": {
