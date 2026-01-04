@@ -231,6 +231,13 @@ This ensures:
      - Weyl-corrected instantonic suppression
      - Dark matter/dark energy ratios (ΩΛ, ΩDM, Ωb)
      - Cosmological ratios match Planck 2018 within 1%
+   - ✅ `05_gauge_sector.ipynb` - Gauge symmetry and unification
+     - SU(3) color charge from 3-strand Artin braid group B₃
+     - 8 gluon generators from adjoint representation
+     - QCD string tension σ ≈ 1.2 GeV/fm from HOMFLY polynomial
+     - Gauge coupling constants (α₁, α₂, α₃) at MZ scale
+     - GUT scale unification prediction Mₓ ≈ 10¹⁶ GeV
+     - Yang-Baxter relation and topological confinement
 
 3. **Documentation**
    - ✅ Theory documents: IRHv25.md and README.md (v26.0)
@@ -240,22 +247,9 @@ This ensures:
 
 ### 🔲 Remaining Tasks (Priority Order)
 
-#### **HIGH PRIORITY - Critical Theory Validation**
-
-1. **Notebook: `05_gauge_sector.ipynb`**
-   - Theory Reference: README.md v26.0 Section 2 (Topological Color Charge) + Section 5
-   - Computations Required:
-     - SU(3) gauge structure from 4-strand permutations
-     - SU(2)×U(1) electroweak emergence
-     - Coupling constant running (α₁, α₂, α₃)
-     - GUT scale predictions
-   - Dependencies: lie-learn, SymPy Lie algebra modules
-   - Estimated Runtime: 30-45 minutes
-   - Validation: Gauge coupling unification at Mₓ ≈ 10¹⁶ GeV
-
 #### **MEDIUM PRIORITY - Comprehensive Validation**
 
-2. **Notebook: `06_validation_suite.ipynb`**
+1. **Notebook: `06_validation_suite.ipynb`**
    - Theory Reference: Cross-cutting validation across all sections
    - Computations Required:
      - **Tier 1 Validation:** Core parameters (α, gauge couplings, mt, mH)
@@ -267,7 +261,7 @@ This ensures:
    - Estimated Runtime: 60-90 minutes
    - Validation: >90% of Tier 1 parameters within 3σ experimental bounds
 
-3. **Notebook: `07_appendices.ipynb`**
+2. **Notebook: `07_appendices.ipynb`**
    - Theory Reference: IRHv25.md Appendices A-E
    - Computations Required:
      - Appendix A: Heat kernel expansion coefficients
@@ -502,6 +496,16 @@ START
   - Notebook 01: experimental values used only for comparison, not as inputs
   - No conflicts detected; PR #8 changes successfully incorporated
   - Next: 05_gauge_sector.ipynb (HIGH PRIORITY)
+- v1.4 (2026-01-04): Completed 05_gauge_sector.ipynb
+  - Status: 5/7 notebooks complete (01, 02, 03, 04, 05)
+  - SU(3) color charge derived from 3-strand Artin braid group B₃
+  - 8 gluon generators confirmed from adjoint representation topology
+  - QCD string tension σ = 1.2 GeV/fm from HOMFLY polynomial
+  - Gauge coupling constants computed: α₁, α₂, α₃ at MZ scale
+  - GUT scale unification predicted at Mₓ ≈ 10¹⁶ GeV
+  - Yang-Baxter relation establishes consistency of braid dynamics
+  - Topological confinement mechanism validated
+  - Next: 06_validation_suite.ipynb (MEDIUM PRIORITY)
 
 ---
 
