@@ -243,13 +243,10 @@ jobs:
                     pull_number: ${{ inputs.pr_number }}
                   });
                   
-                  const body = `🚨 **${issue.message}**
-                  
-**Required fix:** ${issue.fix_required}
-
-${issue.suggested_code ? '**Suggested code:**\n```python\n' + issue.suggested_code + '\n```' : ''}
-
-_This is an automated review by Gemini AI_`;
+                  const body = "🚨 **" + issue.message + "**\n\n" +
+                    "**Required fix:** " + issue.fix_required + "\n\n" +
+                    (issue.suggested_code ? "**Suggested code:**\n```python\n" + issue.suggested_code + "\n```\n\n" : "") +
+                    "_This is an automated review by Gemini AI_";
                   
                   await github.rest.pulls.createReviewComment({
                     owner: context.repo.owner,
