@@ -178,7 +178,7 @@ python gemini_review.py \
 
 **AI Prompt Strategy:**
 - Loads full directive text (A, B, C)
-- Analyzes code diff (up to 8000 chars)
+- Analyzes code diff (up to 500,000 chars)
 - Instructs AI to suggest topological derivations
 - Forbids "acknowledge limitation" as primary fix
 - Requests JSON output with structured issues
