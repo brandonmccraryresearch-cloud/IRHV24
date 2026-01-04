@@ -495,6 +495,13 @@ START
   - Cosmological ratios (ΩΛ, ΩDM, Ωb) match Planck 2018 within 1%
   - Quaternionic interference + Weyl anomaly mechanisms validated
   - Next: 05_gauge_sector.ipynb (HIGH PRIORITY)
+- v1.3 (2026-01-04): Verified PR #8 changes integrated
+  - Status: 4/7 notebooks complete (01, 02, 03, 04)
+  - Confirmed all notebooks follow directive: experimental values used only for validation
+  - Notebooks 02 and 03: proper labeling with "EXPERIMENTAL VALUES FOR VALIDATION ONLY"
+  - Notebook 01: experimental values used only for comparison, not as inputs
+  - No conflicts detected; PR #8 changes successfully incorporated
+  - Next: 05_gauge_sector.ipynb (HIGH PRIORITY)
 
 ---
 
