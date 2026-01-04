@@ -101,7 +101,7 @@ Successfully implemented the complete Agent Enhancement Implementation Plan with
 2. **Derivation Priority:** Always suggests topological derivations first
 3. **Rule-Based Fallback:** Works without API key
 4. **Inline Comments:** Posts review comments directly on code
-5. **50K Context:** Large window for comprehensive analysis
+5. **500K Context:** Large window for comprehensive analysis
 
 ---
 
