@@ -68,7 +68,7 @@ jobs:
             else
               echo "Changed files: $CHANGED_PATHS"
               echo "skip_check=false" >> $GITHUB_OUTPUT
-              echo "paths=$CHANGED_PATHS" >> $GITHUB_OUTPUT
+              echo "paths=$(echo "$CHANGED_PATHS" | tr '\n' ' ')" >> $GITHUB_OUTPUT
             fi
           else
             # For manual trigger, use input or default
