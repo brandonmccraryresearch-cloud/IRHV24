@@ -19,9 +19,8 @@ import warnings
 ureg = UnitRegistry()
 Q_ = ureg.Quantity
 
-# Enable uncertainties if available
+# Enable uncertainties if available via pint
 try:
-    import uncertainties
     ureg.enable_uncertainties()
 except ImportError:
     warnings.warn("uncertainties package not available, uncertainty propagation disabled")
