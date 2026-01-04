@@ -263,8 +263,29 @@ class IRHTheory:
         # Weyl anomaly instantonic action
         # S_inst ~ 8π²/g² where g ~ α for EM coupling
         # NOTE: Uses geometric α (not experimental) as this is the topologically-derived
-        # coupling that enters the instantonic action calculation
-        alpha_irh = 1 / IRHTheory.fine_structure_constant()[0]
+        # coupling that enters the instantonic action calculation.
+        # IMPORTANT: To avoid circular reasoning and use of experimental inputs,
+        # we construct a purely geometric IRH coupling here. This helper must NOT
+        # depend on any experimental values; it should eventually be replaced by
+        # the full topological derivation from the Harmony Functional.
+        def geometric_alpha_irh() -> mp.mpf:
+            """
+            Geometric fine-structure constant (IRH coupling) used for
+            cosmological constant suppression.
+
+            This is a purely theoretical quantity derived from IRH geometry.
+            It MUST NOT depend on experimental inputs; experimental values
+            belong exclusively in validation code paths.
+
+            Current implementation is a placeholder based on simple geometric
+            ratios of π and should be updated when the full IRH derivation
+            is implemented in this constants module or an associated notebook.
+            """
+            # Placeholder purely geometric estimate (no experimental inputs).
+            # TODO: Replace with exact IRH-derived expression for α_geom.
+            return 1 / (4 * mp.pi)
+
+        alpha_irh = geometric_alpha_irh()
         S_inst = 8 * mp.pi**2 * alpha_irh
         instanton_factor = mp.exp(-S_inst)
         
