@@ -297,7 +297,7 @@ def plot_rg_flow(output_file: str = 'rg_flow_alpha.png'):
         alpha_inv_values.append(float(1/alpha_Q))
     
     # Create figure
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 10))
+    _, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 10))
     
     # Plot 1: α vs energy scale
     ax1.semilogx(Q_range_log, alpha_values, 'b-', linewidth=2, label='α(Q) with IRH corrections')
