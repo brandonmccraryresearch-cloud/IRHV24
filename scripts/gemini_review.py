@@ -61,8 +61,8 @@ class GeminiReviewer:
         if GEMINI_AVAILABLE and self.api_key:
             try:
                 genai.configure(api_key=self.api_key)
-                # Use Gemini 1.5 Pro for advanced reasoning
-                self.model = genai.GenerativeModel('gemini-1.5-pro-latest')
+                # Use Gemini 3 Pro for advanced reasoning and code review
+                self.model = genai.GenerativeModel('gemini-3-pro')
             except Exception as e:
                 print(f"Warning: Could not initialize Gemini: {e}", file=sys.stderr)
                 self.model = None

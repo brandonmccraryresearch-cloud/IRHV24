@@ -1,5 +1,5 @@
 # Gemini AI Code Review Workflow
-# Uses Google's Gemini AI for intelligent code review focused on
+# Uses Google's Gemini 3 Pro for intelligent code review focused on
 # IRH directive compliance with actionable derivation suggestions
 #
 # This is a reusable workflow that can be called from other workflows
