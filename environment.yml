@@ -45,6 +45,9 @@ dependencies:
   - memory_profiler>=0.61
   - tqdm>=4.65
   
+  # Unit handling for dimensional analysis
+  - pint>=0.23                 # Physical units and dimensional analysis
+  
   # Pip-only packages
   - pip:
     # Quantum Computing (Braid Group Calculations)
