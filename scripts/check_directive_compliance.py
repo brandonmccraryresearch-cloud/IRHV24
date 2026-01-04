@@ -103,11 +103,42 @@ class ViolationDetector:
         """
         lines = content.split('\n')
         
+        # Track whether we're inside a multi-line triple-quoted string (e.g., docstring)
+        in_docstring = False
+        docstring_delim = None  # Either '"""' or "'''"
+        
         for line_num, line in enumerate(lines, start=1):
-            # Skip comments and docstrings for this check
             stripped = line.strip()
-            if stripped.startswith('#') or stripped.startswith('"""') or stripped.startswith("'''"):
+
+            # If currently inside a docstring, look for the closing delimiter and skip line
+            if in_docstring:
+                if docstring_delim and docstring_delim in stripped:
+                    # Closing delimiter found; exit docstring mode
+                    in_docstring = False
+                    docstring_delim = None
                 continue
+
+            # Skip comment lines
+            if stripped.startswith('#'):
+                continue
+
+            # Detect start (and possible end) of triple-quoted docstrings/strings
+            if '"""' in stripped or "'''" in stripped:
+                # Prefer the delimiter that actually appears
+                if '"""' in stripped:
+                    delim = '"""'
+                else:
+                    delim = "'''"
+
+                count = stripped.count(delim)
+                if count == 1:
+                    # Start of a multi-line docstring/string; skip this and following lines
+                    in_docstring = True
+                    docstring_delim = delim
+                    continue
+                else:
+                    # Triple-quoted string starts and ends on the same line; skip this line only
+                    continue
                 
             # Check for experimental value patterns
             for value_pattern, description in EXPERIMENTAL_VALUES.items():
