@@ -93,6 +93,22 @@ jobs:
         run: |
           echo "⏭️ Skipping compliance check - no Python or notebook files changed" >> $GITHUB_STEP_SUMMARY
       
+      - name: Display violations in log
+        if: always() && steps.paths.outputs.skip_check != 'true'
+        run: |
+          if [ -f violations.json ]; then
+            echo "==================== VIOLATIONS REPORT ===================="
+            echo ""
+            cat violations.json
+            echo ""
+            echo "==========================================================="
+            echo ""
+            echo "Full violations.json content displayed above for easy access."
+            echo "This file is also uploaded as an artifact for download if needed."
+          else
+            echo "No violations.json file found - compliance check completed but produced no output file"
+          fi
+      
       - name: Upload violation report
         if: always() && steps.paths.outputs.skip_check != 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
