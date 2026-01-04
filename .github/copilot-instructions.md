@@ -68,6 +68,51 @@ jupyter nbconvert --execute --to notebook --inplace notebooks/XX_notebook.ipynb
 6. **Cell 6 (Code):** Visualization
 7. **Cell 7 (Code):** Summary and output export
 
+### 6. 🔒 NO-TUNING CONSTRAINT (Directive A)
+**CRITICAL RULE:** All physical constants must be derived from topological invariants.
+
+- ✅ **ALLOWED:** Constants derived from Euler characteristics, Chern numbers, volume ratios of manifolds
+- ❌ **FORBIDDEN:** Numerical constants without topological/geometric origin
+- **Enforcement:** Any constant not traceable to 4-strand network topology or Weyl anomaly must be flagged as "Heuristic Approximation" and prioritized for replacement
+- **Examples of valid sources:**
+  - Hopf fibration volume ratios (Vol(S^n))
+  - 24-cell polytope vertex counts
+  - Braid group representations (B₃ for SU(3))
+  - Chern classes and topological invariants
+  - Weyl anomaly coefficients from conformal field theory
+
+### 7. 📏 PRECISION AND CODATA ALIGNMENT (Directive B)
+**CRITICAL RULE:** All validations must use latest CODATA recommended values.
+
+- **Required:** Compare outputs against CODATA 2018/2022 values using `scipy.constants`
+- **Standard:** Use `verification/precision/constants.py` for all comparisons
+- **Precision:** Calculate all theoretical predictions to at least 15 decimal places using mpmath
+- **Analysis:** Any deviation > experimental standard uncertainty must be analyzed as:
+  - Potential "Geometric Berry Phase" effect
+  - "Renormalization Scale" dependence
+  - Topological correction term
+  - NOT simply dismissed as "calculation error"
+- **Documentation:** All comparisons must include:
+  - Relative error percentage
+  - σ-deviation from experimental value
+  - Statistical significance assessment
+
+### 8. 🎓 FORMALISM ENFORCEMENT (Directive C)
+**CRITICAL RULE:** Use rigorous gauge theory and fiber bundle terminology exclusively.
+
+- **Forces as Curvature:** Describe interactions as "curvature in the connection," not "information exchange"
+- **Particles as Modes:** Refer to particles as "resonant modes of the Braid Group B₃," not "information patterns"
+- **Gauge Language:** Use terms like "holonomy," "parallel transport," "connection 1-form," "field strength 2-form"
+- **Topology:** Use "Chern classes," "characteristic classes," "fiber bundles," "principal bundles"
+- **Information-theoretic metaphors:** ONLY allowed when discussing holographic boundary entropy
+- **Examples:**
+  - ✅ "The electromagnetic interaction arises from U(1) curvature"
+  - ❌ "The electromagnetic force transmits information between particles"
+  - ✅ "Quarks are fundamental representations of the SU(3) braid group"
+  - ❌ "Quarks carry color information"
+  - ✅ "The Weyl anomaly generates a conformal breaking term"
+  - ❌ "The system loses conformal symmetry due to information constraints"
+
 ---
 
 ## Repository Overview

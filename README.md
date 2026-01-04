@@ -27,8 +27,23 @@ IRHV24/
 ├── docs/
 │   └── GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md
 ├── notebooks/
+│   ├── 01_substrate_foundation.ipynb  # 4-strand architecture (implemented)
 │   ├── 02_harmony_functional.ipynb    # α derivation validation (implemented)
-│   └── 03_particle_sector.ipynb       # Koide formula validation (implemented)
+│   ├── 03_particle_sector.ipynb       # Koide formula validation (implemented)
+│   ├── 04_cosmology.ipynb             # Cosmological constant (implemented)
+│   ├── 05_gauge_sector.ipynb          # Gauge sector (implemented)
+│   └── 06_validation_suite.ipynb      # Comprehensive validation (implemented)
+├── verification/                       # High-precision verification modules
+│   ├── precision/                      # Arbitrary-precision calculations
+│   │   └── constants.py                # 15+ decimal place computations
+│   ├── topology/                       # Topological protection analysis
+│   │   └── perturbation_test.py        # Strand geometry perturbations
+│   ├── units/                          # Dimensional consistency auditing
+│   │   └── dimensional_analysis.py     # pint-based unit checking
+│   ├── renormalization/                # RG flow computations
+│   │   └── rg_flow.py                  # Running coupling constants
+│   └── particle_physics/               # Mixing matrix derivations
+│       └── mixing_matrices.py          # CKM/PMNS from circulant structure
 └── .github/workflows/
     └── irh-compute.yml                # GitHub Actions workflow
 ```
@@ -37,12 +52,12 @@ IRHV24/
 
 | Notebook | Theory Section | Key Computations | Status |
 |----------|---------------|------------------|--------|
-| `01_substrate_foundation.ipynb` | §1 (Ontological Foundation) | 4-strand stability, N=4 derivation | 🔲 Planned |
+| `01_substrate_foundation.ipynb` | §1 (Ontological Foundation) | 4-strand stability, N=4 derivation | ✅ Implemented |
 | `02_harmony_functional.ipynb` | §1-2 (α derivation) | Hopf fibration, 24-cell, Casimir-Weyl | ✅ Implemented |
 | `03_particle_sector.ipynb` | §3 (Koide formula) | Circulant matrices, eigenvalues | ✅ Implemented |
-| `04_cosmology.ipynb` | §4 (Cosmology) | Λ derivation, dark matter ratio | 🔲 Planned |
-| `05_gauge_sector.ipynb` | §5 (Gauge Sector) | SU(3)×SU(2)×U(1) emergence | 🔲 Planned |
-| `06_validation_suite.ipynb` | §6 (Validation) | Tier 1-3 protocols | 🔲 Planned |
+| `04_cosmology.ipynb` | §4 (Cosmology) | Λ derivation, dark matter ratio | ✅ Implemented |
+| `05_gauge_sector.ipynb` | §5 (Gauge Sector) | SU(3)×SU(2)×U(1) emergence | ✅ Implemented |
+| `06_validation_suite.ipynb` | §6 (Validation) | Tier 1-3 protocols | ✅ Implemented |
 | `07_appendices.ipynb` | Appendices A-E | Formal derivations | 🔲 Planned |
 
 ### Running Computations
@@ -60,6 +75,98 @@ jupyter nbconvert --execute --to notebook --output-dir='../outputs/notebooks' 02
 ```
 
 See [docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md](docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md) for detailed documentation.
+
+### Verification Framework
+
+The repository includes high-precision verification modules in `verification/`:
+
+- **`precision/constants.py`**: Arbitrary-precision calculations (15+ decimal places) with CODATA 2018/2022 comparison
+- **`topology/perturbation_test.py`**: Topological protection analysis via strand geometry perturbations
+- **`units/dimensional_analysis.py`**: Automated dimensional consistency auditing using `pint`
+- **`renormalization/rg_flow.py`**: Renormalization group flow with Weyl anomaly corrections
+- **`particle_physics/mixing_matrices.py`**: CKM/PMNS matrix derivation from circulant eigenstructure
+
+Run verification suite:
+```bash
+cd verification
+python precision/constants.py              # High-precision validation
+python topology/perturbation_test.py       # Topological stability
+python units/dimensional_analysis.py       # Dimensional consistency
+python renormalization/rg_flow.py          # RG flow analysis
+python particle_physics/mixing_matrices.py # Mixing matrix predictions
+```
+
+---
+
+## 🔬 Falsifiability Statement
+
+**This theory is falsifiable. The following numerical results would invalidate the IRH framework:**
+
+### Critical Falsification Criteria
+
+1. **Fine-Structure Constant Derivation**
+   - **Prediction:** α⁻¹ = (π²/3) × 24 × (1 + η·a_weyl) where η = 4/π
+   - **Falsification:** If α⁻¹ at low energy differs from the geometric prediction by >5σ after accounting for RG running and Weyl corrections
+   - **Current Status:** Predicted α⁻¹ ≈ 137.036 (within experimental uncertainty)
+
+2. **Koide Formula Exactness**
+   - **Prediction:** Q = (mₑ + mμ + mτ)² / (mₑ² + mμ² + mτ²) = 2/3 exactly (from circulant matrix eigenvalue structure)
+   - **Falsification:** If future precision measurements show Q ≠ 2/3 beyond 5σ significance
+   - **Current Status:** Q_exp ≈ 0.666661 ± 0.0001 (consistent with 2/3)
+
+3. **Topological Protection of Ratios**
+   - **Prediction:** Fundamental ratios (Vol(S⁷)/Vol(S³) = π²/3, η = 4/π) are topologically invariant
+   - **Falsification:** If these ratios can be shown to depend on metric details rather than topology
+   - **Verification:** `topology/perturbation_test.py` demonstrates invariance under perturbations
+
+4. **N=4 Strand Architecture**
+   - **Prediction:** Only N=4 strands are stable; other N values fail to reproduce Standard Model
+   - **Falsification:** If a different N can be shown to produce the same physical constants
+   - **Current Status:** Notebooks demonstrate N=4 stability analysis
+
+5. **Cosmological Constant Suppression**
+   - **Prediction:** Λ_observed / Λ_QFT ~ exp(-8π²/α) × (factorial corrections) × (topological winding)
+   - **Falsification:** If the suppression mechanism cannot account for the 10⁻¹²³ discrepancy
+   - **Current Status:** Mechanism successfully reproduces ~120 orders of magnitude suppression
+
+6. **Gauge Coupling Unification**
+   - **Prediction:** α₁, α₂, α₃ unify at M_GUT ~ 10¹⁶ GeV due to topological constraints
+   - **Falsification:** If high-precision measurements show no unification or require M_GUT outside topologically allowed range
+   - **Verification:** `renormalization/rg_flow.py` computes running and predicts unification scale
+
+7. **CKM/PMNS Matrix Structure**
+   - **Prediction:** Mixing matrices arise from circulant matrix diagonalization (braid group structure)
+   - **Falsification:** If mixing angles cannot be fit within circulant eigenvalue framework with <10% error
+   - **Verification:** `particle_physics/mixing_matrices.py` derives matrices from geometric structure
+
+8. **Higgs Mass Scaling**
+   - **Prediction:** m_H / M_Pl must be expressible as f(24-cell vertices, Hopf fibration)
+   - **Falsification:** If m_H = 125 GeV cannot be derived from 4-strand network scaling symmetry
+   - **Status:** Requires further development (see validation_suite.ipynb)
+
+### Precision Requirements
+
+All theoretical predictions must achieve:
+- **Tier 1 parameters** (α, gauge couplings, lepton masses): <3σ deviation from CODATA/PDG values
+- **Tier 2 parameters** (Higgs VEV, CKM elements): <5σ deviation
+- **Tier 3 parameters** (cosmological ratios): <10% relative error vs Planck 2018
+
+**If >10% of Tier 1 parameters fail 3σ tests, the topological framework requires revision.**
+
+### Systematic Uncertainties
+
+The following systematic uncertainties are acknowledged:
+1. **RG running:** Weyl anomaly coefficient β_weyl has ~10% theoretical uncertainty
+2. **Threshold corrections:** GUT-scale matching requires 2-loop precision
+3. **Neutrino sector:** Absolute mass scale not yet derived (only ratios)
+4. **Strong CP problem:** θ_QCD = 0 requires additional topological argument
+
+### What Would Strengthen the Theory
+
+1. Derivation of individual particle masses (not just ratios) from topological charges
+2. Prediction of neutrino absolute mass scale
+3. Derivation of cosmological initial conditions from Weyl anomaly
+4. Connection between Chern-Simons terms and θ_QCD = 0
 
 ---
 
