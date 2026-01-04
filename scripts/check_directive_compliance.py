@@ -210,6 +210,12 @@ class ViolationDetector:
         lines = content.split('\n')
         
         for line_num, line in enumerate(lines, start=1):
+            stripped = line.strip()
+            
+            # Skip comments and docstrings
+            if stripped.startswith('#') or '"""' in stripped or "'''" in stripped:
+                continue
+            
             # Look for validation labels
             has_label = False
             for pattern in VALIDATION_LABELS:
@@ -224,6 +230,9 @@ class ViolationDetector:
                     check_idx = line_num - 1 + offset
                     if 0 <= check_idx < len(lines):
                         check_line = lines[check_idx]
+                        # Skip comments when looking for values
+                        if check_line.strip().startswith('#'):
+                            continue
                         # Look for numerical assignments
                         if re.search(r'=\s*[\d.eE-]+', check_line):
                             has_value = True
@@ -411,6 +420,9 @@ def main():
         else:
             # Check directory recursively
             for py_file in path.rglob('*.py'):
+                # Skip the compliance checker itself to avoid self-flagging
+                if py_file.name == 'check_directive_compliance.py':
+                    continue
                 detector.check_python_file(py_file, check_flags)
             
             for nb_file in path.rglob('*.ipynb'):
