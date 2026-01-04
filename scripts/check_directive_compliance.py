@@ -7,10 +7,10 @@ and Jupyter notebooks for hardcoded experimental values, improper labeling,
 and missing placeholder warnings.
 
 Usage:
-    python check_directive_compliance.py \\
-        --check-hardcoded-values \\
-        --check-experimental-labels \\
-        --check-placeholder-warnings \\
+    python check_directive_compliance.py \
+        --check-hardcoded-values \
+        --check-experimental-labels \
+        --check-placeholder-warnings \
         --output violations.json
 
 Author: IRH Computational Research Team

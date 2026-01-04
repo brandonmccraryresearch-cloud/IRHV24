@@ -14,10 +14,10 @@ Key Features:
 - Generates actionable fix recommendations
 
 Usage:
-    python gemini_review.py \\
-        --pr-number 42 \\
-        --directives .github/agents/irh-computational-research.agent.md \\
-        --focus-areas "hardcoded values,experimental inputs,placeholder implementations" \\
+    python gemini_review.py \
+        --pr-number 42 \
+        --directives .github/agents/irh-computational-research.agent.md \
+        --focus-areas "hardcoded values,experimental inputs,placeholder implementations" \
         --output review_results.json
 
 Author: IRH Computational Research Team
@@ -182,7 +182,7 @@ Your task is to review the following code changes and identify violations of IRH
 ## CODE CHANGES TO REVIEW:
 
 ```diff
-{code_diff[:8000]}  # Limit to 8000 chars to avoid token limits
+{code_diff[:50000]}  # Gemini 3 Pro supports large context windows
 ```
 
 ## YOUR TASK:

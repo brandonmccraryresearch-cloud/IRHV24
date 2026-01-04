@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Theory Evolution System is a planned AI-guided framework for continuously improving the Intrinsic Resonance Holography (IRH) theoretical predictions through systematic error analysis and synoptic refinement.
+The Theory Evolution System is a planned AI-guided framework for continuously improving the Intrinsic Resonance Holography (IRH) theoretical predictions through systematic error analysis and synoptic (comprehensive, unified) refinement.
 
 **Status:** Design Phase - Documentation Only
 
