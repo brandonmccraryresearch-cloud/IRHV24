@@ -368,7 +368,7 @@ def plot_perturbation_results(results: Dict, output_file: str = 'perturbation_an
     """
     Create visualization of perturbation test results.
     """
-    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+    _fig, axes = plt.subplots(2, 2, figsize=(12, 10))
     
     # Plot 1: Relative changes
     ax = axes[0, 0]
