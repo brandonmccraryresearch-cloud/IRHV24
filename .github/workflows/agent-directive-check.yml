@@ -59,8 +59,8 @@ jobs:
         id: paths
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            # For PRs, check changed files
-            CHANGED_PATHS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.(py|ipynb)$' || echo "")
+            # For PRs, check changed files (excluding workflow itself, violations.json, and the checker script)
+            CHANGED_PATHS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.(py|ipynb)$' | grep -v -E '(\.github/workflows/agent-directive-check\.yml|violations\.json|check_directive_compliance\.py)' || echo "")
             if [ -z "$CHANGED_PATHS" ]; then
               echo "No Python or notebook files changed - skipping compliance check"
               echo "skip_check=true" >> $GITHUB_OUTPUT
@@ -68,7 +68,7 @@ jobs:
             else
               echo "Changed files: $CHANGED_PATHS"
               echo "skip_check=false" >> $GITHUB_OUTPUT
-              echo "paths=$CHANGED_PATHS" >> $GITHUB_OUTPUT
+              echo "paths=$(echo "$CHANGED_PATHS" | tr '\n' ' ')" >> $GITHUB_OUTPUT
             fi
           else
             # For manual trigger, use input or default
@@ -92,6 +92,22 @@ jobs:
         if: steps.paths.outputs.skip_check == 'true'
         run: |
           echo "⏭️ Skipping compliance check - no Python or notebook files changed" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Display violations in log
+        if: always() && steps.paths.outputs.skip_check != 'true'
+        run: |
+          if [ -f violations.json ]; then
+            echo "==================== VIOLATIONS REPORT ===================="
+            echo ""
+            cat violations.json
+            echo ""
+            echo "==========================================================="
+            echo ""
+            echo "Full violations.json content displayed above for easy access."
+            echo "This file is also uploaded as an artifact for download if needed."
+          else
+            echo "No violations.json file found - compliance check completed but produced no output file"
+          fi
       
       - name: Upload violation report
         if: always() && steps.paths.outputs.skip_check != 'true'
