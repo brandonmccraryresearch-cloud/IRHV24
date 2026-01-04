@@ -39,7 +39,7 @@ python precision/constants.py
 Topological protection analysis via strand geometry perturbations.
 
 **Features:**
-- Tests that Vol(S⁷)/Vol(S³) = π²/3 is truly topological (invariant)
+- Tests that Vol(S⁷)/Vol(S³) = π²/6 is truly topological (invariant)
 - Verifies η = 4/π stability under metric perturbations
 - Demonstrates Chern number c₁(CP³) = 4 is an integer invariant
 - Analyzes fine-structure constant sensitivity to curvature changes

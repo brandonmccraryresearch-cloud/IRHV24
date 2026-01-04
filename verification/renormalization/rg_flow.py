@@ -11,7 +11,7 @@ with energy due to quantum corrections.
 
 import mpmath as mp
 import numpy as np
-from typing import Dict, Tuple, Callable
+from typing import Dict, Tuple
 import matplotlib.pyplot as plt
 
 # Set high precision
@@ -140,7 +140,8 @@ class RGFlow:
             (α_geometric, metadata)
         """
         # Hopf fibration volume ratio
-        hopf_ratio = mp.pi**2 / 3
+        # Vol(S^7)/Vol(S^3) = (π⁴/3)/(2π²) = π²/6
+        hopf_ratio = mp.pi**2 / 6
         
         # 24-cell vertices
         n_vertices = mp.mpf(24)
@@ -382,12 +383,10 @@ def print_rg_flow_report():
     print("COMPARISON WITH EXPERIMENT AT MZ")
     print("=" * 80)
     
-    alpha_MZ_irh = results['Z boson mass']['alpha']
     alpha_inv_MZ_irh = results['Z boson mass']['alpha_inv']
     
     # Experimental values (PDG 2020)
     alpha_inv_MZ_exp = 128.95
-    alpha_MZ_exp = 1 / alpha_inv_MZ_exp
     
     print(f"\nIRH prediction:  α⁻¹(MZ) = {alpha_inv_MZ_irh:.10f}")
     print(f"Experimental:    α⁻¹(MZ) = {alpha_inv_MZ_exp:.10f}")

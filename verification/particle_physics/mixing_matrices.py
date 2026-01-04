@@ -15,7 +15,6 @@ geometric properties of braid group crossings.
 import mpmath as mp
 import numpy as np
 from typing import Dict, Tuple, List
-import scipy.linalg as la
 from scipy.optimize import minimize
 
 # Set high precision

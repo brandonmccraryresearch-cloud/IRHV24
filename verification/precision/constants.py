@@ -14,7 +14,6 @@ calculations. They are ONLY used for validation and comparison.
 
 import mpmath as mp
 from typing import Dict, Tuple
-import numpy as np
 
 # Set high precision for all calculations
 mp.dps = 50  # 50 decimal places of precision
@@ -117,10 +116,9 @@ class IRHTheory:
         """
         Compute fine-structure constant α from IRH theory.
         
-        **NOTE:** This is a simplified derivation for validation purposes.
+        **NOTE:** This is a simplified geometric derivation.
         The full derivation in notebooks/02_harmony_functional.ipynb includes
-        additional geometric factors and renormalization corrections that bring
-        the prediction closer to the experimental value.
+        additional corrections that account for the full experimental value.
         
         Simplified formula captures the essential IRH mechanism:
         1. Tetrahedral solid angle β_geometric from 4-strand network
@@ -128,12 +126,13 @@ class IRHTheory:
         3. Casimir-Weyl corrections
         4. Volume corrections
         
-        The theory predicts α⁻¹ ≈ 137.036 when all corrections are included.
-        This simplified version gives ~100, demonstrating the ~70% contribution
-        from pure geometry, with remaining ~37% from radiative/RG corrections.
+        This geometric calculation yields α⁻¹ ≈ 100.4, which represents the
+        pure topological contribution. The experimental value α⁻¹ ≈ 137.036
+        requires additional radiative corrections and RG running effects
+        (see renormalization/rg_flow.py).
         
         Returns:
-            (α⁻¹_simplified, metadata_dict)
+            (α⁻¹_geometric, metadata_dict)
         """
         # Step 1: Tetrahedral solid angle
         # Ω_tet = 4·arccos(1/3) for regular tetrahedron
@@ -155,6 +154,10 @@ class IRHTheory:
         
         # Step 3: Casimir-Weyl correction
         # Correction factor = 24/13
+        # NOTE: This ratio requires further topological justification.
+        # It appears in the notebook derivation but its origin from
+        # Casimir operators and Weyl anomaly coefficients needs to be
+        # traced back to explicit topological invariants (per Directive A).
         correction_factor = mp.mpf(24) / mp.mpf(13)
         
         alpha_inv_corrected = Phi_12 * correction_factor
@@ -163,15 +166,13 @@ class IRHTheory:
         volume_correction = 1 + 1 / (4 * mp.pi)
         alpha_inv_simplified = alpha_inv_corrected * volume_correction
         
-        # Step 5: For comparison, apply an effective radiative correction factor
-        # to bring closer to experimental value (this encapsulates RG running
-        # and other quantum corrections detailed in the full theory)
-        radiative_factor = mp.mpf('137.036') / alpha_inv_simplified
-        alpha_inv_with_radiative = alpha_inv_simplified * radiative_factor
-        
-        # Use the radiative-corrected value for validation
-        alpha_inv = alpha_inv_with_radiative
-        alpha = 1 / alpha_inv
+        # Note: The geometric calculation gives α⁻¹ ≈ 100.4
+        # The experimental value is α⁻¹ ≈ 137.036
+        # The discrepancy (~37%) represents radiative corrections and RG running
+        # not captured in this simplified geometric derivation.
+        # See notebooks/02_harmony_functional.ipynb and renormalization/rg_flow.py
+        # for the full treatment including radiative corrections.
+        alpha_inv = alpha_inv_simplified
         
         metadata = {
             'Omega_tet': float(Omega_tet),
@@ -180,12 +181,11 @@ class IRHTheory:
             'Phi_12': float(Phi_12),
             'correction_factor': float(correction_factor),
             'volume_correction': float(volume_correction),
-            'alpha_inv_geometric_only': float(alpha_inv_simplified),
-            'radiative_factor': float(radiative_factor),
-            'alpha_inv_full': float(alpha_inv),
-            'derivation': 'Simplified: tetrahedral + 12-fold + Casimir-Weyl + radiative',
-            'note': 'Full derivation in notebooks/02_harmony_functional.ipynb includes all corrections',
-            'geometric_contribution_percent': 100.0 / float(radiative_factor)
+            'alpha_inv_geometric': float(alpha_inv_simplified),
+            'alpha_inv_final': float(alpha_inv),
+            'derivation': 'Simplified: tetrahedral + 12-fold + Casimir-Weyl',
+            'note': 'Geometric prediction ~100; experimental ~137. Discrepancy represents radiative corrections. See notebooks/02_harmony_functional.ipynb for full derivation',
+            'geometric_contribution_percent': float(alpha_inv_simplified) / 137.036 * 100
         }
         
         return alpha_inv, metadata
@@ -242,6 +242,8 @@ class IRHTheory:
         
         # Weyl anomaly instantonic action
         # S_inst ~ 8π²/g² where g ~ α for EM coupling
+        # NOTE: Uses geometric α (not experimental) as this is the topologically-derived
+        # coupling that enters the instantonic action calculation
         alpha_irh = 1 / IRHTheory.fine_structure_constant()[0]
         S_inst = 8 * mp.pi**2 * alpha_irh
         instanton_factor = mp.exp(-S_inst)

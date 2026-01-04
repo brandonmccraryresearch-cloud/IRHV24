@@ -12,7 +12,7 @@ not fine-tuned numerical coincidences.
 
 import mpmath as mp
 import numpy as np
-from typing import Dict, List, Tuple, Callable
+from typing import Dict, Callable
 import matplotlib.pyplot as plt
 
 # Set high precision
@@ -483,7 +483,6 @@ def run_all_tests():
 
 
 if __name__ == '__main__':
-    import sys
     import os
     
     # Run all tests

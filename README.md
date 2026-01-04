@@ -105,9 +105,9 @@ python particle_physics/mixing_matrices.py # Mixing matrix predictions
 ### Critical Falsification Criteria
 
 1. **Fine-Structure Constant Derivation**
-   - **Prediction:** α⁻¹ = (π²/3) × 24 × (1 + η·a_weyl) where η = 4/π
+   - **Prediction:** α⁻¹ derived from tetrahedral geometry (β_geometric) × 12-fold symmetry × Casimir-Weyl corrections
    - **Falsification:** If α⁻¹ at low energy differs from the geometric prediction by >5σ after accounting for RG running and Weyl corrections
-   - **Current Status:** Predicted α⁻¹ ≈ 137.036 (within experimental uncertainty)
+   - **Current Status:** Geometric prediction ~100 requires radiative corrections to reach experimental ~137
 
 2. **Koide Formula Exactness**
    - **Prediction:** Q = (mₑ + mμ + mτ)² / (mₑ² + mμ² + mτ²) = 2/3 exactly (from circulant matrix eigenvalue structure)
@@ -115,7 +115,7 @@ python particle_physics/mixing_matrices.py # Mixing matrix predictions
    - **Current Status:** Q_exp ≈ 0.666661 ± 0.0001 (consistent with 2/3)
 
 3. **Topological Protection of Ratios**
-   - **Prediction:** Fundamental ratios (Vol(S⁷)/Vol(S³) = π²/3, η = 4/π) are topologically invariant
+   - **Prediction:** Fundamental ratios (Vol(S⁷)/Vol(S³) = π²/6, η = 4/π) are topologically invariant
    - **Falsification:** If these ratios can be shown to depend on metric details rather than topology
    - **Verification:** `topology/perturbation_test.py` demonstrates invariance under perturbations
 
