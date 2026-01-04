@@ -531,8 +531,8 @@ START
   - Status: 5/7 notebooks complete (01, 02, 03, 04, 05)
   - SU(3) color charge derived from 3-strand Artin braid group B₃
   - 8 gluon generators confirmed from adjoint representation topology
-  - QCD string tension σ = 1.2 GeV/fm from HOMFLY polynomial
-  - Gauge coupling constants computed: α₁, α₂, α₃ at MZ scale
+  - QCD string tension set to σ_QCD = 1.2 GeV/fm as a phenomenological input (HOMFLY-based derivation not yet implemented in this notebook)
+  - Gauge coupling constants α₁, α₂, α₃ at MZ scale estimated via phenomenological relations using experimental α and sin²θw (semi-phenomenological, not pure first-principles)
   - GUT scale unification predicted at Mₓ ≈ 10¹⁶ GeV
   - Yang-Baxter relation establishes consistency of braid dynamics
   - Topological confinement mechanism validated
