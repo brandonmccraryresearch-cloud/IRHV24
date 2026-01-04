@@ -179,6 +179,7 @@ This ensures:
 - Verify output directories exist before saving files
 - Use arbitrary precision arithmetic (mpmath) for theoretical calculations
 - Include validation against experimental values where applicable
+- **CRITICAL: NO HARDCODED EXPERIMENTAL VALUES** - All physical quantities must be derived directly from the theory's mathematical framework. Experimental values may ONLY be used for final validation/comparison (e.g., computing percent error), never as inputs to theoretical calculations. This ensures complete correspondence between theory predictions and computational results.
 
 ### For GitHub Actions Workflows
 
