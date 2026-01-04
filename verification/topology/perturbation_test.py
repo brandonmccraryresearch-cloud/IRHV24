@@ -46,7 +46,7 @@ class StrandGeometry:
         to small perturbations in tension/curvature.
         
         Returns:
-            Volume ratio (should be π²/3 exactly)
+            Volume ratio = π²/6 exactly
         """
         # Topological formula (independent of metric perturbations)
         # Vol(S^n) = 2π^((n+1)/2) / Γ((n+1)/2)
@@ -60,7 +60,7 @@ class StrandGeometry:
         # Ratio (topological invariant)
         ratio = vol_S7 / vol_S3
         
-        # Should equal π²/3 exactly
+        # Should equal π²/6 exactly
         return ratio
     
     def metric_mismatch_eta(self) -> mp.mpf:
@@ -186,15 +186,17 @@ def test_hopf_fibration_stability():
     """
     Test that Hopf fibration volume ratio is truly topological.
     
-    The ratio Vol(S^7)/Vol(S^3) = π²/3 should be exactly constant
+    The ratio Vol(S^7)/Vol(S^3) = π²/6 should be exactly constant
     regardless of metric perturbations.
     """
     print("=" * 80)
     print("TEST 1: Hopf Fibration Volume Ratio Stability")
     print("=" * 80)
     
-    # Expected value
-    expected = float(mp.pi**2 / 3)
+    # Expected value (CORRECTED: π²/6, not π²/3)
+    # Vol(S^7) = π^4/3, Vol(S^3) = 2π^2
+    # Ratio = (π^4/3) / (2π^2) = π^2/6
+    expected = float(mp.pi**2 / 6)
     
     # Test with different "tension" parameters
     # (shouldn't matter because volume is topological)
@@ -212,10 +214,10 @@ def test_hopf_fibration_stability():
         tolerance=1e-12  # Should be exact to machine precision
     )
     
-    print(f"Expected value: {expected:.15f}")
-    print(f"Value range:    [{min(results['values']):.15f}, {max(results['values']):.15f}]")
-    print(f"Max change:     {results['max_relative_change']:.2e}")
-    print(f"Protected:      {results['is_topologically_protected']}")
+    print(f"Expected value (π²/6): {expected:.15f}")
+    print(f"Value range:           [{min(results['values']):.15f}, {max(results['values']):.15f}]")
+    print(f"Max change:            {results['max_relative_change']:.2e}")
+    print(f"Protected:             {results['is_topologically_protected']}")
     print()
     
     return results
