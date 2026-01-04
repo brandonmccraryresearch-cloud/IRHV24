@@ -161,7 +161,7 @@ Exit code: 1 (correct for critical violations)
 **Features:**
 - Loads directive constraints from agent instructions
 - Analyzes PR diffs using GitHub CLI or git commands
-- Uses Gemini 3 Pro for intelligent code review (if API key available)
+- Uses Gemini 3 pro (model: `gemini-3.0-pro`) for intelligent code review (if API key available)
 - Falls back to rule-based analysis if Gemini unavailable
 - **Priority:** Always suggests derivation paths over failure admission
 - Generates actionable fix recommendations with suggested code
