@@ -25,14 +25,19 @@ IRHV24/
 ├── IRHv25.md                          # Full theoretical framework (v25 & v26)
 ├── environment.yml                     # Conda environment specification
 ├── docs/
-│   └── GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md
+│   ├── GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md
+│   └── MATHEMATICAL_REFINEMENTS.md     # v26.0 refinement documentation
+├── scripts/
+│   ├── knot_link_search.py             # 4-strand link hyperbolic volumes
+│   └── rg_flow_vacuum_energy.py        # Renormalization group flow
 ├── notebooks/
 │   ├── 01_substrate_foundation.ipynb  # 4-strand architecture (implemented)
 │   ├── 02_harmony_functional.ipynb    # α derivation validation (implemented)
 │   ├── 03_particle_sector.ipynb       # Koide formula validation (implemented)
 │   ├── 04_cosmology.ipynb             # Cosmological constant (implemented)
 │   ├── 05_gauge_sector.ipynb          # Gauge sector (implemented)
-│   └── 06_validation_suite.ipynb      # Comprehensive validation (implemented)
+│   ├── 06_validation_suite.ipynb      # Comprehensive validation (implemented)
+│   └── 07_appendices.ipynb            # Mathematical refinements v26.0 (implemented)
 ├── verification/                       # High-precision verification modules
 │   ├── precision/                      # Arbitrary-precision calculations
 │   │   └── constants.py                # 15+ decimal place computations
@@ -58,7 +63,28 @@ IRHV24/
 | `04_cosmology.ipynb` | §4 (Cosmology) | Λ derivation, dark matter ratio | ✅ Implemented |
 | `05_gauge_sector.ipynb` | §5 (Gauge Sector) | SU(3)×SU(2)×U(1) emergence | ✅ Implemented |
 | `06_validation_suite.ipynb` | §6 (Validation) | Tier 1-3 protocols | ✅ Implemented |
-| `07_appendices.ipynb` | Appendices A-E | Formal derivations | 🔲 Planned |
+| `07_appendices.ipynb` | Mathematical Refinements | Knot volumes, tetrahedral κ, RG flow | ✅ Implemented |
+
+### Mathematical Refinements (v26.0)
+
+The repository includes advanced refinements to address key theoretical gaps:
+
+1. **Knot Complexity Correction** (`07_appendices.ipynb` §1, `scripts/knot_link_search.py`)
+   - Uses SnapPy to calculate hyperbolic volumes of 4-strand links
+   - Refines α⁻¹ from base geometric value (~200) toward experimental (137.036)
+   - Pure topological derivation without experimental input fitting
+
+2. **Tetrahedral Angle Mapping** (`07_appendices.ipynb` §2)
+   - Derives Koide coupling κ = 1/√2 from tetrahedral geometry
+   - Links κ to physical angle θ_tet = arccos(-1/3) via projection
+   - Eliminates need to solve for κ as free parameter
+
+3. **Renormalization Group Flow** (`07_appendices.ipynb` §3, `scripts/rg_flow_vacuum_energy.py`)
+   - Scales vacuum energy from Planck to cosmological scale
+   - Applies logarithmic RG flow: Λ_obs = Λ_planck × e^(-S) × [ln(R_u/L_p)]^(-n)
+   - Bridges 61 orders of magnitude in scale hierarchy
+
+See [docs/MATHEMATICAL_REFINEMENTS.md](docs/MATHEMATICAL_REFINEMENTS.md) for detailed documentation.
 
 ### Running Computations
 
