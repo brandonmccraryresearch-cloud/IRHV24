@@ -61,7 +61,7 @@ EXPERIMENTAL_VALUES = {
     "0.0169": "U(1) coupling α₁",
     
     # QCD string tension
-    "1.2": "QCD string tension (GeV/fm) or (GeV²)",
+    r"\b1\.2\b\s*(?:GeV(?:/fm)?|GeV\^2)\b": "QCD string tension (GeV/fm) or (GeV²)",
 }
 
 
