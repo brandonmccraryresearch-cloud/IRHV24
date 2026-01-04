@@ -55,10 +55,11 @@ EXPERIMENTAL_VALUES = {
     "10⁻⁵²": "Cosmological constant order of magnitude",
     "10⁻¹²³": "Vacuum energy discrepancy",
     
-    # Gauge couplings at MZ scale
-    "0.357": "SU(3) coupling α₃",
-    "0.034": "SU(2) coupling α₂",
-    "0.0169": "U(1) coupling α₁",
+    # Gauge couplings at MZ scale (using word boundaries to avoid false positives)
+    r"\b0\.357\b": "SU(3) coupling α₃",
+    r"\b0\.034\b": "SU(2) coupling α₂",
+    r"\b0\.0169225\b": "U(1) coupling α₁",
+    r"\b0\.0169\b": "U(1) coupling α₁ (rounded)",
     
     # QCD string tension
     r"\b1\.2\b\s*(?:GeV(?:/fm)?|GeV\^2)\b": "QCD string tension (GeV/fm) or (GeV²)",
@@ -142,9 +143,11 @@ class ViolationDetector:
                 
             # Check for experimental value patterns
             for value_pattern, description in EXPERIMENTAL_VALUES.items():
-                # Handle scientific notation patterns
-                if 'e' in value_pattern or '⁻' in value_pattern:
-                    # More lenient matching for scientific notation
+                # Check if pattern starts with regex syntax (e.g., \b or raw string)
+                is_regex = value_pattern.startswith(r'\b') or 'e' in value_pattern or '⁻' in value_pattern
+                
+                if is_regex:
+                    # Use regex matching for patterns with word boundaries or special notation
                     pattern = value_pattern.replace('e', r'[eE]').replace('⁻', '-?')
                     if re.search(pattern, line):
                         # Check if properly labeled
@@ -159,7 +162,7 @@ class ViolationDetector:
                                 "code_snippet": line.strip()
                             })
                 else:
-                    # Exact matching for regular decimals
+                    # Exact substring matching for regular decimals
                     if value_pattern in line:
                         # Check if properly labeled
                         if not self._has_validation_label(line, lines, line_num - 1):

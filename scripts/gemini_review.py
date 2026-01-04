@@ -182,7 +182,7 @@ Your task is to review the following code changes and identify violations of IRH
 ## CODE CHANGES TO REVIEW:
 
 ```diff
-{code_diff[:50000]}  # Gemini 3 Pro supports large context windows
+{code_diff[:500000]}  # Gemini 3 Pro supports up to 1M token context (approximately 750K characters)
 ```
 
 ## YOUR TASK:
