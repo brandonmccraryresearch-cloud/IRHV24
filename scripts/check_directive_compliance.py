@@ -23,7 +23,7 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import List, Dict, Any, Set
+from typing import List, Dict, Any
 import nbformat
 
 
