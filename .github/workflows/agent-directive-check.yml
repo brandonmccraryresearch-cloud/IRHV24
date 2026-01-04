@@ -59,8 +59,8 @@ jobs:
         id: paths
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            # For PRs, check changed files
-            CHANGED_PATHS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.(py|ipynb)$' || echo "")
+            # For PRs, check changed files (excluding workflow itself and violations.json)
+            CHANGED_PATHS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.(py|ipynb)$' | grep -v -E '(\.github/workflows/agent-directive-check\.yml|violations\.json)' || echo "")
             if [ -z "$CHANGED_PATHS" ]; then
               echo "No Python or notebook files changed - skipping compliance check"
               echo "skip_check=true" >> $GITHUB_OUTPUT
