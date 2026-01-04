@@ -56,10 +56,10 @@ EXPERIMENTAL_VALUES = {
     "10⁻¹²³": "Vacuum energy discrepancy",
     
     # Gauge couplings at MZ scale (using word boundaries to avoid false positives)
+    # More specific pattern should come first to avoid substring matching issues
+    r"\b0\.0169225\b": "U(1) coupling α₁",
     r"\b0\.357\b": "SU(3) coupling α₃",
     r"\b0\.034\b": "SU(2) coupling α₂",
-    r"\b0\.0169225\b": "U(1) coupling α₁",
-    r"\b0\.0169\b": "U(1) coupling α₁ (rounded)",
     
     # QCD string tension
     r"\b1\.2\b\s*(?:GeV(?:/fm)?|GeV\^2)\b": "QCD string tension (GeV/fm) or (GeV²)",
@@ -143,12 +143,14 @@ class ViolationDetector:
                 
             # Check for experimental value patterns
             for value_pattern, description in EXPERIMENTAL_VALUES.items():
-                # Check if pattern starts with regex syntax (e.g., \b or raw string)
-                is_regex = value_pattern.startswith(r'\b') or 'e' in value_pattern or '⁻' in value_pattern
+                # Check if pattern is a regex (starts with \b or contains regex special chars in raw string)
+                is_regex = (value_pattern.startswith(r'\b') or 
+                           (('e-' in value_pattern or 'e+' in value_pattern or '⁻' in value_pattern) and 
+                            ('10' in value_pattern or 'E' in value_pattern.upper())))
                 
                 if is_regex:
-                    # Use regex matching for patterns with word boundaries or special notation
-                    pattern = value_pattern.replace('e', r'[eE]').replace('⁻', '-?')
+                    # Use regex matching for patterns with word boundaries or scientific notation
+                    pattern = value_pattern.replace('⁻', '-?')
                     if re.search(pattern, line):
                         # Check if properly labeled
                         if not self._has_validation_label(line, lines, line_num - 1):

@@ -64,7 +64,7 @@ jobs:
             if [ -z "$CHANGED_PATHS" ]; then
               echo "No Python or notebook files changed - skipping compliance check"
               echo "skip_check=true" >> $GITHUB_OUTPUT
-              echo "paths=" >> $GITHUB_OUTPUT
+              echo "paths=." >> $GITHUB_OUTPUT  # Safe default path
             else
               echo "Changed files: $CHANGED_PATHS"
               echo "skip_check=false" >> $GITHUB_OUTPUT
