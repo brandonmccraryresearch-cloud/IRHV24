@@ -27,7 +27,7 @@ on:
       precision:
         description: 'Numerical precision level'
         required: true
-        default: ult: 'high'
+        default: 'high'
         type: choice
         options:
           - 'standard'
