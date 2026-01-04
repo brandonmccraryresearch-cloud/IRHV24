@@ -244,7 +244,7 @@ python scripts/gemini_review.py \
 The IRH repository now has:
 - ✅ Enforced directives preventing theoretical violations
 - ✅ Automated compliance checking on every PR
-- ✅ AI-guided review with Gemini 3 Pro
+- ✅ AI-guided review with gemini-1.5-pro
 - ✅ Comprehensive theory evolution documentation
 - ✅ Production-ready, secure implementation
 
