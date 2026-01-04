@@ -162,6 +162,9 @@ The following systematic uncertainties are acknowledged:
 2. **Threshold corrections:** GUT-scale matching requires 2-loop precision
 3. **Neutrino sector:** Absolute mass scale not yet derived (only ratios)
 4. **Strong CP problem:** θ_QCD = 0 requires additional topological argument
+5. **Casimir-Weyl correction (24/13):** Requires rigorous topological derivation from 4-strand network geometry
+6. **Geometric α placeholder:** Cosmological constant calculation uses simplified α_geom = 1/(4π); needs full Harmony Functional derivation
+7. **Mixing matrix inputs:** CKM/PMNS calculations currently use experimental quark/lepton masses for demonstration; future work will derive masses from topological principles first
 
 ### What Would Strengthen the Theory
 

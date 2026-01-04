@@ -355,12 +355,16 @@ class IRHTheory:
             It MUST NOT depend on experimental inputs; experimental values
             belong exclusively in validation code paths.
 
-            Current implementation is a placeholder based on simple geometric
+            Current implementation is a PLACEHOLDER based on simple geometric
             ratios of π and should be updated when the full IRH derivation
             is implemented in this constants module or an associated notebook.
+            
+            WARNING: Cosmological constant results using this function are
+            PRELIMINARY until this derivation is completed.
             """
-            # Placeholder purely geometric estimate (no experimental inputs).
-            # TODO: Replace with exact IRH-derived expression for α_geom.
+            # PLACEHOLDER purely geometric estimate (no experimental inputs).
+            # TODO: Replace with exact IRH-derived expression for α_geom from
+            # Harmony Functional (see IRHv25.md Section 2 and notebooks/02_harmony_functional.ipynb).
             return 1 / (4 * mp.pi)
 
         alpha_irh = geometric_alpha_irh()
@@ -369,8 +373,10 @@ class IRHTheory:
         
         # Topological winding number from Hopf fibration
         # N_wind ~ (MPl/MEW)⁴ ~ 10^120
-        M_Pl_GeV = mp.mpf('1.220910e19')  # Planck mass in GeV
-        M_EW_GeV = mp.mpf('246.22')  # Electroweak scale in GeV
+        # NOTE: M_Pl and M_EW are fundamental scales used as reference values.
+        # Future work will derive M_EW from Weyl anomaly structure of 4-strand network.
+        M_Pl_GeV = mp.mpf('1.220910e19')  # Planck mass in GeV (fundamental scale)
+        M_EW_GeV = mp.mpf('246.22')  # Electroweak scale in GeV (phenomenological reference)
         N_wind = (M_Pl_GeV / M_EW_GeV) ** 4
         winding_factor = 1 / N_wind
         

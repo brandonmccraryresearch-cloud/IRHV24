@@ -232,10 +232,13 @@ class CKMMatrix:
         # Use geometric constraint: sum of angles = 2π (closed braid)
         # Fit angles to reproduce experimental mass eigenvalues
         
-        # Approximate quark masses (up, charm, top in MeV)
-        m_u = 2.2  # MeV
-        m_c = 1275  # MeV
-        m_t = 173070  # MeV (173.07 GeV)
+        # IMPORTANT: These are experimental quark masses used for DEMONSTRATION purposes.
+        # This violates Directive A (No-Tuning Constraint) as noted in systematic uncertainties.
+        # Future work: Derive these masses from topological principles FIRST, then compute mixing.
+        # See README.md "Systematic Uncertainties" section #7.
+        m_u = 2.2  # MeV (experimental value - FOR VALIDATION ONLY)
+        m_c = 1275  # MeV (experimental value - FOR VALIDATION ONLY)
+        m_t = 173070  # MeV (173.07 GeV) (experimental value - FOR VALIDATION ONLY)
         
         # Normalize to geometric mean
         m_geom = (m_u * m_c * m_t) ** (1/3)
@@ -373,10 +376,13 @@ class PMNSMatrix:
         Returns:
             (PMNS_matrix, metadata)
         """
-        # Lepton masses (electron, muon, tau in MeV)
-        m_e = 0.511
-        m_mu = 105.66
-        m_tau = 1776.86
+        # IMPORTANT: These are experimental lepton masses used for DEMONSTRATION purposes.
+        # This violates Directive A (No-Tuning Constraint) as noted in systematic uncertainties.
+        # Future work: Derive these masses from topological principles FIRST, then compute mixing.
+        # See README.md "Systematic Uncertainties" section #7.
+        m_e = 0.511  # MeV (experimental value - FOR VALIDATION ONLY)
+        m_mu = 105.66  # MeV (experimental value - FOR VALIDATION ONLY)
+        m_tau = 1776.86  # MeV (experimental value - FOR VALIDATION ONLY)
         
         # Normalize
         m_geom = (m_e * m_mu * m_tau) ** (1/3)
