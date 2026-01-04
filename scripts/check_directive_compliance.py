@@ -18,7 +18,6 @@ Version: 1.0.0
 """
 
 import argparse
-import ast
 import json
 import re
 import sys
