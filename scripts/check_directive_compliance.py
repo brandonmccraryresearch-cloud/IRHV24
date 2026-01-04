@@ -278,20 +278,24 @@ class ViolationDetector:
             with open(filepath, 'r', encoding='utf-8') as f:
                 nb = nbformat.read(f, as_version=4)
             
+            line_offset = 0  # Cumulative line offset across code cells
             for cell_idx, cell in enumerate(nb.cells):
                 if cell.cell_type == 'code':
                     content = cell.source
-                    # Use cell index for line offset
-                    line_offset = cell_idx * 1000  # Arbitrary offset to distinguish cells
-                    
+                    # Use cumulative line offset based on actual code cell line counts
+                    current_offset = line_offset
+
                     if check_flags.get('hardcoded_values', False):
-                        self.check_hardcoded_values(content, str(filepath), line_offset)
-                    
+                        self.check_hardcoded_values(content, str(filepath), current_offset)
+
                     if check_flags.get('experimental_labels', False):
-                        self.check_experimental_labels(content, str(filepath), line_offset)
-                    
+                        self.check_experimental_labels(content, str(filepath), current_offset)
+
                     if check_flags.get('placeholder_warnings', False):
-                        self.check_placeholder_warnings(content, str(filepath), line_offset)
+                        self.check_placeholder_warnings(content, str(filepath), current_offset)
+
+                    # Update cumulative offset by number of lines in this code cell
+                    line_offset += content.count('\n') + 1
                         
         except Exception as e:
             print(f"Error checking notebook {filepath}: {e}", file=sys.stderr)
