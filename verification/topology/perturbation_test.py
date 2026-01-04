@@ -105,18 +105,15 @@ class StrandGeometry:
         # For S^7: χ = 1 + (-1)^7 = 1 - 1 = 0
         return 0
     
-    def perturbed_coupling(self, alpha_base: mp.mpf) -> mp.mpf:
+    def perturbed_coupling(self) -> mp.mpf:
         """
         Compute fine-structure constant with perturbed geometry.
         
         Test: α should be approximately stable under small perturbations
         because it's derived from topological invariants.
         
-        Args:
-            alpha_base: Base value of α⁻¹ from unperturbed geometry
-        
         Returns:
-            Perturbed α⁻¹ (should be close to alpha_base)
+            Perturbed α⁻¹ calculated from current geometry parameters
         """
         # Hopf ratio (topologically protected)
         hopf_ratio = self.hopf_fibration_volume_ratio()
@@ -301,7 +298,7 @@ def test_fine_structure_sensitivity():
     
     # Base geometry
     base_geom = StrandGeometry(n_strands=4, tension=1.0, curvature=1.0)
-    base_alpha = float(base_geom.perturbed_coupling(mp.mpf(137.036)))
+    base_alpha = float(base_geom.perturbed_coupling())
     
     print(f"Base α⁻¹: {base_alpha:.10f}")
     print()
@@ -311,7 +308,7 @@ def test_fine_structure_sensitivity():
     
     def compute_alpha(curvature):
         geom = StrandGeometry(n_strands=4, tension=1.0, curvature=curvature)
-        return geom.perturbed_coupling(mp.mpf(137.036))
+        return geom.perturbed_coupling()
     
     results = perturbation_analysis(
         'curvature',
