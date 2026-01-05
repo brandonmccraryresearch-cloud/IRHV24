@@ -143,10 +143,15 @@ def search_links(max_crossings=12, target_alpha_inv=None):
                               f"error={float(rel_error*100):.2f}%, components={M.num_components()}")
                 
             except Exception as e:
-                # Link doesn't exist or has issues
-                if link_num == 1:  # Only print once per crossing number
-                    pass  # No links at this crossing number
-                break
+                # Link doesn't exist or has issues.
+                # If the very first link at this crossing fails, assume there are no
+                # usable links at this crossing number and move on to the next one.
+                if link_num == 1:  # Only handle once per crossing number
+                    # No links (or unusable links) at this crossing number
+                    break
+                # For later failures, skip this specific link and continue trying
+                # remaining link indices for the same crossing number.
+                continue
     
     # Sort by error
     candidates.sort(key=lambda x: x['rel_error'])
