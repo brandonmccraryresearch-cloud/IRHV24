@@ -62,6 +62,9 @@ dependencies:
     # Topology Computations
     - giotto-tda>=0.6.0
     
+    # Knot Theory and Hyperbolic Geometry (4-strand link volumes)
+    - snappy>=3.1.1
+    
     # Additional Math
     - primefac>=2.0.12          # Prime factorization utilities
     - galois>=0.3.6             # Finite field arithmetic
