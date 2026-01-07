@@ -775,10 +775,3 @@ $\delta f / \delta x$ - Functional derivative
 $f|_{x=a}$ - Function $f$ evaluated at $x=a$  
 $f(x) \big|_{a}^{b}$ - Difference $f(b) - f(a)$ (definite integral bounds)
 
-
-
-## Metadata
-- **Version**: 1.0.0
-- **Framework Version**: v26.0
-- **Last Updated**: 2026-01-03
-- **Author**: IRH Computational Research Team
