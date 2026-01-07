@@ -113,6 +113,29 @@ jupyter nbconvert --execute --to notebook --inplace notebooks/XX_notebook.ipynb
   - ✅ "The Weyl anomaly generates a conformal breaking term"
   - ❌ "The system loses conformal symmetry due to information constraints"
 
+### 9. 📁 HARDCODED VALUE CHECK EXCLUSIONS
+**CRITICAL RULE:** Reference-only and validation-only files are excluded from the hardcoded experimental value check.
+
+The following files are **excluded** from Directive A compliance checking because they serve as reference/validation data stores, NOT as inputs to theoretical calculations:
+
+**Excluded Files:**
+- `verification/precision/constants.py` - Contains CODATA experimental values FOR VALIDATION ONLY
+- Files explicitly marked with `# VALIDATION REFERENCE FILE - EXCLUDED FROM DIRECTIVE A CHECK` at the top
+
+**Why these exclusions exist:**
+- These files contain experimental values that are used ONLY for comparing theory outputs to measurements
+- They are NOT used as inputs to any theoretical derivations
+- The values in these files are clearly labeled as "FOR VALIDATION ONLY" or "EXPERIMENTAL VALUE"
+
+**How to exclude a new file:**
+1. Add the comment `# VALIDATION REFERENCE FILE - EXCLUDED FROM DIRECTIVE A CHECK` at the top of the file
+2. Ensure ALL experimental values in the file are clearly labeled with "EXPERIMENTAL VALUE" or "FOR VALIDATION ONLY"
+3. Document the exclusion in this directive
+
+**Currently excluded paths:**
+- `verification/precision/constants.py`
+- `scripts/check_directive_compliance.py` (excluded because it contains the experimental value patterns it searches for, which would cause false positives)
+
 ---
 
 ## Repository Overview

@@ -232,6 +232,18 @@ jobs:
         if: steps.compliance_check.outcome == 'failure' && steps.paths.outputs.skip_check != 'true'
         run: |
           echo "::error::Critical Directive A violations detected. Please resolve before merging."
+          echo ""
+          echo "==================== VIOLATIONS REPORT ===================="
+          echo ""
+          if [ -f violations.json ]; then
+            cat violations.json
+          else
+            echo "No violations.json file found"
+          fi
+          echo ""
+          echo "==========================================================="
+          echo ""
+          echo "See above for details on violations to fix."
           exit 1
       
       - name: Success summary

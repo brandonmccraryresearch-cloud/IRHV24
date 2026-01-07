@@ -85,6 +85,50 @@ PLACEHOLDER_WARNINGS = [
     r"PENDING.*DERIVATION",
 ]
 
+# Files excluded from hardcoded value checks (validation/reference files only)
+# These files contain experimental values FOR VALIDATION ONLY, not as inputs
+EXCLUDED_FILES = [
+    'verification/precision/constants.py',
+    'scripts/check_directive_compliance.py',
+]
+
+# Marker comment that excludes a file from Directive A checks
+EXCLUSION_MARKER = "# VALIDATION REFERENCE FILE - EXCLUDED FROM DIRECTIVE A CHECK"
+
+
+def is_file_excluded(filepath: Path) -> bool:
+    """
+    Check if a file should be excluded from Directive A compliance checks.
+    
+    A file is excluded if:
+    1. It's in the EXCLUDED_FILES list, OR
+    2. It contains the EXCLUSION_MARKER comment at the top
+    
+    Args:
+        filepath: Path to the file to check
+        
+    Returns:
+        True if the file should be excluded from checks
+    """
+    # Check if file is in the excluded list
+    filepath_str = str(filepath)
+    for excluded in EXCLUDED_FILES:
+        if filepath_str.endswith(excluded):
+            return True
+    
+    # Check if file contains the exclusion marker in the first 10 lines
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            for i, line in enumerate(f):
+                if i >= 10:  # Only check first 10 lines
+                    break
+                if EXCLUSION_MARKER in line:
+                    return True
+    except Exception:
+        pass
+    
+    return False
+
 
 class ViolationDetector:
     """Detects Directive A violations in Python code and notebooks."""
@@ -301,6 +345,11 @@ class ViolationDetector:
     
     def check_python_file(self, filepath: Path, check_flags: Dict[str, bool]) -> None:
         """Check a Python source file for violations."""
+        # Skip excluded files (validation/reference files)
+        if is_file_excluded(filepath):
+            print(f"Skipping excluded file: {filepath}", file=sys.stderr)
+            return
+            
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
                 content = f.read()
@@ -319,6 +368,11 @@ class ViolationDetector:
     
     def check_notebook_file(self, filepath: Path, check_flags: Dict[str, bool]) -> None:
         """Check a Jupyter notebook for violations."""
+        # Skip excluded files (validation/reference files)
+        if is_file_excluded(filepath):
+            print(f"Skipping excluded file: {filepath}", file=sys.stderr)
+            return
+            
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
                 nb = nbformat.read(f, as_version=4)
