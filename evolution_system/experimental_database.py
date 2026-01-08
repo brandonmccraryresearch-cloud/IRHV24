@@ -180,11 +180,11 @@ class ExperimentalDatabase:
             notes="FOR VALIDATION ONLY - Never use as input to theory"
         )
         
-        # Inverse fine-structure constant
+        # Inverse fine-structure constant - EXPERIMENTAL VALUE FOR VALIDATION ONLY
         self._constants['alpha_inv'] = ExperimentalConstant(
             name="Inverse fine-structure constant",
             symbol="α⁻¹",
-            value=mp.mpf('137.035999177'),
+            value=mp.mpf('137.035999177'),  # CODATA 2022 - FOR VALIDATION ONLY
             uncertainty=mp.mpf('2.1e-8'),
             unit="dimensionless",
             source="CODATA 2022",
@@ -277,11 +277,11 @@ class ExperimentalDatabase:
         
         **FOR VALIDATION ONLY** - Per Directive A
         """
-        # Electron mass
+        # Electron mass - EXPERIMENTAL VALUE FOR VALIDATION ONLY
         self._constants['m_electron'] = ExperimentalConstant(
             name="Electron mass",
             symbol="m_e",
-            value=mp.mpf('0.51099895000'),  # MeV/c²
+            value=mp.mpf('0.51099895000'),  # MeV/c² - CODATA 2022 FOR VALIDATION ONLY
             uncertainty=mp.mpf('1.5e-10'),
             unit="MeV/c²",
             source="CODATA 2022",
@@ -293,11 +293,11 @@ class ExperimentalDatabase:
             notes="FOR VALIDATION ONLY - Koide formula constraint"
         )
         
-        # Muon mass
+        # Muon mass - EXPERIMENTAL VALUE FOR VALIDATION ONLY
         self._constants['m_muon'] = ExperimentalConstant(
             name="Muon mass",
             symbol="m_μ",
-            value=mp.mpf('105.6583755'),  # MeV/c²
+            value=mp.mpf('105.6583755'),  # MeV/c² - CODATA 2022 FOR VALIDATION ONLY
             uncertainty=mp.mpf('2.3e-6'),
             unit="MeV/c²",
             source="CODATA 2022",
@@ -309,11 +309,11 @@ class ExperimentalDatabase:
             notes="FOR VALIDATION ONLY - Koide formula constraint"
         )
         
-        # Tau mass
+        # Tau mass - EXPERIMENTAL VALUE FOR VALIDATION ONLY
         self._constants['m_tau'] = ExperimentalConstant(
             name="Tau mass",
             symbol="m_τ",
-            value=mp.mpf('1776.86'),  # MeV/c²
+            value=mp.mpf('1776.86'),  # MeV/c² - PDG 2022 FOR VALIDATION ONLY
             uncertainty=mp.mpf('0.12'),
             unit="MeV/c²",
             source="PDG 2022",

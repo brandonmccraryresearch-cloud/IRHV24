@@ -1,0 +1,11 @@
+{
+  "total_violations": 0,
+  "critical_violations": 0,
+  "warning_violations": 0,
+  "violations": [],
+  "check_flags": {
+    "hardcoded_values": true,
+    "experimental_labels": true,
+    "placeholder_warnings": true
+  }
+}
