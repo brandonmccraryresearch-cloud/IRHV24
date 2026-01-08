@@ -389,5 +389,205 @@ class TestIntegration:
         assert result.agreement_status.value == "excellent"
 
 
+class TestAIAdvisor:
+    """Tests for AIAdvisor module (Phase 2)."""
+    
+    def test_import(self):
+        """Test that AIAdvisor can be imported."""
+        from evolution_system import AIAdvisor
+        advisor = AIAdvisor()
+        assert advisor is not None
+    
+    def test_modification_templates(self):
+        """Test that modification templates are available."""
+        from evolution_system.ai_advisor import TopologicalModificationTemplates
+        
+        templates = TopologicalModificationTemplates()
+        
+        # Test Chern class template
+        chern = templates.chern_class_correction(order=2)
+        assert chern is not None
+        assert chern.name == "Chern Class C_2 Correction"
+        assert len(chern.derivation_steps) > 0
+        assert len(chern.symmetries_preserved) > 0
+        
+        # Test Berry phase template
+        berry = templates.berry_phase_mass_correction()
+        assert berry is not None
+        assert "Berry" in berry.name
+        
+        # Test instanton template
+        instanton = templates.instanton_vacuum_correction(order=2)
+        assert instanton is not None
+        assert "Instanton" in instanton.name
+    
+    def test_generate_suggestions(self):
+        """Test generating suggestions from error analysis."""
+        from evolution_system import (
+            AIAdvisor, ErrorAnalyzer, ValidationModule, CalculationEngine
+        )
+        
+        # Run full pipeline to get error analysis
+        engine = CalculationEngine()
+        predictions = engine.compute_all_predictions()
+        
+        validator = ValidationModule()
+        report = validator.validate_all(predictions)
+        
+        analyzer = ErrorAnalyzer()
+        analysis = analyzer.analyze(report)
+        
+        # Generate suggestions
+        advisor = AIAdvisor()
+        suggestions = advisor.generate_suggestions(analysis.to_dict())
+        
+        # Should generate some suggestions
+        assert isinstance(suggestions, list)
+    
+    def test_rank_suggestions(self):
+        """Test ranking of suggestions."""
+        from evolution_system import AIAdvisor
+        from evolution_system.ai_advisor import (
+            TopologicalModificationTemplates, RefinementSuggestion
+        )
+        
+        advisor = AIAdvisor()
+        templates = TopologicalModificationTemplates()
+        
+        # Create some mock suggestions
+        suggestions = [
+            RefinementSuggestion(
+                modification=templates.chern_class_correction(order=2),
+                error_pattern="gauge_coupling_systematic",
+                justification="Test justification",
+                implementation_notes="Test notes",
+                validation_criteria=["Criterion 1"],
+                risk_assessment="Low risk"
+            ),
+            RefinementSuggestion(
+                modification=templates.berry_phase_mass_correction(),
+                error_pattern="lepton_mass_pattern",
+                justification="Test justification 2",
+                implementation_notes="Test notes 2",
+                validation_criteria=["Criterion 2"],
+                risk_assessment="Medium risk"
+            )
+        ]
+        
+        ranked = advisor.rank_suggestions(suggestions)
+        
+        # Should be sorted by priority score
+        assert len(ranked) == 2
+        assert ranked[0].modification.priority_score >= ranked[1].modification.priority_score
+    
+    def test_filter_topological_only(self):
+        """Test filtering to only topological modifications."""
+        from evolution_system import AIAdvisor
+        from evolution_system.ai_advisor import (
+            TopologicalModificationTemplates, RefinementSuggestion
+        )
+        
+        advisor = AIAdvisor()
+        templates = TopologicalModificationTemplates()
+        
+        # Create valid topological suggestion
+        suggestion = RefinementSuggestion(
+            modification=templates.hopf_fibration_correction(),
+            error_pattern="alpha_systematic",
+            justification="Test",
+            implementation_notes="Test",
+            validation_criteria=["Test"],
+            risk_assessment="Low"
+        )
+        
+        filtered = advisor.filter_topological_only([suggestion])
+        
+        # Should pass through
+        assert len(filtered) == 1
+    
+    def test_generate_report(self):
+        """Test generating human-readable report."""
+        from evolution_system import (
+            AIAdvisor, ErrorAnalyzer, ValidationModule, CalculationEngine
+        )
+        
+        # Run full pipeline
+        engine = CalculationEngine()
+        predictions = engine.compute_all_predictions()
+        
+        validator = ValidationModule()
+        report = validator.validate_all(predictions)
+        
+        analyzer = ErrorAnalyzer()
+        analysis = analyzer.analyze(report)
+        
+        # Generate report
+        advisor = AIAdvisor()
+        text_report = advisor.generate_report(analysis.to_dict(), n=3)
+        
+        # Should be a non-empty string
+        assert isinstance(text_report, str)
+        assert len(text_report) > 0
+        assert "DIRECTIVE A COMPLIANCE" in text_report
+    
+    def test_to_dict(self):
+        """Test advisor configuration to dict."""
+        from evolution_system import AIAdvisor
+        
+        advisor = AIAdvisor()
+        config = advisor.to_dict()
+        
+        assert isinstance(config, dict)
+        assert 'error_patterns' in config
+        assert 'modification_types' in config
+        assert 'confidence_levels' in config
+
+
+class TestFullPipelineWithAdvisor:
+    """Integration tests for the complete evolution system with AI Advisor."""
+    
+    def test_complete_evolution_cycle(self):
+        """Test complete evolution cycle including AI Advisor."""
+        from evolution_system import (
+            CalculationEngine,
+            ExperimentalDatabase,
+            ValidationModule,
+            ErrorAnalyzer,
+            AIAdvisor,
+        )
+        
+        # 1. Load experimental database
+        db = ExperimentalDatabase()
+        assert db.count() > 0
+        
+        # 2. Compute predictions
+        engine = CalculationEngine()
+        predictions = engine.compute_all_predictions()
+        assert len(predictions) > 0
+        
+        # 3. Validate against experiments
+        validator = ValidationModule(db)
+        report = validator.validate_all(predictions)
+        assert report.compared_predictions > 0
+        
+        # 4. Analyze errors
+        analyzer = ErrorAnalyzer()
+        analysis = analyzer.analyze(report)
+        assert analysis.total_errors_analyzed > 0
+        
+        # 5. Get AI-powered suggestions
+        advisor = AIAdvisor()
+        suggestions = advisor.get_top_suggestions(analysis.to_dict(), n=5)
+        
+        # Should get some suggestions
+        assert isinstance(suggestions, list)
+        
+        # 6. Verify all suggestions are topologically motivated
+        for suggestion in suggestions:
+            assert suggestion.modification.topological_basis is not None
+            assert len(suggestion.modification.symmetries_preserved) > 0
+            assert len(suggestion.modification.derivation_steps) > 0
+
+
 if __name__ == '__main__':
     pytest.main([__file__, '-v'])
