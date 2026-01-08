@@ -46,7 +46,6 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple, Any
 from enum import Enum
 from collections import defaultdict
-import math
 
 from .validation_module import ValidationReport, ValidationResult, AgreementStatus
 
