@@ -42,7 +42,7 @@ References:
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Dict, List, Optional, Tuple
 from enum import Enum
 from collections import defaultdict
 
