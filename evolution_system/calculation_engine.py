@@ -543,14 +543,14 @@ class CalculationEngine:
         
         # Using Standard Model 1-loop beta functions:
         # b₁ = 41/10, b₂ = -19/6, b₃ = -7
-        # Meeting point from g₂ = g₃ condition
-        
-        b2 = mp.mpf('-19') / 6
-        b3 = mp.mpf('-7')
+        # Meeting point from g₂ = g₃ condition (documented for future RG-running refinement)
         
         alpha_GUT_inv = mp.mpf(24)
         M_Z = mp.mpf('91.1876')  # GeV
         
+        # α₂⁻¹ and α₃⁻¹ meet when:
+        # α_GUT⁻¹ + (b₂/2π)ln(M_X/M_Z) = α_GUT⁻¹ + (b₃/2π)ln(M_X/M_Z)
+        # This is automatic at GUT scale, so we need experimental α values
         # α₂⁻¹ and α₃⁻¹ meet when:
         # α_GUT⁻¹ + (b₂/2π)ln(M_X/M_Z) = α_GUT⁻¹ + (b₃/2π)ln(M_X/M_Z)
         # This is automatic at GUT scale, so we need experimental α values
