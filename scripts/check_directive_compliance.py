@@ -72,10 +72,9 @@ EXPERIMENTAL_VALUES = {
 VALIDATION_LABELS = [
     r"EXPERIMENTAL\s+VALUE",
     r"FOR\s+VALIDATION\s+ONLY",
-    r"VALIDATION\s+ONLY",
     r"EXPERIMENTAL\s*-\s*FOR\s+VALIDATION",
-    r"CODATA\s+\d{4}",  # CODATA followed by year (e.g., "CODATA 2022")
-    r"PDG\s+\d{4}",     # PDG followed by year (e.g., "PDG 2022")
+    r"CODATA\s+\d{4}.*(?:VALIDATION|FOR\s+VALIDATION)",  # CODATA year with validation context
+    r"PDG\s+\d{4}.*(?:VALIDATION|FOR\s+VALIDATION)",     # PDG year with validation context
     r"MEASURED\s+VALUE",
 ]
 
