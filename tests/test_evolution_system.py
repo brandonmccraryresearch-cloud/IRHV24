@@ -589,5 +589,251 @@ class TestFullPipelineWithAdvisor:
             assert len(suggestion.modification.derivation_steps) > 0
 
 
+class TestIntegrationSystem:
+    """Tests for IntegrationSystem module (Phase 3)."""
+    
+    def test_import(self):
+        """Test that IntegrationSystem can be imported."""
+        from evolution_system import IntegrationSystem
+        integrator = IntegrationSystem()
+        assert integrator is not None
+    
+    def test_integration_status_enum(self):
+        """Test IntegrationStatus enum values."""
+        from evolution_system.integration_system import IntegrationStatus
+        
+        assert IntegrationStatus.PENDING.value == "pending"
+        assert IntegrationStatus.TESTING.value == "testing"
+        assert IntegrationStatus.VALIDATED.value == "validated"
+        assert IntegrationStatus.REJECTED.value == "rejected"
+        assert IntegrationStatus.INTEGRATED.value == "integrated"
+    
+    def test_isolated_test_environment(self):
+        """Test IsolatedTestEnvironment setup."""
+        from evolution_system.integration_system import IsolatedTestEnvironment
+        
+        env = IsolatedTestEnvironment()
+        baseline = env.setup_baseline()
+        
+        assert baseline is not None
+        assert len(baseline) > 0
+        assert 'alpha_inv' in baseline or 'koide_Q' in baseline
+    
+    def test_topological_verifier(self):
+        """Test TopologicalVerifier validation."""
+        from evolution_system.integration_system import TopologicalVerifier
+        from evolution_system.ai_advisor import TopologicalModificationTemplates
+        
+        verifier = TopologicalVerifier()
+        templates = TopologicalModificationTemplates()
+        
+        # Test valid topological modification
+        chern = templates.chern_class_correction(order=2)
+        is_valid, derivation = verifier.verify(chern)
+        
+        assert is_valid is True
+        assert derivation is not None
+        assert len(derivation) > 0
+    
+    def test_symmetry_checker(self):
+        """Test SymmetryChecker validation."""
+        from evolution_system.integration_system import SymmetryChecker
+        from evolution_system.ai_advisor import TopologicalModificationTemplates
+        
+        checker = SymmetryChecker()
+        templates = TopologicalModificationTemplates()
+        
+        # Test modification with symmetry declarations
+        hopf = templates.hopf_fibration_correction()
+        
+        # Pass empty predictions for symmetry check
+        checks = checker.check_all(hopf, {})
+        
+        assert len(checks) > 0
+        # Hopf fibration should preserve symmetries
+        gauge_check = next((c for c in checks if "Gauge" in c.symmetry_name), None)
+        assert gauge_check is not None
+    
+    def test_test_refinement(self):
+        """Test the main test_refinement method."""
+        from evolution_system import IntegrationSystem, AIAdvisor, ErrorAnalyzer
+        from evolution_system import CalculationEngine, ValidationModule
+        
+        # Get a suggestion to test
+        engine = CalculationEngine()
+        predictions = engine.compute_all_predictions()
+        
+        validator = ValidationModule()
+        report = validator.validate_all(predictions)
+        
+        analyzer = ErrorAnalyzer()
+        analysis = analyzer.analyze(report)
+        
+        advisor = AIAdvisor()
+        suggestions = advisor.get_top_suggestions(analysis.to_dict(), n=1)
+        
+        if suggestions:
+            # Test the refinement
+            integrator = IntegrationSystem()
+            result = integrator.test_refinement(suggestions[0])
+            
+            # Result should have all required fields
+            assert result.refinement_name is not None
+            assert result.status is not None
+            assert result.test_timestamp is not None
+            assert isinstance(result.regression_tests, list)
+            assert isinstance(result.symmetry_checks, list)
+    
+    def test_generate_report(self):
+        """Test report generation for integration result."""
+        from evolution_system import IntegrationSystem
+        from evolution_system.integration_system import (
+            IntegrationResult, IntegrationStatus
+        )
+        
+        # Create a mock result
+        result = IntegrationResult(
+            refinement_name="Test Refinement",
+            status=IntegrationStatus.VALIDATED,
+            target_improved=True,
+            target_improvement_pct=5.2,
+            topological_origin_verified=True,
+            topological_derivation="Derived from Chern classes"
+        )
+        
+        integrator = IntegrationSystem()
+        report = integrator.generate_report(result)
+        
+        assert isinstance(report, str)
+        assert "Test Refinement" in report
+        assert "VALIDATED" in report
+    
+    def test_to_dict(self):
+        """Test IntegrationSystem configuration to dict."""
+        from evolution_system import IntegrationSystem
+        
+        integrator = IntegrationSystem()
+        config = integrator.to_dict()
+        
+        assert isinstance(config, dict)
+        assert 'sigma_tolerance' in config
+        assert 'valid_topological_sources' in config
+        assert 'history_count' in config
+    
+    def test_integration_result_is_valid(self):
+        """Test IntegrationResult.is_valid property."""
+        from evolution_system.integration_system import (
+            IntegrationResult, IntegrationStatus
+        )
+        
+        # Valid result
+        valid_result = IntegrationResult(
+            refinement_name="Test",
+            status=IntegrationStatus.VALIDATED,
+            target_improved=True,
+            regressions_found=0,
+            symmetries_preserved=True,
+            topological_origin_verified=True
+        )
+        assert valid_result.is_valid is True
+        
+        # Invalid: not improved
+        invalid_result = IntegrationResult(
+            refinement_name="Test",
+            status=IntegrationStatus.REJECTED,
+            target_improved=False,
+            regressions_found=0,
+            symmetries_preserved=True,
+            topological_origin_verified=True
+        )
+        assert invalid_result.is_valid is False
+        
+        # Invalid: has regressions
+        regressed_result = IntegrationResult(
+            refinement_name="Test",
+            status=IntegrationStatus.REJECTED,
+            target_improved=True,
+            regressions_found=2,
+            symmetries_preserved=True,
+            topological_origin_verified=True
+        )
+        assert regressed_result.is_valid is False
+
+
+class TestFullPipelineWithIntegration:
+    """Integration tests for the complete evolution system with Integration System."""
+    
+    def test_complete_evolution_cycle_with_integration(self):
+        """Test complete evolution cycle including Integration System."""
+        from evolution_system import (
+            CalculationEngine,
+            ExperimentalDatabase,
+            ValidationModule,
+            ErrorAnalyzer,
+            AIAdvisor,
+            IntegrationSystem,
+        )
+        from evolution_system.ai_advisor import TopologicalModificationTemplates, RefinementSuggestion
+        
+        # 1. Load experimental database
+        db = ExperimentalDatabase()
+        assert db.count() > 0
+        
+        # 2. Compute predictions
+        engine = CalculationEngine()
+        predictions = engine.compute_all_predictions()
+        assert len(predictions) > 0
+        
+        # 3. Validate against experiments
+        validator = ValidationModule(db)
+        report = validator.validate_all(predictions)
+        assert report.compared_predictions > 0
+        
+        # 4. Analyze errors
+        analyzer = ErrorAnalyzer()
+        analysis = analyzer.analyze(report)
+        
+        # 5. Get AI-powered suggestions or create test suggestion
+        advisor = AIAdvisor()
+        suggestions = advisor.get_top_suggestions(analysis.to_dict(), n=3)
+        
+        # If no suggestions from analysis, create a test suggestion
+        if not suggestions:
+            templates = TopologicalModificationTemplates()
+            test_suggestion = RefinementSuggestion(
+                modification=templates.chern_class_correction(order=2),
+                error_pattern="gauge_coupling_systematic",
+                justification="Test refinement for integration testing",
+                implementation_notes="Testing only",
+                validation_criteria=["Test criterion"],
+                risk_assessment="Low risk test"
+            )
+            suggestions = [test_suggestion]
+        
+        # 6. Test refinements with Integration System
+        integrator = IntegrationSystem()
+        
+        results = []
+        for suggestion in suggestions:
+            result = integrator.test_refinement(suggestion)
+            results.append(result)
+        
+        # Should have tested some refinements
+        assert len(results) > 0
+        
+        # All results should have proper status
+        from evolution_system.integration_system import IntegrationStatus
+        for result in results:
+            assert result.status in [
+                IntegrationStatus.VALIDATED,
+                IntegrationStatus.REJECTED,
+                IntegrationStatus.TESTING
+            ]
+        
+        # Integration history should be populated
+        history = integrator.get_integration_history()
+        assert len(history) == len(results)
+
+
 if __name__ == '__main__':
     pytest.main([__file__, '-v'])
