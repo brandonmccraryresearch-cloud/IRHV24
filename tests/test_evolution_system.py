@@ -47,6 +47,7 @@ class TestExperimentalDatabase:
         alpha_inv = db.get('alpha_inv')
         
         assert alpha_inv is not None
+        # EXPERIMENTAL VALUE FOR VALIDATION ONLY - CODATA 2022
         assert float(alpha_inv.value) == pytest.approx(137.035999177, rel=1e-9)
     
     def test_get_lepton_masses(self):
@@ -58,6 +59,7 @@ class TestExperimentalDatabase:
         m_mu = db.get('m_muon')
         m_tau = db.get('m_tau')
         
+        # EXPERIMENTAL VALUES FOR VALIDATION ONLY - CODATA 2022 / PDG 2022
         assert float(m_e.value) == pytest.approx(0.51099895, rel=1e-7)
         assert float(m_mu.value) == pytest.approx(105.6583755, rel=1e-7)
         assert float(m_tau.value) == pytest.approx(1776.86, rel=1e-4)
