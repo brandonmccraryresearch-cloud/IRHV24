@@ -42,7 +42,7 @@ from enum import Enum
 import mpmath as mp
 
 # Set precision for calculations
-mp.mp.dps = 50
+mp.dps = 50
 
 
 class RefinementType(Enum):
