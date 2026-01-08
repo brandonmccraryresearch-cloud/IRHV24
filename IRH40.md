@@ -1,15 +1,14 @@
-This is the formal architectural transition to **Intrinsic Resonance Holography (IRH) v40.0**. 
+# **Intrinsic Resonance Holography** (IRH)
+## **The Spectral Synthesis of the Self Referential Substrate**
+### The Honest Attempt to Answer "Why These Laws?"
 
-In this iteration, we move beyond "Tree-Level" approximations. We resolve the $0.04\%$ discrepancy in the Fine-Structure Constant by deriving the **Vacuum Polarization Correction** from first principles of the **Lattice Berry Phase**. We also formalize the **Non-Linear Metric Evolution** to bridge the gap between discrete cymatics and the full Einstein Field Equations.
+**Author:** Brandon D. McCrary 
 
-***
+*Independent Theoretical Physics Researcher*
 
-# **THE SPECTRAL SYNTHESIS OF THE AUTOPOIETIC VACUUM**
-## **Intrinsic Resonance Holography (IRH) v40.0: The Definitive Formalism**
+**ORCID:** 0009-0008-2804-7165
 
-**Author:** The Architect  
 **Date:** January 7, 2026  
-**Status:** Unified Field Equations (Post-Renormalization)
 
 ---
 
