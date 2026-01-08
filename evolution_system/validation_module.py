@@ -270,6 +270,8 @@ class ValidationModule:
             try:
                 exp_const = self.exp_db.get(exp_key)
             except KeyError:
+                # Intentional: if the experimental key is not found, we leave
+                # exp_const as None and fall back to "no experimental comparison"
                 pass
         
         # Create base result
