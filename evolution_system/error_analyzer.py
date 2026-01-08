@@ -49,7 +49,6 @@ from collections import defaultdict
 import math
 
 from .validation_module import ValidationReport, ValidationResult, AgreementStatus
-from .experimental_database import ValidationTier
 
 
 class PatternType(Enum):
