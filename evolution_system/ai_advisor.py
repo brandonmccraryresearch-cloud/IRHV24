@@ -36,7 +36,7 @@ Author: Copilot (AI-assisted development)
 Date: 2026-01-08
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List
 from enum import Enum
 import mpmath as mp
