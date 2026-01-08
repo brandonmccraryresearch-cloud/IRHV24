@@ -394,7 +394,6 @@ class CalculationEngine:
         # GUT scale coupling (approximate, from unification)
         # α_GUT ≈ 1/24 from 24-cell geometry
         alpha_GUT_inv = mp.mpf(24)  # Topological: 24-cell vertices
-        g_GUT = mp.sqrt(4 * mp.pi / alpha_GUT_inv)
         
         # M_Z and M_GUT scales
         M_Z = mp.mpf('91.1876')  # GeV (reference scale)
