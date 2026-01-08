@@ -618,9 +618,12 @@ class CalculationEngine:
         instanton_factor = mp.exp(-S_inst)
         
         # Topological winding number
-        M_Pl_GeV = mp.mpf('1.220910e19')  # Planck mass
-        M_EW_GeV = mp.mpf('246.22')       # Electroweak scale
-        N_wind = (M_Pl_GeV / M_EW_GeV) ** 4
+        # NOTE (Directive A): Do NOT use experimental Planck/EW masses here.
+        # Instead, define a dimensionless topological ratio based on the
+        # 4-strand metric mismatch η = 4/π (see substrate foundation).
+        # This is a heuristic topological approximation, not an experimental input.
+        winding_topological_ratio = (4 / mp.pi) ** 2  # Heuristic from η = 4/π
+        N_wind = winding_topological_ratio ** 4
         winding_factor = 1 / N_wind
         
         # Total suppression
