@@ -416,7 +416,6 @@ class ErrorAnalyzer:
             # Compute sector statistics
             sigma_values = [result.sigma_deviation for _, result in sector_results]
             mean_sigma = sum(sigma_values) / len(sigma_values)
-            # max_sigma is tracked for potential future use in detailed reporting
             
             # Check if sector has issues
             if mean_sigma > 3:
