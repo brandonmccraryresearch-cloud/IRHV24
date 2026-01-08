@@ -41,7 +41,6 @@ References:
 - docs/THEORY_EVOLUTION_SYSTEM.md: Error Analyzer specification
 """
 
-import mpmath as mp
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple, Any
 from enum import Enum
