@@ -9,6 +9,8 @@ The Theory Evolution System enables the IRH framework to self-improve by:
 2. Validating predictions against experimental measurements
 3. Analyzing error patterns to identify systematic discrepancies
 4. Suggesting topologically-motivated refinements (no phenomenological fitting)
+5. Testing and integrating successful refinements
+6. Automatically documenting all changes
 
 ## Installation
 
@@ -22,12 +24,48 @@ pip install mpmath numpy
 
 ## Quick Start
 
+### Option 1: Run Complete Evolution Cycle (Recommended)
+
+```python
+from evolution_system import EvolutionCycle
+
+# Run a complete evolution cycle
+cycle = EvolutionCycle()
+result = cycle.run(max_refinements=5)
+
+# Print summary
+print(f"Cycle completed: {result.status}")
+print(f"Refinements tested: {result.refinements_tested}")
+print(f"Refinements integrated: {result.refinements_integrated}")
+```
+
+### Option 2: Command-Line Interface
+
+```bash
+# Run single cycle with default settings
+python -m evolution_system.evolution_cycle
+
+# Run 3 cycles with 10 refinements each
+python -m evolution_system.evolution_cycle --cycles 3 --max-refinements 10
+
+# Auto-integrate successful refinements
+python -m evolution_system.evolution_cycle --auto-integrate
+
+# Export results to custom path
+python -m evolution_system.evolution_cycle --output results/cycle.json
+```
+
+### Option 3: Run Components Individually
+
 ```python
 from evolution_system import (
     CalculationEngine,
     ExperimentalDatabase,
     ValidationModule,
-    ErrorAnalyzer
+    ErrorAnalyzer,
+    AIAdvisor,
+    IntegrationSystem,
+    DocumentationUpdater
 )
 
 # 1. Load experimental database
@@ -50,10 +88,21 @@ analysis = analyzer.analyze(report)
 analyzer.print_analysis(analysis)
 
 # 5. Get refinement suggestions
-suggestions = analysis.get_high_priority_suggestions(n=5)
-for s in suggestions:
-    print(f"Suggestion: {s.title}")
-    print(f"  {s.description}")
+advisor = AIAdvisor()
+suggestions = advisor.get_top_suggestions(analysis.to_dict(), n=5)
+
+# 6. Test and integrate refinements
+integrator = IntegrationSystem()
+doc_updater = DocumentationUpdater()
+
+for suggestion in suggestions:
+    result = integrator.test_refinement(suggestion)
+    if result.is_valid:
+        integrator.integrate_refinement(suggestion, result)
+        doc_updater.update_changelog(
+            doc_updater.create_changelog_entry(result, suggestion)
+        )
+        print(f"Integrated: {suggestion.modification.name}")
 ```
 
 ## Modules
@@ -205,13 +254,18 @@ See [docs/THEORY_EVOLUTION_SYSTEM.md](../docs/THEORY_EVOLUTION_SYSTEM.md) for th
 - [x] Suggestion ranking algorithms
 - [x] Directive A compliance filtering
 
-**Phase 3: Integration System** - In Progress 🔄
+**Phase 3: Integration System** - Complete ✅
 - [x] Isolated testing environment
 - [x] Regression testing suite
 - [x] Symmetry preservation checks
 - [x] Topological origin verification
-- [ ] Automated documentation updates
+- [x] Automated documentation updates
+- [x] Changelog generation
 
-**Phase 4: Full System Operation** - Planned
-- [ ] First evolution cycle
-- [ ] Theory version updates
+**Phase 4: Full System Operation** - Complete ✅
+- [x] Evolution cycle orchestrator
+- [x] Command-line interface
+- [x] Multi-cycle execution
+- [x] Progress tracking and reporting
+- [x] Results export to JSON
+- [ ] First production evolution cycle (ready to run)
