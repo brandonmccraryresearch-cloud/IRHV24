@@ -764,16 +764,28 @@ class AIAdvisor:
         # Check for systematic offset patterns
         if "patterns" in analysis_result:
             for pattern in analysis_result.get("patterns", []):
-                pattern_type = pattern.get("type", "")
-                affected = pattern.get("affected_observables", [])
+                pattern_type = pattern.get("pattern_type", pattern.get("type", ""))
+                affected = pattern.get("affected_predictions", pattern.get("affected_observables", []))
+                description = pattern.get("description", "")
                 
-                # Classify the pattern
-                if "alpha" in str(affected).lower() or "gauge" in str(affected).lower():
+                # Classify based on pattern_type (can be "sector_specific", "systematic_offset", etc.)
+                # Also check description and affected predictions
+                
+                # Gauge sector patterns
+                if any(term in description.lower() for term in ["gauge", "coupling"]):
                     if pattern_type == "systematic_offset":
                         patterns.append("gauge_coupling_systematic")
-                    elif pattern_type == "scale_dependent":
-                        patterns.append("gauge_coupling_scale_dependent")
+                    else:
+                        # Default for gauge sector issues
+                        patterns.append("gauge_coupling_systematic")
                 
+                # Check affected predictions directly
+                gauge_obs = ["alpha_s", "alpha_1", "alpha_2", "alpha_3", "sin2_theta_W"]
+                if any(obs in affected for obs in gauge_obs):
+                    if "gauge_coupling_systematic" not in patterns:
+                        patterns.append("gauge_coupling_systematic")
+                
+                # Mass patterns
                 if any("mass" in obs.lower() for obs in affected):
                     if any("lepton" in obs.lower() or obs in ["m_electron", "m_muon", "m_tau"] 
                            for obs in affected):
@@ -781,15 +793,20 @@ class AIAdvisor:
                     if any("quark" in obs.lower() for obs in affected):
                         patterns.append("quark_mass_pattern")
                 
-                if any(obs in ["Lambda", "Omega_Lambda", "vacuum_energy"] for obs in affected):
+                # Cosmological patterns
+                cosmo_obs = ["Lambda", "Omega_Lambda", "Omega_DM", "Omega_b", "vacuum_energy"]
+                if any(obs in affected for obs in cosmo_obs):
+                    if "cosmology" in description.lower():
+                        patterns.append("cosmological_ratios")
                     if pattern_type == "systematic_offset":
                         patterns.append("vacuum_energy_too_high")
-                    patterns.append("cosmological_ratios")
                 
-                if "alpha_inv" in affected:
+                # Fine-structure constant
+                if "alpha_inv" in affected or "alpha_inv" in description.lower():
                     patterns.append("alpha_systematic")
                 
-                if any(obs in ["alpha_3", "QCD_string_tension"] for obs in affected):
+                # Strong sector (QCD)
+                if any(obs in ["alpha_s", "alpha_3", "QCD_string_tension"] for obs in affected):
                     patterns.append("qcd_errors")
         
         # Check individual poor results
