@@ -1,0 +1,145 @@
+name: Evolution Cycle with Gemini AI
+
+on:
+  workflow_dispatch:
+    inputs:
+      n_suggestions:
+        description: 'Number of refinement suggestions to generate'
+        required: false
+        default: '5'
+        type: string
+      max_refinements:
+        description: 'Maximum refinements to test per cycle'
+        required: false
+        default: '3'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  evolution-cycle:
+    name: Run Evolution Cycle with Gemini
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+      
+      - name: Set up Python
+        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236  # v4.7.1
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mpmath numpy scipy
+          
+          # Install Gemini SDK
+          if [ -n "${{ secrets.GEMINI_API_KEY }}" ]; then
+            pip install google-genai
+            echo "✅ Gemini SDK installed"
+          else
+            echo "⚠️  GEMINI_API_KEY not found - will use template-based suggestions"
+          fi
+      
+      - name: Run Evolution Cycle
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          echo "=========================================="
+          echo "  IRH EVOLUTION CYCLE - GEMINI POWERED"
+          echo "=========================================="
+          echo ""
+          echo "Configuration:"
+          echo "  Max refinements: ${{ inputs.max_refinements }}"
+          echo "  Suggestions: ${{ inputs.n_suggestions }}"
+          echo ""
+          
+          # Run main evolution cycle
+          python3 demo_evolution_cycle.py
+          
+          echo ""
+          echo "=========================================="
+          echo "  TESTING GEMINI ADVISOR DIRECTLY"
+          echo "=========================================="
+          echo ""
+          
+          # Test Gemini advisor
+          python3 evolution_system/gemini_advisor.py
+      
+      - name: Upload evolution cycle results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: evolution-cycle-results-${{ github.run_number }}
+          path: |
+            outputs/evolution_system/*.json
+            outputs/evolution_system/*.txt
+          retention-days: 30
+      
+      - name: Display results summary
+        if: always()
+        run: |
+          echo ""
+          echo "=========================================="
+          echo "  RESULTS SUMMARY"
+          echo "=========================================="
+          
+          # Find the most recent result file
+          LATEST_RESULT=$(ls -t outputs/evolution_system/evolution_cycle_*.json 2>/dev/null | head -1)
+          
+          if [ -f "$LATEST_RESULT" ]; then
+            echo "✅ Evolution cycle completed successfully"
+            echo ""
+            echo "Results file: $LATEST_RESULT"
+            echo ""
+            
+            # Extract key metrics using Python
+            python3 << EOF
+          import json
+          
+          with open('$LATEST_RESULT', 'r') as f:
+              data = json.load(f)
+          
+          summary = data.get('summary', {})
+          
+          print(f"Predictions computed: {summary.get('predictions_count', 'N/A')}")
+          print(f"Mean σ-deviation: {summary.get('mean_sigma', 'N/A'):.2f}" if isinstance(summary.get('mean_sigma'), (int, float)) else "N/A")
+          print(f"Pass rate: {summary.get('pass_rate', 0) * 100:.1f}%" if isinstance(summary.get('pass_rate'), (int, float)) else "N/A")
+          print(f"Suggestions generated: {summary.get('suggestions_count', 'N/A')}")
+          EOF
+          
+            echo ""
+            echo "📊 Full results available in artifacts"
+          else
+            echo "⚠️  No results file found"
+          fi
+      
+      - name: Check Gemini status
+        if: always()
+        run: |
+          echo ""
+          echo "=========================================="
+          echo "  GEMINI AI STATUS"
+          echo "=========================================="
+          
+          if [ -n "${{ secrets.GEMINI_API_KEY }}" ]; then
+            echo "✅ GEMINI_API_KEY is configured"
+            echo ""
+            echo "Gemini features available:"
+            echo "  • Deep error pattern analysis"
+            echo "  • Novel refinement suggestions"
+            echo "  • Mathematical derivation assistance"
+          else
+            echo "ℹ️  GEMINI_API_KEY not configured"
+            echo ""
+            echo "To enable Gemini AI:"
+            echo "  1. Go to Repository Settings"
+            echo "  2. Navigate to Secrets and variables → Actions"
+            echo "  3. Verify GEMINI_API_KEY secret exists"
+            echo ""
+            echo "Using template-based suggestions as fallback."
+          fi
