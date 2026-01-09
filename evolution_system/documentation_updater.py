@@ -26,7 +26,7 @@ Date: 2026-01-09
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 from datetime import datetime
 from pathlib import Path
 import json
