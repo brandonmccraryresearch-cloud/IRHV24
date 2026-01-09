@@ -81,7 +81,7 @@ Key parameters:
 - `docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md`
 - `environment.yml`
 - `README.md` (v26.0 theory)
-- `IRH35.MD` (VERSION 35 LATEST)
+- `IRH40.md` (v40.0 theory, latest)
 - `IRHv25.md` (v25.0 theory)
 - `notebooks/*.ipynb` (computational notebooks)
 
