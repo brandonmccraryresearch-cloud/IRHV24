@@ -168,21 +168,34 @@ class DocumentationUpdater:
         Increment version number.
         
         Args:
-            current: Current version (e.g., "26.0")
-            release_type: Type of release ("major", "minor", "patch")
+            current: Current version (e.g., "26.0" or "26.0.1").
+            release_type: Type of release ("major", "minor", "patch").
         
         Returns:
-            New version string
+            New version string.
+        
+        Raises:
+            ValueError: If the current version string is not of the form "X.Y" or "X.Y.Z"
+                with integer components.
         """
         parts = current.split(".")
-        
-        if len(parts) == 2:
-            major, minor = int(parts[0]), int(parts[1])
-            patch = 0
-        elif len(parts) == 3:
-            major, minor, patch = int(parts[0]), int(parts[1]), int(parts[2])
-        else:
-            major, minor, patch = 26, 0, 0
+
+        try:
+            if len(parts) == 2:
+                major, minor = int(parts[0]), int(parts[1])
+                patch = 0
+            elif len(parts) == 3:
+                major, minor, patch = int(parts[0]), int(parts[1]), int(parts[2])
+            else:
+                raise ValueError(
+                    f"Invalid version string '{current}': expected 'X.Y' or 'X.Y.Z'."
+                )
+        except ValueError as exc:
+            # Normalize any integer-conversion errors into a clear message
+            raise ValueError(
+                f"Invalid version string '{current}': expected 'X.Y' or 'X.Y.Z' "
+                f"with integer components."
+            ) from exc
         
         if release_type == "major":
             major += 1
