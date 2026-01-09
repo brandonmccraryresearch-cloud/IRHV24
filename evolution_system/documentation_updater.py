@@ -248,38 +248,44 @@ class DocumentationUpdater:
             target_path: Path to changelog file (default: docs/THEORY_CHANGELOG.md)
         
         Returns:
-            True if successful
+            True if successful, False if an I/O error occurred.
         """
         if target_path is None:
             target_path = self.theory_changelog_path
         
-        # Ensure parent directory exists
-        target_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        # Read existing changelog or create header
-        if target_path.exists():
-            with open(target_path, 'r', encoding='utf-8') as f:
-                existing_content = f.read()
-        else:
-            existing_content = self._create_changelog_header()
-        
-        # Find insertion point (after header)
-        header_end = existing_content.find("\n## Version ")
-        if header_end == -1:
-            # No existing versions, append after header
-            new_content = existing_content + "\n" + entry.to_markdown()
-        else:
-            # Insert new entry before existing versions
-            new_content = (
-                existing_content[:header_end] +
-                "\n" +
-                entry.to_markdown() +
-                existing_content[header_end:]
-            )
-        
-        # Write updated changelog
-        with open(target_path, 'w', encoding='utf-8') as f:
-            f.write(new_content)
+        try:
+            # Ensure parent directory exists
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            # Read existing changelog or create header
+            if target_path.exists():
+                with open(target_path, 'r', encoding='utf-8') as f:
+                    existing_content = f.read()
+            else:
+                existing_content = self._create_changelog_header()
+            
+            # Find insertion point (after header)
+            header_end = existing_content.find("\n## Version ")
+            if header_end == -1:
+                # No existing versions, append after header
+                new_content = existing_content + "\n" + entry.to_markdown()
+            else:
+                # Insert new entry before existing versions
+                new_content = (
+                    existing_content[:header_end] +
+                    "\n" +
+                    entry.to_markdown() +
+                    existing_content[header_end:]
+                )
+            
+            # Write updated changelog
+            with open(target_path, 'w', encoding='utf-8') as f:
+                f.write(new_content)
+        except (OSError, IOError) as e:
+            # Surface a clear failure signal to callers without raising.
+            # For richer diagnostics, callers can inspect logs or wrap this method.
+            print(f"Failed to update changelog at {target_path}: {e}")
+            return False
         
         return True
     
