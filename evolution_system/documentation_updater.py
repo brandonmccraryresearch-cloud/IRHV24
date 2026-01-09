@@ -25,7 +25,7 @@ Author: IRH Computational Research Team
 Date: 2026-01-09
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
 from pathlib import Path
