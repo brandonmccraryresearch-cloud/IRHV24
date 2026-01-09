@@ -277,10 +277,18 @@ class EvolutionCycle:
             
             # Re-validate with any integrated refinements
             if result.refinements_integrated > 0 and auto_integrate:
-                # Recompute predictions (would need modified engine in production)
-                final_report = baseline_report  # Placeholder
-                result.final_mean_sigma = final_report.mean_sigma_deviation
-                result.final_pass_rate = final_report.overall_pass_rate
+                try:
+                    self._log("  Recomputing predictions with integrated refinements...")
+                    final_predictions = self.engine.compute_all_predictions()
+                    self._log(f"  Recomputed {len(final_predictions)} predictions")
+                    final_report = self.validator.validate_all(final_predictions)
+                    result.final_mean_sigma = final_report.mean_sigma_deviation
+                    result.final_pass_rate = final_report.overall_pass_rate
+                except Exception as e:
+                    # If recomputation fails for any reason, fall back to baseline statistics
+                    self._log(f"  WARNING: Failed to recompute final statistics: {e}")
+                    result.final_mean_sigma = result.baseline_mean_sigma
+                    result.final_pass_rate = result.baseline_pass_rate
             else:
                 result.final_mean_sigma = result.baseline_mean_sigma
                 result.final_pass_rate = result.baseline_pass_rate
