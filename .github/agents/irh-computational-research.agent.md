@@ -84,6 +84,7 @@ Key parameters:
 - `IRH40.md` (v40.0 theory, latest)
 - `IRHv25.md` (v25.0 theory)
 - `notebooks/*.ipynb` (computational notebooks)
+- `evolution_system/` (agent evolution and configuration utilities)
 
 ## Examples of Tasks This Agent Can Handle
 
