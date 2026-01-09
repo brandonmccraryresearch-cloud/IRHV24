@@ -47,7 +47,7 @@ try:
     from .integration_system import (
         IntegrationSystem, IntegrationResult
     )
-    from .documentation_updater import DocumentationUpdater, ChangelogEntry
+    from .documentation_updater import DocumentationUpdater
 except ImportError as e:
     # Handle standalone execution
     import warnings
