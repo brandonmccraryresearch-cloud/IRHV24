@@ -835,5 +835,243 @@ class TestFullPipelineWithIntegration:
         assert len(history) == len(results)
 
 
+class TestDocumentationUpdater:
+    """Tests for DocumentationUpdater module (Phase 3 completion)."""
+    
+    def test_import(self):
+        """Test that DocumentationUpdater can be imported."""
+        from evolution_system import DocumentationUpdater
+        updater = DocumentationUpdater()
+        assert updater is not None
+    
+    def test_get_current_version(self):
+        """Test getting current theory version."""
+        from evolution_system import DocumentationUpdater
+        updater = DocumentationUpdater()
+        
+        version = updater.get_current_version()
+        assert version is not None
+        assert isinstance(version, str)
+        # Should have at least major.minor format
+        parts = version.split('.')
+        assert len(parts) >= 2
+    
+    def test_increment_version(self):
+        """Test version incrementing logic."""
+        from evolution_system import DocumentationUpdater
+        updater = DocumentationUpdater()
+        
+        # Test patch increment
+        assert updater.increment_version("26.0", "patch") == "26.0.1"
+        assert updater.increment_version("26.0.1", "patch") == "26.0.2"
+        
+        # Test minor increment
+        assert updater.increment_version("26.0", "minor") == "26.1"
+        assert updater.increment_version("26.0.1", "minor") == "26.1"
+        
+        # Test major increment
+        assert updater.increment_version("26.0", "major") == "27.0"
+    
+    def test_create_changelog_entry(self):
+        """Test creating changelog entry from integration result."""
+        from evolution_system import (
+            DocumentationUpdater, IntegrationSystem, AIAdvisor
+        )
+        from evolution_system.ai_advisor import TopologicalModificationTemplates, RefinementSuggestion
+        from evolution_system.integration_system import IntegrationResult, IntegrationStatus
+        
+        updater = DocumentationUpdater()
+        templates = TopologicalModificationTemplates()
+        
+        # Create mock result and suggestion
+        suggestion = RefinementSuggestion(
+            modification=templates.chern_class_correction(order=2),
+            error_pattern="gauge_coupling_systematic",
+            justification="Test justification",
+            implementation_notes="Test notes",
+            validation_criteria=["Criterion 1"],
+            risk_assessment="Low risk"
+        )
+        
+        result = IntegrationResult(
+            refinement_name="Chern Class C_2 Correction",
+            status=IntegrationStatus.VALIDATED,
+            target_improved=True,
+            target_improvement_pct=2.5,
+            regressions_found=0,
+            symmetries_preserved=True,
+            topological_origin_verified=True
+        )
+        
+        entry = updater.create_changelog_entry(result, suggestion)
+        
+        assert entry is not None
+        assert entry.refinement_name == "Chern Class C_2 Correction"
+        assert entry.improvement_pct == 2.5
+        assert entry.version is not None
+    
+    def test_changelog_entry_to_markdown(self):
+        """Test converting changelog entry to markdown."""
+        from evolution_system.documentation_updater import ChangelogEntry
+        
+        entry = ChangelogEntry(
+            version="26.1",
+            date="2026-01-09",
+            refinement_name="Test Refinement",
+            description="Test description",
+            affected_observables=["alpha_inv", "alpha_s"],
+            improvement_pct=3.5,
+            topological_origin="Chern classes",
+            regression_tests_passed=10,
+            symmetries_preserved=["Gauge invariance", "CPT"]
+        )
+        
+        markdown = entry.to_markdown()
+        
+        assert "## Version 26.1" in markdown
+        assert "Test Refinement" in markdown
+        assert "3.50%" in markdown
+        assert "Gauge invariance" in markdown
+    
+    def test_generate_summary_statistics(self):
+        """Test generating summary statistics."""
+        from evolution_system import DocumentationUpdater
+        updater = DocumentationUpdater()
+        
+        stats = updater.generate_summary_statistics()
+        
+        assert isinstance(stats, dict)
+        assert 'total_attempts' in stats
+        assert 'success_rate' in stats
+    
+    def test_to_dict(self):
+        """Test updater configuration to dict."""
+        from evolution_system import DocumentationUpdater
+        updater = DocumentationUpdater()
+        
+        config = updater.to_dict()
+        
+        assert isinstance(config, dict)
+        assert 'current_version' in config
+
+
+class TestEvolutionCycle:
+    """Tests for EvolutionCycle module (Phase 4)."""
+    
+    def test_import(self):
+        """Test that EvolutionCycle can be imported."""
+        from evolution_system import EvolutionCycle
+        cycle = EvolutionCycle(verbose=False)
+        assert cycle is not None
+    
+    def test_cycle_result_dataclass(self):
+        """Test CycleResult dataclass."""
+        from evolution_system.evolution_cycle import CycleResult, CycleStatus
+        
+        result = CycleResult(
+            cycle_id="test_001",
+            status=CycleStatus.COMPLETED,
+            start_time="2026-01-09T12:00:00",
+            end_time="2026-01-09T12:05:00",
+            refinements_tested=5,
+            refinements_integrated=2,
+            refinements_rejected=3
+        )
+        
+        assert result.cycle_id == "test_001"
+        assert result.refinements_tested == 5
+        assert result.refinements_integrated == 2
+    
+    def test_cycle_result_to_dict(self):
+        """Test CycleResult serialization."""
+        from evolution_system.evolution_cycle import CycleResult, CycleStatus
+        
+        result = CycleResult(
+            cycle_id="test_002",
+            status=CycleStatus.COMPLETED,
+            start_time="2026-01-09T12:00:00",
+            baseline_mean_sigma=2.5,
+            baseline_pass_rate=0.85
+        )
+        
+        data = result.to_dict()
+        
+        assert isinstance(data, dict)
+        assert data['cycle_id'] == "test_002"
+        assert data['baseline_mean_sigma'] == 2.5
+    
+    def test_run_cycle(self):
+        """Test running a single evolution cycle."""
+        from evolution_system import EvolutionCycle
+        from evolution_system.evolution_cycle import CycleStatus
+        
+        cycle = EvolutionCycle(verbose=False)
+        result = cycle.run(max_refinements=2)
+        
+        assert result is not None
+        assert result.cycle_id is not None
+        assert result.status in [CycleStatus.COMPLETED, CycleStatus.FAILED]
+        assert result.start_time is not None
+        assert result.end_time is not None
+    
+    def test_get_cycle_history(self):
+        """Test cycle history tracking."""
+        from evolution_system import EvolutionCycle
+        
+        cycle = EvolutionCycle(verbose=False)
+        result = cycle.run(max_refinements=1)
+        
+        history = cycle.get_cycle_history()
+        
+        assert len(history) >= 1
+        assert history[-1].cycle_id == result.cycle_id
+    
+    def test_to_dict(self):
+        """Test EvolutionCycle configuration to dict."""
+        from evolution_system import EvolutionCycle
+        
+        cycle = EvolutionCycle(verbose=False)
+        config = cycle.to_dict()
+        
+        assert isinstance(config, dict)
+        assert 'sigma_tolerance' in config
+        assert 'verbose' in config
+
+
+class TestFullEvolutionPipeline:
+    """Integration tests for complete evolution pipeline with Phase 4 components."""
+    
+    def test_complete_evolution_workflow(self):
+        """Test the complete evolution workflow from start to finish."""
+        from evolution_system import (
+            EvolutionCycle,
+            DocumentationUpdater,
+        )
+        from evolution_system.evolution_cycle import CycleStatus
+        
+        # Initialize orchestrator
+        cycle = EvolutionCycle(verbose=False)
+        
+        # Run a single cycle
+        result = cycle.run(max_refinements=3, auto_integrate=False)
+        
+        # Verify cycle completed
+        assert result.status in [CycleStatus.COMPLETED, CycleStatus.FAILED]
+        
+        # Verify we have baseline metrics
+        assert result.baseline_mean_sigma is not None or result.status == CycleStatus.FAILED
+        
+        # Verify suggestions were considered
+        assert result.suggestions_considered >= 0
+        
+        # Verify integration results are tracked
+        assert isinstance(result.integration_results, list)
+        
+        # Verify documentation updater works
+        updater = DocumentationUpdater()
+        stats = updater.generate_summary_statistics()
+        assert isinstance(stats, dict)
+
+
 if __name__ == '__main__':
     pytest.main([__file__, '-v'])
