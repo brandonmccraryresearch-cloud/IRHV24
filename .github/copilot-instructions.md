@@ -6,6 +6,20 @@
 
 ## These rules MUST be followed for every session. No exceptions.
 
+### 0. 🔄 DIRECTIVE COMPLIANCE CHECKER NOTES
+**IMPORTANT:** The `scripts/check_directive_compliance.py` script enforces Directive A on PRs.
+
+**Known behaviors:**
+- The script checks for hardcoded experimental values without proper "FOR VALIDATION ONLY" labels
+- Experimental values in database/constants files need labels on or within 3 lines before the value
+- The script intentionally does NOT warn about benign uses of "validation" in class names, type hints, or documentation strings
+- If adding experimental values to the `ExperimentalDatabase`, add a comment like `# EXPERIMENTAL VALUE FOR VALIDATION ONLY` on the line before or on the same line as the value
+
+**To test compliance locally:**
+```bash
+python scripts/check_directive_compliance.py --check-hardcoded-values --check-experimental-labels --check-placeholder-warnings --paths <path>
+```
+
 ### 1. 🚫 NO HARDCODED EXPERIMENTAL VALUES
 **CRITICAL RULE:** All physical quantities must be derived directly from the theory's mathematical framework. 
 

@@ -7,6 +7,9 @@ outputs/figures/
 outputs/data/
 outputs/reports/
 
+# Directive compliance check output
+violations.json
+
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 */.ipynb_checkpoints/*
