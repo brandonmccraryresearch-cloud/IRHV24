@@ -42,7 +42,7 @@ try:
     from .calculation_engine import CalculationEngine
     from .experimental_database import ExperimentalDatabase
     from .validation_module import ValidationModule, ValidationReport
-    from .error_analyzer import ErrorAnalyzer, ErrorAnalysis
+    from .error_analyzer import ErrorAnalyzer
     from .ai_advisor import AIAdvisor, RefinementSuggestion
     from .integration_system import (
         IntegrationSystem, IntegrationResult
