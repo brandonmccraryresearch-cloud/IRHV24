@@ -503,16 +503,31 @@ class EvolutionCycle:
         if output_path is None:
             output_path = "cycle_results.json"
         
+        # Normalize to string in case a Path object is provided
+        output_path_str = str(output_path)
+        
         results_dict = {
             "generated": datetime.now().isoformat(),
             "total_cycles": len(self._cycle_history),
             "cycles": [r.to_dict() for r in self._cycle_history],
         }
         
-        with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(results_dict, f, indent=2)
+        try:
+            with open(output_path_str, 'w', encoding='utf-8') as f:
+                json.dump(results_dict, f, indent=2)
+        except (OSError, TypeError, ValueError) as e:
+            error_msg = (
+                f"Failed to export evolution cycle results to "
+                f"'{output_path_str}': {e}"
+            )
+            # Best-effort logging; do not let logging failures mask the original error
+            try:
+                self._log(error_msg)
+            except Exception:
+                pass
+            raise RuntimeError(error_msg) from e
         
-        return output_path
+        return output_path_str
     
     def to_dict(self) -> Dict:
         """Return orchestrator configuration as dictionary."""
