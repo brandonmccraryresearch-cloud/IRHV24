@@ -331,55 +331,71 @@ no degradation of existing predictions.
             suggestion: RefinementSuggestion that was tested/integrated
         
         Returns:
-            True if successful
+            True if successful, False if an I/O or JSON error occurred.
         """
-        # Load existing history
-        if self.integration_history_path.exists():
-            with open(self.integration_history_path, 'r', encoding='utf-8') as f:
-                history = json.load(f)
-        else:
-            history = {
-                "version": "1.0",
-                "generated": datetime.now().isoformat(),
-                "total_attempts": 0,
-                "total_integrated": 0,
-                "total_rejected": 0,
-                "entries": []
+        try:
+            # Load existing history
+            if self.integration_history_path.exists():
+                try:
+                    with open(self.integration_history_path, 'r', encoding='utf-8') as f:
+                        history = json.load(f)
+                except json.JSONDecodeError as e:
+                    print(f"Failed to parse integration history at {self.integration_history_path}: {e}")
+                    # Start fresh if the file is corrupted
+                    history = None
+            else:
+                history = None
+            
+            if history is None:
+                history = {
+                    "version": "1.0",
+                    "generated": datetime.now().isoformat(),
+                    "total_attempts": 0,
+                    "total_integrated": 0,
+                    "total_rejected": 0,
+                    "entries": []
+                }
+            
+            # Create new entry
+            entry = {
+                "timestamp": datetime.now().isoformat(),
+                "refinement_name": suggestion.modification.name,
+                "refinement_type": suggestion.modification.refinement_type.value,
+                "status": result.status.value,
+                "rejection_reason": result.rejection_reason.value if result.rejection_reason else None,
+                "target_improved": result.target_improved,
+                "improvement_pct": result.target_improvement_pct,
+                "regressions_found": result.regressions_found,
+                "symmetries_preserved": result.symmetries_preserved,
+                "topological_verified": result.topological_origin_verified,
+                "affected_observables": suggestion.modification.affected_observables,
             }
-        
-        # Create new entry
-        entry = {
-            "timestamp": datetime.now().isoformat(),
-            "refinement_name": suggestion.modification.name,
-            "refinement_type": suggestion.modification.refinement_type.value,
-            "status": result.status.value,
-            "rejection_reason": result.rejection_reason.value if result.rejection_reason else None,
-            "target_improved": result.target_improved,
-            "improvement_pct": result.target_improvement_pct,
-            "regressions_found": result.regressions_found,
-            "symmetries_preserved": result.symmetries_preserved,
-            "topological_verified": result.topological_origin_verified,
-            "affected_observables": suggestion.modification.affected_observables,
-        }
-        
-        # Update statistics
-        history["total_attempts"] += 1
-        if result.status.value == "integrated":
-            history["total_integrated"] += 1
-        elif result.status.value == "rejected":
-            history["total_rejected"] += 1
-        
-        history["entries"].append(entry)
-        history["last_updated"] = datetime.now().isoformat()
-        
-        # Ensure parent directory exists
-        self.integration_history_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        # Write updated history
-        with open(self.integration_history_path, 'w', encoding='utf-8') as f:
-            json.dump(history, f, indent=2)
-        
-        return True
+            
+            # Update statistics
+            history["total_attempts"] += 1
+            if result.status.value == "integrated":
+                history["total_integrated"] += 1
+            elif result.status.value == "rejected":
+                history["total_rejected"] += 1
+            
+            history["entries"].append(entry)
+            history["last_updated"] = datetime.now().isoformat()
+            
+            # Ensure parent directory exists
+            self.integration_history_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            # Write updated history
+            with open(self.integration_history_path, 'w', encoding='utf-8') as f:
+                json.dump(history, f, indent=2)
+            
+            return True
+            
+        except (OSError, IOError) as e:
+            print(f"Failed to update integration history at {self.integration_history_path}: {e}")
+            return False
+        except (TypeError, ValueError) as e:
+            print(f"Failed to serialize integration history entry: {e}")
+            return False
     
     def generate_refinement_report(
         self,
