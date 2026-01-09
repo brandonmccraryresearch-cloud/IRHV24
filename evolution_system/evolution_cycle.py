@@ -45,7 +45,7 @@ try:
     from .error_analyzer import ErrorAnalyzer, ErrorAnalysis
     from .ai_advisor import AIAdvisor, RefinementSuggestion
     from .integration_system import (
-        IntegrationSystem, IntegrationResult, IntegrationStatus
+        IntegrationSystem, IntegrationResult
     )
     from .documentation_updater import DocumentationUpdater, ChangelogEntry
 except ImportError as e:
