@@ -14,6 +14,8 @@ The Theory Evolution System enables the IRH framework to self-improve by:
 
 ## Installation
 
+### Core Dependencies
+
 ```bash
 # From repository root
 pip install -e .
@@ -21,6 +23,98 @@ pip install -e .
 # Or install dependencies manually
 pip install mpmath numpy
 ```
+
+### Gen AI SDK (for AI Advisor)
+
+The AI Advisor module can optionally use Google's Gen AI SDK for enhanced AI-powered theoretical refinement suggestions.
+
+**Installation:**
+
+```bash
+# Install the Gen AI SDK
+pip install --upgrade google-genai
+```
+
+**Configuration:**
+
+Set your Google Cloud API key as an environment variable:
+
+```bash
+export GOOGLE_CLOUD_API_KEY="YOUR_API_KEY"
+```
+
+For GitHub Actions workflows, add `GOOGLE_CLOUD_API_KEY` as a repository secret.
+
+**Example Usage:**
+
+```python
+from google import genai
+from google.genai import types
+import os
+
+def generate_refinement_suggestions():
+    """Use Gen AI to generate topologically-motivated refinements."""
+    client = genai.Client(
+        vertexai=True,
+        api_key=os.environ.get("GOOGLE_CLOUD_API_KEY"),
+    )
+
+    model = "gemini-3-pro-preview"
+    contents = [
+        types.Content(
+            role="user",
+            parts=[
+                # Add your prompt here for refinement suggestions
+            ]
+        )
+    ]
+    
+    tools = [
+        types.Tool(google_search=types.GoogleSearch()),
+    ]
+
+    generate_content_config = types.GenerateContentConfig(
+        temperature=1,
+        top_p=0.95,
+        max_output_tokens=65535,
+        safety_settings=[
+            types.SafetySetting(
+                category="HARM_CATEGORY_HATE_SPEECH",
+                threshold="OFF"
+            ),
+            types.SafetySetting(
+                category="HARM_CATEGORY_DANGEROUS_CONTENT",
+                threshold="OFF"
+            ),
+            types.SafetySetting(
+                category="HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                threshold="OFF"
+            ),
+            types.SafetySetting(
+                category="HARM_CATEGORY_HARASSMENT",
+                threshold="OFF"
+            )
+        ],
+        tools=tools,
+        thinking_config=types.ThinkingConfig(
+            thinking_level="HIGH",
+        ),
+    )
+
+    for chunk in client.models.generate_content_stream(
+        model=model,
+        contents=contents,
+        config=generate_content_config,
+    ):
+        if not chunk.candidates or not chunk.candidates[0].content or not chunk.candidates[0].content.parts:
+            continue
+        print(chunk.text, end="")
+
+# Use in AI Advisor
+generate_refinement_suggestions()
+```
+
+**Note:** The Gen AI integration is optional. The AI Advisor can function using built-in topological modification templates without requiring external API access.
 
 ## Quick Start
 
@@ -236,9 +330,10 @@ cd /path/to/IRHV24
 python -m pytest tests/test_evolution_system.py -v
 ```
 
-## Design Document
+## Documentation
 
-See [docs/THEORY_EVOLUTION_SYSTEM.md](../docs/THEORY_EVOLUTION_SYSTEM.md) for the full design specification.
+- **Design Document**: [docs/THEORY_EVOLUTION_SYSTEM.md](../docs/THEORY_EVOLUTION_SYSTEM.md) - Full design specification
+- **Gen AI SDK Setup**: [docs/GEN_AI_SDK_SETUP.md](../docs/GEN_AI_SDK_SETUP.md) - Detailed guide for AI Advisor integration
 
 ## Status
 
