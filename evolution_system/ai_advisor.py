@@ -787,7 +787,7 @@ class AIAdvisor:
         Identify error patterns from the error analysis result.
         
         Args:
-            analysis_result: Output from ErrorAnalyzer.analyze()
+            analysis_result: Output from ErrorAnalyzer.analyze().to_dict()
             
         Returns:
             List of identified error pattern keys
@@ -797,8 +797,8 @@ class AIAdvisor:
         # Check for systematic offset patterns
         if "patterns" in analysis_result:
             for pattern in analysis_result.get("patterns", []):
-                pattern_type = pattern.get("type", "")
-                affected = pattern.get("affected_observables", [])
+                pattern_type = pattern.get("pattern_type", "")
+                affected = pattern.get("affected_predictions", [])
                 
                 # Classify the pattern
                 if "alpha" in str(affected).lower() or "gauge" in str(affected).lower():
@@ -822,19 +822,18 @@ class AIAdvisor:
                 if "alpha_inv" in affected:
                     patterns.append("alpha_systematic")
                 
-                if any(obs in ["alpha_3", "QCD_string_tension"] for obs in affected):
+                if any(obs in ["alpha_3", "alpha_s", "QCD_string_tension"] for obs in affected):
                     patterns.append("qcd_errors")
         
-        # Check individual poor results
-        if "poor_predictions" in analysis_result:
-            for pred in analysis_result.get("poor_predictions", []):
-                name = pred.get("name", "")
-                if "alpha" in name.lower() and "alpha_systematic" not in patterns:
+        # Check individual poor results (in case patterns missed something)
+        if "poor_predictions" in analysis_result.get("summary", {}):
+            for pred_name in analysis_result["summary"].get("poor_predictions", []):
+                if "alpha" in pred_name.lower() and "alpha_systematic" not in patterns:
                     patterns.append("alpha_systematic")
-                if "mass" in name.lower():
-                    if "lepton" in name.lower() and "lepton_mass_pattern" not in patterns:
+                if "mass" in pred_name.lower():
+                    if "lepton" in pred_name.lower() and "lepton_mass_pattern" not in patterns:
                         patterns.append("lepton_mass_pattern")
-                    elif "quark" in name.lower() and "quark_mass_pattern" not in patterns:
+                    elif "quark" in pred_name.lower() and "quark_mass_pattern" not in patterns:
                         patterns.append("quark_mass_pattern")
         
         return list(set(patterns))  # Remove duplicates
