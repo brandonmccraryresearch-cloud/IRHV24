@@ -116,6 +116,8 @@ generate_refinement_suggestions()
 
 **Note:** The Gen AI integration is optional. The AI Advisor can function using built-in topological modification templates without requiring external API access.
 
+**Example:** See [examples/genai_advisor_example.py](../examples/genai_advisor_example.py) for a complete demonstration of Gen AI SDK integration.
+
 ## Quick Start
 
 ### Option 1: Run Complete Evolution Cycle (Recommended)
