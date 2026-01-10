@@ -68,3 +68,6 @@ dependencies:
     # Additional Math
     - primefac>=2.0.12          # Prime factorization utilities
     - galois>=0.3.6             # Finite field arithmetic
+    
+    # AI Advisor (Optional - requires GOOGLE_CLOUD_API_KEY environment variable)
+    - google-genai>=0.3.0       # Google Gen AI SDK for AI-powered refinement suggestions
