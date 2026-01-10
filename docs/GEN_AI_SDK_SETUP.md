@@ -48,7 +48,51 @@ source ~/.bashrc
 5. Value: Your Google Cloud API key
 6. Click **Add secret**
 
-The workflow will automatically access this secret via `${{ secrets.GOOGLE_CLOUD_API_KEY }}`.
+**Using the secret in workflows:**
+
+```yaml
+name: Evolution Cycle with Gen AI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-evolution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          pip install mpmath numpy scipy
+          pip install --upgrade google-genai
+          
+      - name: Run evolution cycle with Gen AI
+        env:
+          GOOGLE_CLOUD_API_KEY: ${{ secrets.GOOGLE_CLOUD_API_KEY }}
+        run: |
+          python3 << 'EOF'
+          from evolution_system import AIAdvisor, ErrorAnalyzer
+          
+          # The API key is automatically available via environment variable
+          advisor = AIAdvisor()
+          
+          # Check if Gen AI is enabled
+          if advisor._genai_client:
+              print("✅ Gen AI is enabled and ready")
+              # Generate AI suggestions
+              suggestions = advisor.get_genai_suggestions(analysis_dict)
+          else:
+              print("⚠️ Gen AI not available, using templates")
+          EOF
+```
+
+See `.github/workflows/evolution-with-genai.yml` for a complete working example.
 
 ## Usage
 

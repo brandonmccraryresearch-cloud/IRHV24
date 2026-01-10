@@ -118,6 +118,12 @@ generate_refinement_suggestions()
 
 **Example:** See [examples/genai_advisor_example.py](../examples/genai_advisor_example.py) for a complete demonstration of Gen AI SDK integration.
 
+**GitHub Actions:** To run evolution cycles with Gen AI in CI/CD:
+1. Add your `GOOGLE_CLOUD_API_KEY` as a repository secret
+2. Use the workflow at `.github/workflows/evolution-with-genai.yml`
+3. Trigger manually via "Actions" tab or on schedule (weekly)
+4. Results are saved as artifacts and displayed in job summary
+
 ## Quick Start
 
 ### Option 1: Run Complete Evolution Cycle (Recommended)
