@@ -68,3 +68,6 @@ dependencies:
     # Additional Math
     - primefac>=2.0.12          # Prime factorization utilities
     - galois>=0.3.6             # Finite field arithmetic
+    
+    # Gemini 3 Pro Integration (Optional - requires GEMINI_API_KEY environment variable)
+    - google-genai>=0.3.0       # Google Gemini 3 Pro for AI-powered theory analysis and self-examination

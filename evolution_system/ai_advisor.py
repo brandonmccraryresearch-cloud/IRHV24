@@ -8,6 +8,7 @@ This module provides:
 - Topological modification templates
 - Suggestion ranking algorithms
 - Validation that suggestions follow Directive A (topological origin only)
+- Optional Gen AI SDK integration for enhanced AI-powered suggestions
 
 **Critical Constraints (Directive A Compliance):**
 - ❌ NO parameter tuning to fit data
@@ -17,6 +18,11 @@ This module provides:
 - ✅ ONLY modifications with clear mathematical origin
 - ✅ ONLY changes preserving fundamental symmetries
 
+**Gen AI Integration:**
+If the google-genai package is installed and GOOGLE_CLOUD_API_KEY is set,
+the AIAdvisor can use Google's Gemini models to enhance suggestion generation.
+This is optional - the module works with built-in templates without it.
+
 Usage:
     from evolution_system import AIAdvisor, ErrorAnalyzer, ValidationModule
     
@@ -24,9 +30,14 @@ Usage:
     analyzer = ErrorAnalyzer()
     analysis = analyzer.analyze(validation_report)
     
-    # Generate refinement suggestions
+    # Generate refinement suggestions (using built-in templates)
     advisor = AIAdvisor()
     suggestions = advisor.generate_suggestions(analysis)
+    
+    # Optional: Get AI-enhanced suggestions (requires Gen AI SDK)
+    if advisor._genai_client:
+        ai_suggestions = advisor.get_genai_suggestions(analysis.to_dict())
+        print(ai_suggestions)
     
     # Rank and filter
     ranked = advisor.rank_suggestions(suggestions)
@@ -34,15 +45,25 @@ Usage:
 
 Author: Copilot (AI-assisted development)
 Date: 2026-01-08
+Updated: 2026-01-10 (Gen AI SDK integration)
 """
 
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import Dict, List, Optional
 from enum import Enum
 import mpmath as mp
+import os
 
 # Set precision for calculations
 mp.dps = 50
+
+# Optional Gen AI SDK import
+try:
+    from google import genai
+    from google.genai import types
+    GENAI_AVAILABLE = True
+except ImportError:
+    GENAI_AVAILABLE = False
 
 
 class RefinementType(Enum):
@@ -696,6 +717,18 @@ class AIAdvisor:
         """Initialize the AI Advisor with modification templates."""
         self.templates = TopologicalModificationTemplates()
         self._error_pattern_map = self._build_error_pattern_map()
+        self._genai_client = None
+        
+        # Initialize Gen AI client if available and API key is set
+        if GENAI_AVAILABLE and os.environ.get("GOOGLE_CLOUD_API_KEY"):
+            try:
+                self._genai_client = genai.Client(
+                    vertexai=True,
+                    api_key=os.environ.get("GOOGLE_CLOUD_API_KEY"),
+                )
+            except Exception as e:
+                print(f"Warning: Could not initialize Gen AI client: {e}")
+                self._genai_client = None
     
     def _build_error_pattern_map(self) -> Dict[str, List[TopologicalModification]]:
         """
@@ -754,7 +787,7 @@ class AIAdvisor:
         Identify error patterns from the error analysis result.
         
         Args:
-            analysis_result: Output from ErrorAnalyzer.analyze()
+            analysis_result: Output from ErrorAnalyzer.analyze().to_dict()
             
         Returns:
             List of identified error pattern keys
@@ -764,9 +797,8 @@ class AIAdvisor:
         # Check for systematic offset patterns
         if "patterns" in analysis_result:
             for pattern in analysis_result.get("patterns", []):
-                pattern_type = pattern.get("pattern_type", pattern.get("type", ""))
-                affected = pattern.get("affected_predictions", pattern.get("affected_observables", []))
-                description = pattern.get("description", "")
+                pattern_type = pattern.get("pattern_type", "")
+                affected = pattern.get("affected_predictions", [])
                 
                 # Classify based on pattern_type (can be "sector_specific", "systematic_offset", etc.)
                 # Also check description and affected predictions
@@ -809,16 +841,15 @@ class AIAdvisor:
                 if any(obs in ["alpha_s", "alpha_3", "QCD_string_tension"] for obs in affected):
                     patterns.append("qcd_errors")
         
-        # Check individual poor results
-        if "poor_predictions" in analysis_result:
-            for pred in analysis_result.get("poor_predictions", []):
-                name = pred.get("name", "")
-                if "alpha" in name.lower() and "alpha_systematic" not in patterns:
+        # Check individual poor results (in case patterns missed something)
+        if "poor_predictions" in analysis_result.get("summary", {}):
+            for pred_name in analysis_result["summary"].get("poor_predictions", []):
+                if "alpha" in pred_name.lower() and "alpha_systematic" not in patterns:
                     patterns.append("alpha_systematic")
-                if "mass" in name.lower():
-                    if "lepton" in name.lower() and "lepton_mass_pattern" not in patterns:
+                if "mass" in pred_name.lower():
+                    if "lepton" in pred_name.lower() and "lepton_mass_pattern" not in patterns:
                         patterns.append("lepton_mass_pattern")
-                    elif "quark" in name.lower() and "quark_mass_pattern" not in patterns:
+                    elif "quark" in pred_name.lower() and "quark_mass_pattern" not in patterns:
                         patterns.append("quark_mass_pattern")
         
         return list(set(patterns))  # Remove duplicates
@@ -1069,5 +1100,202 @@ class AIAdvisor:
         return {
             "error_patterns": list(self._error_pattern_map.keys()),
             "modification_types": [t.value for t in RefinementType],
-            "confidence_levels": [c.value for c in ConfidenceLevel]
+            "confidence_levels": [c.value for c in ConfidenceLevel],
+            "genai_available": GENAI_AVAILABLE,
+            "genai_enabled": self._genai_client is not None
         }
+    
+    def _generate_genai_suggestions(self, analysis_result: Dict) -> Optional[str]:
+        """
+        Use Gen AI SDK to generate AI-powered refinement suggestions.
+        
+        This method uses Google's Gemini model to analyze error patterns
+        and suggest topologically-motivated corrections. The suggestions
+        are constrained to follow Directive A (topological origin only).
+        
+        Args:
+            analysis_result: Output from ErrorAnalyzer.analyze()
+            
+        Returns:
+            AI-generated suggestions as text, or None if Gen AI unavailable
+        """
+        if not self._genai_client:
+            return None
+        
+        try:
+            # Build prompt with error analysis context
+            prompt = self._build_genai_prompt(analysis_result)
+            
+            model = "gemini-3-pro-preview"
+            contents = [
+                types.Content(
+                    role="user",
+                    parts=[types.Part(text=prompt)]
+                )
+            ]
+            
+            tools = [
+                types.Tool(google_search=types.GoogleSearch()),
+            ]
+            
+            generate_content_config = types.GenerateContentConfig(
+                temperature=1,
+                top_p=0.95,
+                max_output_tokens=65535,
+                safety_settings=[
+                    types.SafetySetting(
+                        category="HARM_CATEGORY_HATE_SPEECH",
+                        threshold="OFF"
+                    ),
+                    types.SafetySetting(
+                        category="HARM_CATEGORY_DANGEROUS_CONTENT",
+                        threshold="OFF"
+                    ),
+                    types.SafetySetting(
+                        category="HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                        threshold="OFF"
+                    ),
+                    types.SafetySetting(
+                        category="HARM_CATEGORY_HARASSMENT",
+                        threshold="OFF"
+                    )
+                ],
+                tools=tools,
+                thinking_config=types.ThinkingConfig(
+                    thinking_level="HIGH",
+                ),
+            )
+            
+            response_text = ""
+            for chunk in self._genai_client.models.generate_content_stream(
+                model=model,
+                contents=contents,
+                config=generate_content_config,
+            ):
+                if not chunk.candidates or not chunk.candidates[0].content or not chunk.candidates[0].content.parts:
+                    continue
+                response_text += chunk.text
+            
+            return response_text
+            
+        except Exception as e:
+            print(f"Warning: Gen AI suggestion generation failed: {e}")
+            return None
+    
+    def _build_genai_prompt(self, analysis_result: Dict) -> str:
+        """
+        Build a prompt for Gen AI that constrains suggestions to topological corrections.
+        
+        Args:
+            analysis_result: Output from ErrorAnalyzer.analyze()
+            
+        Returns:
+            Formatted prompt string
+        """
+        # Extract key error patterns
+        patterns = self.analyze_error_pattern(analysis_result)
+        
+        prompt = f"""
+You are an expert in topological quantum field theory, gauge theory, fiber bundle geometry, 
+and the mathematical foundations of fundamental physics. You are assisting the Intrinsic 
+Resonance Holography (IRH) theory evolution system.
+
+## CRITICAL CONSTRAINTS (Directive A - No-Tuning Constraint):
+
+**FORBIDDEN:**
+❌ NO parameter tuning to fit experimental data
+❌ NO arbitrary scaling factors or adjustment coefficients
+❌ NO phenomenological formulas without geometric origin
+❌ NO "fudge factors" or empirical corrections
+
+**REQUIRED:**
+✅ ONLY topological/geometric refinements
+✅ ONLY modifications with clear mathematical derivation
+✅ ONLY corrections from characteristic classes, Chern numbers, homotopy invariants
+✅ ALL constants must be derived from topology/geometry
+✅ ALL symmetries must be preserved (gauge, Lorentz, CPT)
+
+## Error Analysis Results:
+
+Identified error patterns: {', '.join(patterns)}
+
+Detailed analysis:
+{self._format_analysis_for_prompt(analysis_result)}
+
+## Your Task:
+
+Suggest 2-3 topologically-motivated corrections that address these error patterns.
+For each suggestion, provide:
+
+1. **Name**: Clear, descriptive name
+2. **Topological Basis**: Which topological invariant or geometric structure gives rise to this correction?
+3. **Mathematical Formula**: Exact formula with all terms defined
+4. **Derivation Outline**: Step-by-step mathematical derivation from topology
+5. **Affected Observables**: Which predictions will change?
+6. **Expected Improvement**: Quantitative estimate of improvement
+7. **Symmetries Preserved**: Which symmetries remain unbroken?
+8. **Testable Predictions**: Novel predictions that can be experimentally verified
+
+## Valid Topological Sources:
+
+- Chern classes (c₁, c₂, ...) from fiber bundle curvature
+- Pontryagin classes from SO(n) bundles
+- Euler characteristic χ(M) of compactified manifolds
+- Hopf fibration volume ratios (S³→S², S⁷→S⁴, S¹⁵→S⁸)
+- Braid group representations (B₃ for SU(3), B₄ for 4-strand network)
+- Winding numbers and homotopy groups π_n(S^n)
+- Berry/geometric phases from parameter space topology
+- Instanton contributions (winding number sectors)
+- Weyl anomaly coefficients (a and c in 4D CFT)
+- 24-cell polytope geometry (IRH uses 24-cell symmetry group)
+- Holonomy around closed loops in gauge bundles
+
+## IRH Theory Context:
+
+The theory is based on:
+- 4-strand cymatic resonance network (N=4 is topologically optimal)
+- Metric mismatch η = 4/π from 4-strand substrate geometry
+- Fine-structure constant α⁻¹ derived from Hopf fibration volume ratios
+- Particles as B₃ braid group resonant modes (SU(3) color charge)
+- Vacuum energy suppression via quaternionic destructive interference
+
+Generate your suggestions now:
+"""
+        
+        return prompt
+    
+    def _format_analysis_for_prompt(self, analysis_result: Dict) -> str:
+        """Format error analysis for inclusion in Gen AI prompt."""
+        lines = []
+        
+        if "patterns" in analysis_result:
+            lines.append("\nError Patterns:")
+            for pattern in analysis_result.get("patterns", [])[:5]:  # Top 5 patterns
+                lines.append(f"  - {pattern.get('type', 'unknown')}: {pattern.get('description', '')}")
+                lines.append(f"    Affected: {', '.join(pattern.get('affected_observables', [])[:5])}")
+        
+        if "poor_predictions" in analysis_result:
+            lines.append("\nPoor Predictions (>3σ):")
+            for pred in analysis_result.get("poor_predictions", [])[:5]:  # Top 5 worst
+                lines.append(f"  - {pred.get('name', 'unknown')}: {pred.get('sigma_deviation', 0):.2f}σ")
+                lines.append(f"    Theory: {pred.get('theory_value', 'N/A')}, Experiment: {pred.get('experimental_value', 'N/A')}")
+        
+        return "\n".join(lines) if lines else "No detailed error information available."
+    
+    def get_genai_suggestions(self, analysis_result: Dict) -> Optional[str]:
+        """
+        Get AI-powered refinement suggestions using Gen AI SDK.
+        
+        This is a convenience method for external use. It generates
+        natural language suggestions that can be reviewed by humans.
+        
+        Args:
+            analysis_result: Output from ErrorAnalyzer.analyze()
+            
+        Returns:
+            AI-generated suggestions as formatted text, or None if unavailable
+        """
+        if not self._genai_client:
+            return "Gen AI SDK not available. Install with: pip install --upgrade google-genai"
+        
+        return self._generate_genai_suggestions(analysis_result)
