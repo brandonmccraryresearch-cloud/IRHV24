@@ -5,7 +5,7 @@ IRH Theory Evolution System
 An AI-guided framework for continuously improving the Intrinsic Resonance Holography (IRH)
 theoretical predictions through systematic error analysis and synoptic refinement.
 
-**Status:** Phase 4 Full System Operation - Ready
+**Status:** Phase 4 Full System Operation + Gemini 3 Pro Integration - Ready
 
 **Goal:** Enable the IRH framework to self-improve by learning from prediction errors and
 automatically suggesting theoretical refinements based on topological and geometric principles.
@@ -17,6 +17,7 @@ Modules:
 - validation_module: Compare theoretical predictions to experimental measurements
 - error_analyzer: Identify systematic patterns in prediction errors
 - ai_advisor: Generate topologically-motivated refinement suggestions
+- gemini_integration: 🆕 Gemini 3 Pro AI-powered theory examination and refinement
 - integration_system: Validate and integrate successful refinements (Phase 3)
 - documentation_updater: Automatic documentation and changelog updates (Phase 3)
 - evolution_cycle: Complete evolution cycle orchestration (Phase 4)
@@ -37,7 +38,7 @@ cycle.print_summary()
 # Or run individual components
 from evolution_system import (
     CalculationEngine, ValidationModule, ErrorAnalyzer, 
-    AIAdvisor, IntegrationSystem, DocumentationUpdater
+    AIAdvisor, GeminiTheoryAdvisor, IntegrationSystem, DocumentationUpdater
 )
 
 # Initialize components
@@ -45,6 +46,7 @@ engine = CalculationEngine()
 validator = ValidationModule()
 analyzer = ErrorAnalyzer()
 advisor = AIAdvisor()
+gemini = GeminiTheoryAdvisor()  # 🆕 Gemini 3 Pro integration
 integrator = IntegrationSystem()
 doc_updater = DocumentationUpdater()
 
@@ -55,6 +57,11 @@ error_analysis = analyzer.analyze(validation_report)
 
 # Get AI-powered improvement suggestions
 suggestions = advisor.get_top_suggestions(error_analysis, n=5)
+
+# 🆕 Use Gemini for deep theory examination
+theory_text = open('README.md').read()
+examination = gemini.self_examine(theory_text, ['hardcoded values', 'testability'])
+refinements = gemini.suggest_refinements(theory_text, error_analysis.to_dict())
 
 # Test and integrate refinements
 for suggestion in suggestions:
@@ -78,16 +85,20 @@ python -m evolution_system.evolution_cycle --cycles 3 --max-refinements 10
 
 # Auto-integrate successful refinements
 python -m evolution_system.evolution_cycle --auto-integrate
+
+# 🆕 Use Gemini for theory examination
+python scripts/gemini_theory_examiner.py --analysis-type self-examine
 ```
 
 References:
 -----------
 - docs/THEORY_EVOLUTION_SYSTEM.md: Full design document
+- docs/GEMINI_INTEGRATION.md: 🆕 Gemini 3 Pro integration guide
 - notebooks/06_validation_suite.ipynb: Validation implementation
 - verification/precision/constants.py: High-precision constant calculations
 """
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"  # 🆕 Added Gemini 3 Pro integration
 __author__ = "IRH Computational Research Team"
 __all__ = [
     # Calculation
@@ -105,6 +116,8 @@ __all__ = [
     'AIAdvisor',
     'RefinementSuggestion',
     'TopologicalModification',
+    # Gemini Integration (NEW)
+    'GeminiTheoryAdvisor',
     # Integration System (Phase 3)
     'IntegrationSystem',
     'IntegrationResult',
@@ -123,6 +136,7 @@ from .experimental_database import ExperimentalDatabase
 from .validation_module import ValidationModule, ValidationResult
 from .error_analyzer import ErrorAnalyzer, ErrorPattern
 from .ai_advisor import AIAdvisor, RefinementSuggestion, TopologicalModification
+from .gemini_integration import GeminiTheoryAdvisor  # 🆕 NEW
 from .integration_system import (
     IntegrationSystem, 
     IntegrationResult, 

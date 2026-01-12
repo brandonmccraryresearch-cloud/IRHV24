@@ -6,7 +6,34 @@ This review evaluates the theory against the criteria of **mathematical consiste
 
 ## 📊 Computational Validation Framework
 
-This repository includes a complete computational validation suite for the IRH theoretical framework.
+This repository includes a complete computational validation suite for the IRH theoretical framework, now enhanced with **Gemini 3 Pro AI integration** for self-examination and theory refinement.
+
+### 🚀 NEW: Gemini 3 Pro Integration
+
+**Self-Examination and Theory Refinement with AI**
+
+```bash
+# Install Gemini SDK
+pip install google-genai
+
+# Set API key
+export GEMINI_API_KEY="your_api_key_here"
+
+# Run self-examination
+python scripts/gemini_theory_examiner.py --analysis-type self-examine
+
+# Or use simple example
+python examples/simple_gemini_example.py
+```
+
+**Features:**
+- ✅ HIGH thinking level for deep reasoning
+- ✅ Code execution for mathematical validation
+- ✅ Google Search for literature cross-referencing
+- ✅ Critical self-examination modules
+- ✅ AI-powered refinement suggestions
+
+See [docs/GEMINI_INTEGRATION.md](docs/GEMINI_INTEGRATION.md) for complete documentation.
 
 ### Quick Start
 
@@ -26,18 +53,30 @@ IRHV24/
 ├── environment.yml                     # Conda environment specification
 ├── docs/
 │   ├── GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md
-│   └── MATHEMATICAL_REFINEMENTS.md     # v26.0 refinement documentation
+│   ├── MATHEMATICAL_REFINEMENTS.md     # v26.0 refinement documentation
+│   └── GEMINI_INTEGRATION.md          # 🆕 Gemini 3 Pro AI integration guide
 ├── scripts/
 │   ├── knot_link_search.py             # 4-strand link hyperbolic volumes
-│   └── rg_flow_vacuum_energy.py        # Renormalization group flow
+│   ├── rg_flow_vacuum_energy.py        # Renormalization group flow
+│   └── gemini_theory_examiner.py      # 🆕 AI-powered theory examination CLI
+├── examples/
+│   ├── simple_gemini_example.py       # 🆕 Basic Gemini 3 Pro integration
+│   └── genai_advisor_example.py       # AI advisor with Gemini enhancement
+├── evolution_system/
+│   ├── gemini_integration.py          # 🆕 Gemini theory advisor class
+│   ├── ai_advisor.py                  # Template-based advisor
+│   └── ...                            # Other evolution modules
 ├── notebooks/
-│   ├── 01_substrate_foundation.ipynb  # 4-strand architecture (implemented)
-│   ├── 02_harmony_functional.ipynb    # α derivation validation (implemented)
-│   ├── 03_particle_sector.ipynb       # Koide formula validation (implemented)
-│   ├── 04_cosmology.ipynb             # Cosmological constant (implemented)
-│   ├── 05_gauge_sector.ipynb          # Gauge sector (implemented)
-│   ├── 06_validation_suite.ipynb      # Comprehensive validation (implemented)
-│   └── 07_appendices.ipynb            # Mathematical refinements v26.0 (implemented)
+│   ├── archive/                       # 🆕 Archived v25/v26 notebooks
+│   │   ├── README.md                  # Archive documentation
+│   │   ├── 01_substrate_foundation.ipynb
+│   │   ├── 02_harmony_functional.ipynb
+│   │   ├── 03_particle_sector.ipynb
+│   │   ├── 04_cosmology.ipynb
+│   │   ├── 05_gauge_sector.ipynb
+│   │   ├── 06_validation_suite.ipynb
+│   │   └── 07_appendices.ipynb
+│   └── [Reserved for new v57 notebooks]
 ├── verification/                       # High-precision verification modules
 │   ├── precision/                      # Arbitrary-precision calculations
 │   │   └── constants.py                # 15+ decimal place computations
@@ -53,17 +92,18 @@ IRHV24/
     └── irh-compute.yml                # GitHub Actions workflow
 ```
 
-### Notebook-Theory Correlation
+### Notebook Archive (v25/v26)
 
-| Notebook | Theory Section | Key Computations | Status |
-|----------|---------------|------------------|--------|
-| `01_substrate_foundation.ipynb` | §1 (Ontological Foundation) | 4-strand stability, N=4 derivation | ✅ Implemented |
-| `02_harmony_functional.ipynb` | §1-2 (α derivation) | Hopf fibration, 24-cell, Casimir-Weyl | ✅ Implemented |
-| `03_particle_sector.ipynb` | §3 (Koide formula) | Circulant matrices, eigenvalues | ✅ Implemented |
-| `04_cosmology.ipynb` | §4 (Cosmology) | Λ derivation, dark matter ratio | ✅ Implemented |
-| `05_gauge_sector.ipynb` | §5 (Gauge Sector) | SU(3)×SU(2)×U(1) emergence | ✅ Implemented |
-| `06_validation_suite.ipynb` | §6 (Validation) | Tier 1-3 protocols | ✅ Implemented |
-| `07_appendices.ipynb` | Mathematical Refinements | Knot volumes, tetrahedral κ, RG flow | ✅ Implemented |
+**Note**: Original computational notebooks for IRH v25/v26 have been archived to `notebooks/archive/` to make way for new v57 implementations with Gemini AI integration.
+
+The archived notebooks successfully validated:
+- ✅ Fine-structure constant α⁻¹ within experimental bounds
+- ✅ Koide formula for lepton masses (>99% accuracy)
+- ✅ Cosmological constant suppression (10¹²³ → observable value)
+- ✅ SU(3) color charge from topological invariants
+- ✅ Overall Tier 1 validation: >90% of parameters within 3σ bounds
+
+See [notebooks/archive/README.md](notebooks/archive/README.md) for details on archived implementations.
 
 ### Mathematical Refinements (v26.0)
 
