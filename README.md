@@ -1,12 +1,24 @@
-This is a formal, critical review of **Intrinsic Resonance Holography (IRH) v25.0**.
+This repository contains **Intrinsic Resonance Holography (IRH)** - a unified theoretical physics framework spanning versions 25-57.
 
-This review evaluates the theory against the criteria of **mathematical consistency**, **recovery of known phenomenology** (General Relativity, Quantum Mechanics, Standard Model), and **ontological fidelity** to the "Vibrational/Tension" primitive established in our prior dialogue.
+**Latest Version**: [IRHv57.md](IRHv57.md) - "The Definitive Axiomatic Synthesis" (January 2026)
 
 ---
 
 ## 📊 Computational Validation Framework
 
 This repository includes a complete computational validation suite for the IRH theoretical framework, now enhanced with **Gemini 3 Pro AI integration** for self-examination and theory refinement.
+
+### 🆕 IRH v57.0 - The Definitive Synthesis
+
+**Key Innovations:**
+- **Autopoietic Substrate**: Solves the "first cause" problem with self-referential vibration
+- **D₄ Root System**: Derived from Maximum Orthogonal Information + Self-Duality (not assumed)
+- **Lattice Green's Function**: Rigorous fine-structure constant derivation (α⁻¹ ≈ 137.036)
+- **Sakharov Induced Gravity**: Newton's constant from lattice geometric moments
+- **Triality-Pairing**: 3 generations explained via D₄ symmetry
+- **PT-Symmetry**: ARO provides time arrow and gauge structure
+
+See [IRHv57.md](IRHv57.md) for complete theory and [docs/IRH_V57_INTEGRATION.md](docs/IRH_V57_INTEGRATION.md) for analysis instructions.
 
 ### 🚀 NEW: Gemini 3 Pro Integration
 
@@ -49,12 +61,14 @@ jupyter lab
 
 ```
 IRHV24/
-├── IRHv25.md                          # Full theoretical framework (v25 & v26)
+├── IRHv57.md                          # 🆕 Latest theory v57.0 - Definitive Synthesis
+├── IRHv25.md                          # Historical v25 & v26 framework
 ├── environment.yml                     # Conda environment specification
 ├── docs/
 │   ├── GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md
 │   ├── MATHEMATICAL_REFINEMENTS.md     # v26.0 refinement documentation
-│   └── GEMINI_INTEGRATION.md          # 🆕 Gemini 3 Pro AI integration guide
+│   ├── GEMINI_INTEGRATION.md          # 🆕 Gemini 3 Pro AI integration guide
+│   └── IRH_V57_INTEGRATION.md         # 🆕 v57 analysis instructions
 ├── scripts/
 │   ├── knot_link_search.py             # 4-strand link hyperbolic volumes
 │   ├── rg_flow_vacuum_energy.py        # Renormalization group flow
