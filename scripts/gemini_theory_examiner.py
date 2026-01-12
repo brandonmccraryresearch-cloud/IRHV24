@@ -213,9 +213,11 @@ Examples:
         sys.exit(1)
     
     except Exception as e:
-        print(f"\n❌ Error during analysis: {e}", file=sys.stderr)
+        analysis_context = args.analysis_type if not args.refinements else 'refinement generation'
+        print(f"\n❌ Error during {analysis_context}: {e}", file=sys.stderr)
         results['status'] = 'error'
         results['error'] = str(e)
+        results['error_context'] = analysis_context
         sys.exit(1)
     
     # Save results

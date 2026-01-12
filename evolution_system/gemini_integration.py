@@ -67,6 +67,10 @@ class GeminiTheoryAdvisor:
                 print(f"✅ Gemini 3 Pro initialized successfully")
             except Exception as e:
                 print(f"❌ Failed to initialize Gemini: {e}", file=sys.stderr)
+                print(f"   Troubleshooting:", file=sys.stderr)
+                print(f"   - Verify API key is valid at https://aistudio.google.com", file=sys.stderr)
+                print(f"   - Check internet connectivity", file=sys.stderr)
+                print(f"   - See docs/GEMINI_INTEGRATION.md for help", file=sys.stderr)
                 self.client = None
         else:
             if not GEMINI_AVAILABLE:
