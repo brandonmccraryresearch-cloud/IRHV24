@@ -25,7 +25,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from evolution_system import (
-    EvolutionCycle,
     CalculationEngine,
     ValidationModule,
     ErrorAnalyzer,

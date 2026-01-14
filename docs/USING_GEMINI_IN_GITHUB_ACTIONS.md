@@ -46,8 +46,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install mpmath numpy scipy
-          pip install google-genai
+          # Pin versions for supply chain security
+          pip install mpmath==1.3.0 numpy==2.0.0 scipy==1.13.1
+          pip install google-genai==0.3.0
       
       - name: Run Evolution Cycle with Gemini
         env:
@@ -125,7 +126,8 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          pip install google-genai mpmath numpy scipy
+          # Pin versions for supply chain security
+          pip install google-genai==0.3.0 mpmath==1.3.0 numpy==2.0.0 scipy==1.13.1
           
           # Quick test
           python3 << 'EOF'

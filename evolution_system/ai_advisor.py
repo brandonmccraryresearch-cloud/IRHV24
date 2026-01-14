@@ -799,6 +799,7 @@ class AIAdvisor:
             for pattern in analysis_result.get("patterns", []):
                 pattern_type = pattern.get("pattern_type", "")
                 affected = pattern.get("affected_predictions", [])
+                description = pattern.get("description", "")
                 
                 # Classify based on pattern_type (can be "sector_specific", "systematic_offset", etc.)
                 # Also check description and affected predictions
