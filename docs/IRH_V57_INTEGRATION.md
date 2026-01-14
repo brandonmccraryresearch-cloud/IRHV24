@@ -70,15 +70,15 @@ python scripts/gemini_theory_examiner.py \
 - [x] Verify file integrity (436 lines, complete)
 - [x] Update integration documentation
 - [ ] Run Gemini self-examination on v57
-- [ ] Create computational notebooks for v57
-  - [ ] 01_v57_D4_substrate.ipynb (Chapter I)
-  - [ ] 02_v57_continuum_limit.ipynb (Chapter II)
-  - [ ] 03_v57_gauge_symmetry.ipynb (Chapter III)
-  - [ ] 04_v57_fine_structure.ipynb (Chapter IV)
-  - [ ] 05_v57_gravity.ipynb (Chapter V)
-  - [ ] 06_v57_matter_triality.ipynb (Chapter VI)
-  - [ ] 07_v57_cosmology.ipynb (Chapter VII)
-  - [ ] 08_v57_validation.ipynb (Comprehensive validation)
+- [x] Create computational notebooks for v57
+  - [x] 01_v57_D4_substrate.ipynb (Chapter I) - D₄ Root System, MOI, Self-Duality
+  - [x] 02_v57_continuum_limit.ipynb (Chapter II) - Glauber Coherent States, Hyper-Isotropy
+  - [x] 03_v57_gauge_symmetry.ipynb (Chapter III) - ARO, PT-Symmetry, Gauge Groups
+  - [x] 04_v57_fine_structure.ipynb (Chapter IV) - Lattice Green's Function, α derivation
+  - [x] 05_v57_gravity.ipynb (Chapter V) - Sakharov Induced Gravity, G = πa₀²
+  - [x] 06_v57_matter_triality.ipynb (Chapter VI) - Triality-Pairing, Koide Formula
+  - [x] 07_v57_cosmology.ipynb (Chapter VII) - Cosmological Constant, Λ ~ 1/R_H²
+  - [x] 08_v57_validation.ipynb (Comprehensive validation) - Tier 1-3 validation suite
 - [ ] Update README.md with v57 information
 - [ ] Validate v57 predictions against CODATA
 
@@ -109,8 +109,57 @@ Compared to v25/v26 (archived), v57 provides:
 - Quick start: `QUICKSTART_GEMINI.md`
 - Archived v25/v26: `notebooks/archive/`
 
+## Notebook Features
+
+All 8 computational notebooks include:
+
+### Gemini 3 Pro Integration
+- Built-in `GeminiTheoryAdvisor` for AI-powered analysis
+- HIGH thinking level configuration
+- Code execution, Google Search, URL context tools
+- Critical self-examination and refinement suggestions
+
+### Scientific Computing
+- mpmath arbitrary precision (50 decimal places)
+- SymPy symbolic derivations
+- scipy.constants for CODATA 2022 values
+- NumPy numerical computations
+
+### Colab Compatibility
+- One-click "Open in Colab" badges
+- Automatic dependency installation
+- GPU/TPU acceleration support
+- Graceful API key handling
+
+### Standards Compliance
+- 7-cell standardized template
+- "FOR VALIDATION ONLY" labels on experimental values
+- Gauge theory terminology
+- Publication-ready figures
+
+## Running the Notebooks
+
+### Option 1: Google Colab (Recommended)
+
+1. Click the "Open in Colab" badge on any notebook
+2. Run the first cell to install dependencies
+3. Set your Gemini API key (optional for AI analysis):
+   ```python
+   import os
+   os.environ['GEMINI_API_KEY'] = 'your_key_here'
+   ```
+4. Run all cells
+
+### Option 2: Local Jupyter
+
+```bash
+conda activate irh-compute
+cd notebooks
+jupyter notebook
+```
+
 ---
 
-**Last Updated**: 2026-01-12  
-**Status**: ✅ IRHv57.md INTEGRATED  
+**Last Updated**: 2026-01-13  
+**Status**: ✅ IRHv57.md INTEGRATED + 8 COMPUTATIONAL NOTEBOOKS CREATED  
 **Ready For**: Gemini analysis and computational validation
