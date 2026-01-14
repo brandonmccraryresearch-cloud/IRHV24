@@ -108,8 +108,19 @@ jobs:
           summary = data.get('summary', {})
           
           print(f"Predictions computed: {summary.get('predictions_count', 'N/A')}")
-          print(f"Mean σ-deviation: {summary.get('mean_sigma', 'N/A'):.2f}" if isinstance(summary.get('mean_sigma'), (int, float)) else "N/A")
-          print(f"Pass rate: {summary.get('pass_rate', 0) * 100:.1f}%" if isinstance(summary.get('pass_rate'), (int, float)) else "N/A")
+          
+          mean_sigma = summary.get('mean_sigma')
+          if isinstance(mean_sigma, (int, float)):
+              print(f"Mean σ-deviation: {mean_sigma:.2f}")
+          else:
+              print("Mean σ-deviation: N/A")
+          
+          pass_rate = summary.get('pass_rate')
+          if isinstance(pass_rate, (int, float)):
+              print(f"Pass rate: {pass_rate * 100:.1f}%")
+          else:
+              print("Pass rate: N/A")
+          
           print(f"Suggestions generated: {summary.get('suggestions_count', 'N/A')}")
           EOF
           
