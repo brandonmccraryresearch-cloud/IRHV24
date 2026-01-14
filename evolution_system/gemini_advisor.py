@@ -315,7 +315,7 @@ Output ONLY valid JSON, no additional text.
         lines = analysis_text.split('\n')
         for line in lines:
             line = line.strip()
-            if line.startswith('-') or line.startswith('•') or line[0:2].replace('.', '').isdigit():
+            if line and (line.startswith('-') or line.startswith('•') or line[0:2].replace('.', '').isdigit()):
                 insights.append(line.lstrip('-•0123456789. '))
         
         return insights[:10]  # Return top 10 insights
