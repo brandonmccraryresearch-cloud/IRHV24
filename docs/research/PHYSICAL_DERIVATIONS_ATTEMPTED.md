@@ -458,7 +458,7 @@ M_EW ~ M_Pl * exp(-1/β*g²)  (hierarchy problem)
 - Limitations documented in systematic uncertainties ✅
 - Directive A violations acknowledged and flagged ✅
 
-**Next Steps**: See AGENT_ENHANCEMENT_IMPLEMENTATION_PLAN.md for:
+**Next Steps**: See `docs/implementation/AGENT_ENHANCEMENT_IMPLEMENTATION_PLAN.md` for:
 - Automated directive enforcement
 - AI-guided code review
 - Self-improving theory framework

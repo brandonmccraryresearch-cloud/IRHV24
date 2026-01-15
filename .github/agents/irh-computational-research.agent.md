@@ -80,7 +80,7 @@ Key parameters:
 # Key Files
 - `docs/implementation/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md`
 - `environment.yml`
-- `README.md` (v26.0), `docs/manuscripts/IRHv25.md` (v25.0)
+- `README.md` (v26.0), `docs/manuscripts/IRHv62.md` (v62.0)
 - `notebooks/*.ipynb`, `evolution_system/`
 
 # Success Criteria
