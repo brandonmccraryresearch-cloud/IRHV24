@@ -78,7 +78,7 @@ Key parameters:
 4. Run `scripts/check_directive_compliance.py`
 
 # Key Files
-- `docs/implementation/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md`
+- `docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md`
 - `environment.yml`
 - `README.md` (v26.0 theory), `docs/manuscripts/IRHv62.md` (v62.0 manuscript — current canonical reference for this agent)
 - `notebooks/*.ipynb`, `evolution_system/`
