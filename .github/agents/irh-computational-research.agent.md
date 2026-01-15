@@ -80,7 +80,7 @@ Key parameters:
 # Key Files
 - `docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md`
 - `environment.yml`
-- `README.md` (v26.0), `IRHv25.md` (v25.0)
+- `README.md` (v26.0 theory), `docs/manuscripts/IRHv62.md` (v62.0 manuscript — current canonical reference for this agent)
 - `notebooks/*.ipynb`, `evolution_system/`
 
 # Success Criteria

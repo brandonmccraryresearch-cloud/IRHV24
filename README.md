@@ -1,12 +1,118 @@
-This repository contains **Intrinsic Resonance Holography (IRH)** - a unified theoretical physics framework spanning versions 25-57.
+This repository contains **Intrinsic Resonance Holography (IRH)** - a unified theoretical physics framework spanning versions 25-62.
 
-**Latest Version**: [IRHv57.md](IRHv57.md) - "The Definitive Axiomatic Synthesis" (January 2026)
+**Latest Version**: [IRHv62.md](docs/manuscripts/IRHv62.md) - "The Autopoietic Lattice and the Induced Elasticity of Spacetime" (January 2026)
+
+## 📁 Repository Structure
+
+```
+IRHV24/
+├── README.md                          # This file - overview and v26 theory
+├── LICENSE                            # MIT License
+├── environment.yml                    # Conda environment specification
+│
+├── docs/
+│   ├── manuscripts/                   # 📖 Theory manuscripts
+│   │   ├── IRHv62.md                 # Latest - v62.0
+│   │   ├── IRHv57.md                 # v57.0 - Definitive Axiomatic Synthesis
+│   │   ├── IRHv44.md                 # v44.0
+│   │   ├── IRH40.md                  # v40.0 - Berry Phase Renormalization
+│   │   └── IRHv25.md                 # v25.0 - Original Vibrational Substrate
+│   │
+│   ├── guides/                        # 📚 User guides and quickstarts
+│   │   ├── QUICKSTART.md             # Verification framework quickstart
+│   │   ├── QUICKSTART_GEMINI.md      # Gemini AI integration quickstart
+│   │   ├── GEMINI_INTEGRATION.md     # Full Gemini documentation
+│   │   ├── GEMINI_AI_GUIDE.md        # AI usage guide
+│   │   ├── GEN_AI_SDK_SETUP.md       # SDK setup instructions
+│   │   └── USING_GEMINI_IN_GITHUB_ACTIONS.md
+│   │
+│   ├── implementation/                # 🔧 Implementation documentation
+│   │   ├── IMPLEMENTATION_COMPLETE.md
+│   │   ├── IMPLEMENTATION_SUMMARY.md
+│   │   ├── IMPLEMENTATION_FINAL_SUMMARY.md
+│   │   ├── IMPLEMENTATION_COMPLETE_GEMINI_V57.md
+│   │   ├── EVOLUTION_SYSTEM_COMPLETION.md
+│   │   ├── GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md
+│   │   ├── IRH_V57_INTEGRATION.md
+│   │   ├── THEORY_EVOLUTION_SYSTEM.md
+│   │   └── AGENT_ENHANCEMENT_IMPLEMENTATION_PLAN.md
+│   │
+│   ├── research/                      # 🔬 Research notes
+│   │   ├── MATHEMATICAL_REFINEMENTS.md
+│   │   └── PHYSICAL_DERIVATIONS_ATTEMPTED.md
+│   │
+│   └── conversations/                 # 💬 AI conversation logs
+│       ├── full_conversation.md
+│       ├── GPAI_Conversation_Extracted.md
+│       ├── Wolfram_Conversation_Transcript.md
+│       ├── Wolfram_Mathematical_Verification_Conversation.md
+│       └── Wolfram - Mathematical Verification Process (2).html
+│
+├── notebooks/                         # 📓 Jupyter computational notebooks
+│   ├── 01_v57_D4_substrate.ipynb
+│   ├── 02_v57_continuum_limit.ipynb
+│   ├── 03_v57_gauge_symmetry.ipynb
+│   ├── 04_v57_fine_structure.ipynb
+│   ├── 05_v57_gravity.ipynb
+│   ├── 06_v57_matter_triality.ipynb
+│   ├── 07_v57_cosmology.ipynb
+│   ├── 08_v57_validation.ipynb
+│   └── archive/                      # Archived v25/v26 notebooks
+│
+├── verification/                      # ✅ High-precision verification modules
+│   ├── precision/                    # Arbitrary-precision calculations
+│   ├── topology/                     # Topological protection analysis
+│   ├── units/                        # Dimensional consistency auditing
+│   ├── renormalization/              # RG flow computations
+│   └── particle_physics/             # Mixing matrix derivations
+│
+├── scripts/                           # 🛠️ Utility scripts
+│   ├── gemini_theory_examiner.py     # AI-powered theory examination
+│   ├── gemini_review.py              # AI review integration
+│   ├── knot_link_search.py           # 4-strand link hyperbolic volumes
+│   ├── rg_flow_vacuum_energy.py      # RG flow calculations
+│   └── check_directive_compliance.py # Directive compliance checker
+│
+├── evolution_system/                  # 🧬 Theory evolution system
+│   ├── gemini_integration.py         # Gemini AI advisor
+│   ├── ai_advisor.py                 # Template-based advisor
+│   ├── calculation_engine.py         # Numerical computations
+│   ├── validation_module.py          # Result validation
+│   └── ...
+│
+├── examples/                          # 📋 Example scripts
+│   ├── simple_gemini_example.py      # Basic Gemini integration
+│   └── genai_advisor_example.py      # AI advisor example
+│
+├── tests/                             # 🧪 Test suite
+│   ├── test_evolution_system.py
+│   └── test_genai_integration.py
+│
+└── .github/
+    ├── agents/                        # 🤖 Custom Copilot agents
+    │   └── irh-computational-research.agent.md
+    └── workflows/                     # ⚙️ GitHub Actions
+        ├── irh-compute.yml
+        ├── gemini-review.yml
+        └── ...
+```
 
 ---
 
 ## 📊 Computational Validation Framework
 
 This repository includes a complete computational validation suite for the IRH theoretical framework, now enhanced with **Gemini 3 Pro AI integration** for self-examination and theory refinement.
+
+### Quick Start
+
+```bash
+# Install environment
+conda env create -f environment.yml
+conda activate irh-compute
+jupyter lab
+```
+
+See [docs/guides/QUICKSTART.md](docs/guides/QUICKSTART.md) for verification framework and [docs/guides/QUICKSTART_GEMINI.md](docs/guides/QUICKSTART_GEMINI.md) for AI integration.
 
 ### 🆕 IRH v57.0 - The Definitive Synthesis
 
@@ -18,9 +124,9 @@ This repository includes a complete computational validation suite for the IRH t
 - **Triality-Pairing**: 3 generations explained via D₄ symmetry
 - **PT-Symmetry**: ARO provides time arrow and gauge structure
 
-See [IRHv57.md](IRHv57.md) for complete theory and [docs/IRH_V57_INTEGRATION.md](docs/IRH_V57_INTEGRATION.md) for analysis instructions.
+See [docs/manuscripts/IRHv57.md](docs/manuscripts/IRHv57.md) for complete theory and [docs/implementation/IRH_V57_INTEGRATION.md](docs/implementation/IRH_V57_INTEGRATION.md) for analysis instructions.
 
-### 🚀 NEW: Gemini 3 Pro Integration
+### 🚀 Gemini 3 Pro Integration
 
 **Self-Examination and Theory Refinement with AI**
 
@@ -33,112 +139,25 @@ export GEMINI_API_KEY="your_api_key_here"
 
 # Run self-examination
 python scripts/gemini_theory_examiner.py --analysis-type self-examine
-
-# Or use simple example
-python examples/simple_gemini_example.py
 ```
 
-**Features:**
-- ✅ HIGH thinking level for deep reasoning
-- ✅ Code execution for mathematical validation
-- ✅ Google Search for literature cross-referencing
-- ✅ Critical self-examination modules
-- ✅ AI-powered refinement suggestions
-
-See [docs/GEMINI_INTEGRATION.md](docs/GEMINI_INTEGRATION.md) for complete documentation.
-
-### Quick Start
-
-```bash
-# Run the computational validation workflow manually from GitHub Actions
-# Or locally with Anaconda:
-conda env create -f environment.yml
-conda activate irh-compute
-jupyter lab
-```
-
-### Repository Structure
-
-```
-IRHV24/
-├── IRHv57.md                          # 🆕 Latest theory v57.0 - Definitive Synthesis
-├── IRHv25.md                          # Historical v25 & v26 framework
-├── environment.yml                     # Conda environment specification
-├── docs/
-│   ├── GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md
-│   ├── MATHEMATICAL_REFINEMENTS.md     # v26.0 refinement documentation
-│   ├── GEMINI_INTEGRATION.md          # 🆕 Gemini 3 Pro AI integration guide
-│   └── IRH_V57_INTEGRATION.md         # 🆕 v57 analysis instructions
-├── scripts/
-│   ├── knot_link_search.py             # 4-strand link hyperbolic volumes
-│   ├── rg_flow_vacuum_energy.py        # Renormalization group flow
-│   └── gemini_theory_examiner.py      # 🆕 AI-powered theory examination CLI
-├── examples/
-│   ├── simple_gemini_example.py       # 🆕 Basic Gemini 3 Pro integration
-│   └── genai_advisor_example.py       # AI advisor with Gemini enhancement
-├── evolution_system/
-│   ├── gemini_integration.py          # 🆕 Gemini theory advisor class
-│   ├── ai_advisor.py                  # Template-based advisor
-│   └── ...                            # Other evolution modules
-├── notebooks/
-│   ├── archive/                       # 🆕 Archived v25/v26 notebooks
-│   │   ├── README.md                  # Archive documentation
-│   │   ├── 01_substrate_foundation.ipynb
-│   │   ├── 02_harmony_functional.ipynb
-│   │   ├── 03_particle_sector.ipynb
-│   │   ├── 04_cosmology.ipynb
-│   │   ├── 05_gauge_sector.ipynb
-│   │   ├── 06_validation_suite.ipynb
-│   │   └── 07_appendices.ipynb
-│   └── [Reserved for new v57 notebooks]
-├── verification/                       # High-precision verification modules
-│   ├── precision/                      # Arbitrary-precision calculations
-│   │   └── constants.py                # 15+ decimal place computations
-│   ├── topology/                       # Topological protection analysis
-│   │   └── perturbation_test.py        # Strand geometry perturbations
-│   ├── units/                          # Dimensional consistency auditing
-│   │   └── dimensional_analysis.py     # pint-based unit checking
-│   ├── renormalization/                # RG flow computations
-│   │   └── rg_flow.py                  # Running coupling constants
-│   └── particle_physics/               # Mixing matrix derivations
-│       └── mixing_matrices.py          # CKM/PMNS from circulant structure
-└── .github/workflows/
-    └── irh-compute.yml                # GitHub Actions workflow
-```
-
-### Notebook Archive (v25/v26)
-
-**Note**: Original computational notebooks for IRH v25/v26 have been archived to `notebooks/archive/` to make way for new v57 implementations with Gemini AI integration.
-
-The archived notebooks successfully validated:
-- ✅ Fine-structure constant α⁻¹ within experimental bounds
-- ✅ Koide formula for lepton masses (>99% accuracy)
-- ✅ Cosmological constant suppression (10¹²³ → observable value)
-- ✅ SU(3) color charge from topological invariants
-- ✅ Overall Tier 1 validation: >90% of parameters within 3σ bounds
-
-See [notebooks/archive/README.md](notebooks/archive/README.md) for details on archived implementations.
+See [docs/guides/GEMINI_INTEGRATION.md](docs/guides/GEMINI_INTEGRATION.md) for complete documentation.
 
 ### Mathematical Refinements (v26.0)
 
-The repository includes advanced refinements to address key theoretical gaps:
+The repository includes advanced refinements to address key theoretical gaps. See [docs/research/MATHEMATICAL_REFINEMENTS.md](docs/research/MATHEMATICAL_REFINEMENTS.md) for detailed documentation.
 
-1. **Knot Complexity Correction** (`07_appendices.ipynb` §1, `scripts/knot_link_search.py`)
+1. **Knot Complexity Correction** (`scripts/knot_link_search.py`)
    - Uses SnapPy to calculate hyperbolic volumes of 4-strand links
    - Refines α⁻¹ from base geometric value (~200) toward experimental (137.036)
-   - Pure topological derivation without experimental input fitting
 
-2. **Tetrahedral Angle Mapping** (`07_appendices.ipynb` §2)
+2. **Tetrahedral Angle Mapping**
    - Derives Koide coupling κ = 1/√2 from tetrahedral geometry
    - Links κ to physical angle θ_tet = arccos(-1/3) via projection
-   - Eliminates need to solve for κ as free parameter
 
-3. **Renormalization Group Flow** (`07_appendices.ipynb` §3, `scripts/rg_flow_vacuum_energy.py`)
+3. **Renormalization Group Flow** (`scripts/rg_flow_vacuum_energy.py`)
    - Scales vacuum energy from Planck to cosmological scale
    - Applies logarithmic RG flow: Λ_obs = Λ_planck × e^(-S) × [ln(R_u/L_p)]^(-n)
-   - Bridges 61 orders of magnitude in scale hierarchy
-
-See [docs/MATHEMATICAL_REFINEMENTS.md](docs/MATHEMATICAL_REFINEMENTS.md) for detailed documentation.
 
 ### Running Computations
 
@@ -154,7 +173,7 @@ cd notebooks
 jupyter nbconvert --execute --to notebook --output-dir='../outputs/notebooks' 02_harmony_functional.ipynb
 ```
 
-See [docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md](docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md) for detailed documentation.
+See [docs/implementation/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md](docs/implementation/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md) for detailed documentation.
 
 ### Verification Framework
 
