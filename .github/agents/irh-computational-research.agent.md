@@ -78,9 +78,9 @@ Key parameters:
 4. Run `scripts/check_directive_compliance.py`
 
 # Key Files
-- `docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md`
+- `docs/implementation/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md`
 - `environment.yml`
-- `README.md` (v26.0), `IRHv25.md` (v25.0)
+- `README.md` (v26.0), `docs/manuscripts/IRHv25.md` (v25.0)
 - `notebooks/*.ipynb`, `evolution_system/`
 
 # Success Criteria
