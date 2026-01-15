@@ -126,21 +126,6 @@ lp=Quantity["PlanckLength"];
 mp=Quantity["PlanckMass"];
 j=24*hbar^2/(lp^4*mp)
 
-```
-
-**Result:** `Quantity[24, "ReducedPlanckConstant"^2/("PlanckLength"^4 "PlanckMass")]`
-
-**Tool Call 2:**
-
-```wolfram
-hbar=Quantity["ReducedPlanckConstant"];
-lp=Quantity["PlanckLength"];
-mp=Quantity["PlanckMass"];
-j=24*hbar^2/(lp^4*mp)
-
-```
-
-**Result:** `Quantity[24, "ReducedPlanckConstant"^2/("PlanckLength"^4 "PlanckMass")]`
 
 
 ---
