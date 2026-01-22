@@ -258,7 +258,7 @@ tooluniverse-smcp-stdio --compact-mode
 ## REFERENCES
 
 - [ToolUniverse Setup Guide](../../docs/guides/TOOLUNIVERSE_MCP_SETUP.md)
-- [IRH Computational Research Plan](../../docs/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md)
+- [IRH Computational Research Plan](../../docs/implementation/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md)
 - [ToolUniverse Documentation](https://zitniklab.hms.harvard.edu/ToolUniverse/)
 
 ---
