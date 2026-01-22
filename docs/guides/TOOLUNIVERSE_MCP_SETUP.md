@@ -34,7 +34,8 @@ pip install tooluniverse
 **HTTP Server (recommended for remote access):**
 
 ```bash
-tooluniverse-smcp --transport http --port 8000 --host 0.0.0.0
+# Bind to localhost; use SSH tunneling or a reverse proxy with TLS for remote access
+tooluniverse-smcp --transport http --port 8000 --host 127.0.0.1
 ```
 
 **STDIO Server (for local agent integration):**
