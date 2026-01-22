@@ -71,3 +71,6 @@ dependencies:
     
     # Gemini 3 Pro Integration (Optional - requires GEMINI_API_KEY environment variable)
     - google-genai>=0.3.0       # Google Gemini 3 Pro for AI-powered theory analysis and self-examination
+    
+    # ToolUniverse MCP Server (Scientific AI tools - 700+ tools for data analysis, computation, visualization)
+    - tooluniverse>=1.0.15      # MCP server with scientific tools ecosystem
