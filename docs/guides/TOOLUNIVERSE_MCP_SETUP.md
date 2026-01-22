@@ -17,9 +17,10 @@ ToolUniverse is a comprehensive ecosystem for AI scientist systems that standard
 Add to your environment's pip dependencies:
 
 ```yaml
-# In environment.yml, under pip:
-- pip:
-    - tooluniverse>=1.0.15
+# In environment.yml:
+dependencies:
+  - pip:
+      - tooluniverse>=1.0.15
 ```
 
 Or install directly:
