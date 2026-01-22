@@ -95,7 +95,10 @@ Add to your workflow:
   run: |
     pip install tooluniverse
     tooluniverse-smcp --transport http --port 8000 &
-    sleep 5  # Wait for server startup
+    echo "Waiting for ToolUniverse server..."
+    # Wait up to 60 seconds for the server to become available.
+    timeout 60s bash -c 'until curl -s --head --fail http://localhost:8000 >/dev/null 2>&1; do sleep 1; done'
+    echo "Server is ready."
 ```
 
 ## Physics & Mathematics Relevant Tools
