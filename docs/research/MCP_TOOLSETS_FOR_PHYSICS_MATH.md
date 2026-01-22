@@ -282,7 +282,7 @@ A curated list of Model Context Protocol (MCP) toolsets ranked by usefulness for
 
 ### IRH-Specific
 - [ToolUniverse Setup Guide](../guides/TOOLUNIVERSE_MCP_SETUP.md)
-- [IRH Computational Research Plan](../GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md)
+- [IRH Computational Research Plan](../implementation/GITHUB_ACTIONS_COMPUTATIONAL_RESEARCH_PLAN.md)
 
 ---
 
