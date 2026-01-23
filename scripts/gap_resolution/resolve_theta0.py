@@ -255,7 +255,9 @@ def run_resolution(max_iterations: int = 3) -> Theta0Resolution:
     
     # Current best value (still phenomenological)
     current_value = 2/9
-    target_value = 2/9  # We're trying to DERIVE this, not assume it
+    # Target: Must derive 2/9 from topology; value serves as validation target
+    # Once derived from Chern-Simons invariant, this becomes the theoretical prediction
+    target_value = 2/9  # Koide formula constraint: must equal 2/9
     
     # Identify remaining gaps
     remaining_gaps = [

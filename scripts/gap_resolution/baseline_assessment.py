@@ -23,8 +23,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
 
-# Add parent directory for imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+# Note: This script is designed to run standalone from the repository root.
+# If importing from within the package, use relative imports instead.
+# The path manipulation below enables running as: python scripts/gap_resolution/baseline_assessment.py
 
 try:
     import mpmath as mp

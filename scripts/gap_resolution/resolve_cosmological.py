@@ -31,6 +31,13 @@ except ImportError:
     mp = None
 
 
+# Physical constants for cosmological calculations
+LAMBDA_OBSERVED = 2.9e-47  # GeV^4 - observed cosmological constant
+LAMBDA_RETRACTED_ESTIMATE = 1e-7  # GeV^4 - retracted formula result (40 orders off)
+E_PLANCK = 1.22e19  # GeV - Planck energy
+ALPHA_EM = 1/137.036  # Fine-structure constant
+
+
 @dataclass
 class CosmologicalResolution:
     """Results of cosmological constant resolution attempt."""
@@ -66,7 +73,8 @@ def compute_retracted_formula():
         "alpha": alpha,
         "rho_P": rho_P_GeV4,
         "suppression_factor": float(-2/alpha),
-        "Lambda_retracted": float(Lambda_retracted) if isinstance(Lambda_retracted, (int, float)) else 1e-7,
+        # Fallback: retracted formula gives ~10^-7 GeV^4 (40 orders off from observed)
+        "Lambda_retracted": float(Lambda_retracted) if isinstance(Lambda_retracted, (int, float)) else LAMBDA_RETRACTED_ESTIMATE,
         "Lambda_observed": Lambda_observed,
         "discrepancy_orders": 40,  # 10^-7 vs 10^-47
     }

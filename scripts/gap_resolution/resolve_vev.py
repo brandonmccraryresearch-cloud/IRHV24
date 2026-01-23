@@ -88,9 +88,9 @@ def run_resolution() -> VEVResolution:
         symmetry_chain=chain,
         remaining_gaps=[
             "α suppression at each step needs rigorous justification",
-            "Why exactly 4 steps? Could be 3 or 5.",
-            "RG running from Planck to electroweak not computed",
-            "β-function coefficients for cascade not derived",
+            "Why exactly 4 steps? The exponent should be derived from group-theoretic counting of broken generators, not phenomenological fit.",
+            "RG running from Planck to electroweak scale not computed",
+            "β-function coefficients for SO(8) → SM cascade not derived",
         ],
     )
 
