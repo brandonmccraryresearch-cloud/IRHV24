@@ -163,7 +163,7 @@ The Dynkin diagram of D₄:
 α₁ —— α₂ —— α₄
 ```
 
-has an S₃ automorphism group permuting {α₁, α₃, α₄}. This induces automorphisms of the Lie algebra 𝔰𝔬(8) cycling three 8-dimensional representations:
+has an $S_3$ automorphism group permuting $\{\alpha_1, \alpha_3, \alpha_4\}$. This induces automorphisms of the Lie algebra 𝔰𝔬(8) cycling three 8-dimensional representations:
 
 $$8_v \xrightarrow{\sigma} 8_s \xrightarrow{\sigma} 8_c \xrightarrow{\sigma} 8_v$$
 
