@@ -66,6 +66,11 @@ permissions:
 
 env:
   PYTHON_VERSION: '3.11'
+  # Default values for scheduled runs (inputs not available on schedule trigger)
+  DEFAULT_RESOLUTION_PHASES: 'all'
+  DEFAULT_GEMINI_COUNCIL: 'true'
+  DEFAULT_THINKING_LEVEL: 'HIGH'
+  DEFAULT_MAX_ITERATIONS: '3'
 
 jobs:
   # ============================================================================
@@ -125,7 +130,10 @@ jobs:
   phase-theta0:
     name: Phase 1 - θ₀ Derivation
     needs: setup-baseline
-    if: contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'theta0')
+    # Handle both workflow_dispatch (inputs available) and schedule (use defaults)
+    if: >-
+      contains(github.event.inputs.resolution_phases || 'all', 'all') ||
+      contains(github.event.inputs.resolution_phases || 'all', 'theta0')
     runs-on: ubuntu-latest
     timeout-minutes: 60
     
@@ -147,9 +155,9 @@ jobs:
       - name: Run θ₀ Derivation Resolution
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
-          THINKING_LEVEL: ${{ inputs.thinking_level }}
-          MAX_ITERATIONS: ${{ inputs.max_iterations }}
+          GEMINI_COUNCIL: ${{ github.event.inputs.gemini_council || env.DEFAULT_GEMINI_COUNCIL }}
+          THINKING_LEVEL: ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }}
+          MAX_ITERATIONS: ${{ github.event.inputs.max_iterations || env.DEFAULT_MAX_ITERATIONS }}
         run: |
           echo "=============================================="
           echo "  PHASE 1: θ₀ = 2/9 TOPOLOGICAL DERIVATION"
@@ -166,7 +174,7 @@ jobs:
             --output outputs/gap_resolution/theta0_resolution.json
       
       - name: Gemini Council Checkpoint
-        if: inputs.gemini_council == true
+        if: github.event.inputs.gemini_council == 'true' || github.event_name == 'schedule'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
@@ -176,7 +184,7 @@ jobs:
           python3 scripts/gap_resolution/gemini_council.py \
             --phase "theta0" \
             --input outputs/gap_resolution/theta0_resolution.json \
-            --thinking-level ${{ inputs.thinking_level }} \
+            --thinking-level ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }} \
             --output outputs/gap_resolution/theta0_council.json
       
       - name: Upload Phase 1 results
@@ -192,7 +200,7 @@ jobs:
   phase-cosmological:
     name: Phase 2 - Cosmological Constant
     needs: [setup-baseline, phase-theta0]
-    if: always() && (contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'cosmological'))
+    if: always() && (contains(github.event.inputs.resolution_phases || 'all', 'all') || contains(github.event.inputs.resolution_phases || 'all', 'cosmological'))
     runs-on: ubuntu-latest
     timeout-minutes: 60
     
@@ -214,9 +222,9 @@ jobs:
       - name: Run Cosmological Constant Resolution
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
-          THINKING_LEVEL: ${{ inputs.thinking_level }}
-          MAX_ITERATIONS: ${{ inputs.max_iterations }}
+          GEMINI_COUNCIL: ${{ github.event.inputs.gemini_council || env.DEFAULT_GEMINI_COUNCIL }}
+          THINKING_LEVEL: ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }}
+          MAX_ITERATIONS: ${{ github.event.inputs.max_iterations || env.DEFAULT_MAX_ITERATIONS }}
         run: |
           echo "=============================================="
           echo "  PHASE 2: COSMOLOGICAL CONSTANT RESOLUTION"
@@ -238,7 +246,7 @@ jobs:
             --output outputs/gap_resolution/cosmological_resolution.json
       
       - name: Gemini Council Checkpoint
-        if: inputs.gemini_council == true
+        if: github.event.inputs.gemini_council == 'true' || github.event_name == 'schedule'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
@@ -248,7 +256,7 @@ jobs:
           python3 scripts/gap_resolution/gemini_council.py \
             --phase "cosmological" \
             --input outputs/gap_resolution/cosmological_resolution.json \
-            --thinking-level ${{ inputs.thinking_level }} \
+            --thinking-level ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }} \
             --output outputs/gap_resolution/cosmological_council.json
       
       - name: Upload Phase 2 results
@@ -264,7 +272,7 @@ jobs:
   phase-vev:
     name: Phase 3 - VEV Cascade
     needs: [setup-baseline, phase-cosmological]
-    if: always() && (contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'vev'))
+    if: always() && (contains(github.event.inputs.resolution_phases || 'all', 'all') || contains(github.event.inputs.resolution_phases || 'all', 'vev'))
     runs-on: ubuntu-latest
     timeout-minutes: 45
     
@@ -286,8 +294,8 @@ jobs:
       - name: Run VEV Cascade Resolution
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
-          THINKING_LEVEL: ${{ inputs.thinking_level }}
+          GEMINI_COUNCIL: ${{ github.event.inputs.gemini_council || env.DEFAULT_GEMINI_COUNCIL }}
+          THINKING_LEVEL: ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }}
         run: |
           echo "=============================================="
           echo "  PHASE 3: VEV CASCADE DERIVATION"
@@ -303,14 +311,14 @@ jobs:
             --output outputs/gap_resolution/vev_resolution.json
       
       - name: Gemini Council Checkpoint
-        if: inputs.gemini_council == true
+        if: github.event.inputs.gemini_council == 'true' || github.event_name == 'schedule'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python3 scripts/gap_resolution/gemini_council.py \
             --phase "vev" \
             --input outputs/gap_resolution/vev_resolution.json \
-            --thinking-level ${{ inputs.thinking_level }} \
+            --thinking-level ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }} \
             --output outputs/gap_resolution/vev_council.json
       
       - name: Upload Phase 3 results
@@ -326,7 +334,7 @@ jobs:
   phase-ckm:
     name: Phase 4 - CKM/PMNS Matrix
     needs: [setup-baseline, phase-vev]
-    if: always() && (contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'ckm'))
+    if: always() && (contains(github.event.inputs.resolution_phases || 'all', 'all') || contains(github.event.inputs.resolution_phases || 'all', 'ckm'))
     runs-on: ubuntu-latest
     timeout-minutes: 45
     
@@ -348,8 +356,8 @@ jobs:
       - name: Run CKM/PMNS Resolution
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
-          THINKING_LEVEL: ${{ inputs.thinking_level }}
+          GEMINI_COUNCIL: ${{ github.event.inputs.gemini_council || env.DEFAULT_GEMINI_COUNCIL }}
+          THINKING_LEVEL: ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }}
         run: |
           echo "=============================================="
           echo "  PHASE 4: CKM/PMNS MATRIX COMPLETION"
@@ -370,14 +378,14 @@ jobs:
             --output outputs/gap_resolution/ckm_resolution.json
       
       - name: Gemini Council Checkpoint
-        if: inputs.gemini_council == true
+        if: github.event.inputs.gemini_council == 'true' || github.event_name == 'schedule'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python3 scripts/gap_resolution/gemini_council.py \
             --phase "ckm" \
             --input outputs/gap_resolution/ckm_resolution.json \
-            --thinking-level ${{ inputs.thinking_level }} \
+            --thinking-level ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }} \
             --output outputs/gap_resolution/ckm_council.json
       
       - name: Upload Phase 4 results
@@ -393,7 +401,7 @@ jobs:
   phase-dark-matter:
     name: Phase 5 - Dark Matter CMB
     needs: [setup-baseline, phase-ckm]
-    if: always() && (contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'dark_matter'))
+    if: always() && (contains(github.event.inputs.resolution_phases || 'all', 'all') || contains(github.event.inputs.resolution_phases || 'all', 'dark_matter'))
     runs-on: ubuntu-latest
     timeout-minutes: 60
     
@@ -415,8 +423,8 @@ jobs:
       - name: Run Dark Matter Resolution
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
-          THINKING_LEVEL: ${{ inputs.thinking_level }}
+          GEMINI_COUNCIL: ${{ github.event.inputs.gemini_council || env.DEFAULT_GEMINI_COUNCIL }}
+          THINKING_LEVEL: ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }}
         run: |
           echo "=============================================="
           echo "  PHASE 5: DARK MATTER CMB ACOUSTIC PEAKS"
@@ -438,14 +446,14 @@ jobs:
             --output outputs/gap_resolution/dark_matter_resolution.json
       
       - name: Gemini Council Checkpoint
-        if: inputs.gemini_council == true
+        if: github.event.inputs.gemini_council == 'true' || github.event_name == 'schedule'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python3 scripts/gap_resolution/gemini_council.py \
             --phase "dark_matter" \
             --input outputs/gap_resolution/dark_matter_resolution.json \
-            --thinking-level ${{ inputs.thinking_level }} \
+            --thinking-level ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }} \
             --output outputs/gap_resolution/dark_matter_council.json
       
       - name: Upload Phase 5 results
@@ -461,7 +469,7 @@ jobs:
   phase-mass-scale:
     name: Phase 6 - Mass Scale
     needs: [setup-baseline, phase-dark-matter]
-    if: always() && (contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'mass_scale'))
+    if: always() && (contains(github.event.inputs.resolution_phases || 'all', 'all') || contains(github.event.inputs.resolution_phases || 'all', 'mass_scale'))
     runs-on: ubuntu-latest
     timeout-minutes: 45
     
@@ -483,8 +491,8 @@ jobs:
       - name: Run Mass Scale Resolution
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
-          THINKING_LEVEL: ${{ inputs.thinking_level }}
+          GEMINI_COUNCIL: ${{ github.event.inputs.gemini_council || env.DEFAULT_GEMINI_COUNCIL }}
+          THINKING_LEVEL: ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }}
         run: |
           echo "=============================================="
           echo "  PHASE 6: MASS SCALE DERIVATION FROM D₄"
@@ -505,14 +513,14 @@ jobs:
             --output outputs/gap_resolution/mass_scale_resolution.json
       
       - name: Gemini Council Checkpoint
-        if: inputs.gemini_council == true
+        if: github.event.inputs.gemini_council == 'true' || github.event_name == 'schedule'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python3 scripts/gap_resolution/gemini_council.py \
             --phase "mass_scale" \
             --input outputs/gap_resolution/mass_scale_resolution.json \
-            --thinking-level ${{ inputs.thinking_level }} \
+            --thinking-level ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }} \
             --output outputs/gap_resolution/mass_scale_council.json
       
       - name: Upload Phase 6 results
@@ -528,7 +536,7 @@ jobs:
   phase-nlo:
     name: Phase 7 - NLO Corrections
     needs: [setup-baseline, phase-mass-scale]
-    if: always() && (contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'nlo'))
+    if: always() && (contains(github.event.inputs.resolution_phases || 'all', 'all') || contains(github.event.inputs.resolution_phases || 'all', 'nlo'))
     runs-on: ubuntu-latest
     timeout-minutes: 45
     
@@ -550,8 +558,8 @@ jobs:
       - name: Run NLO Corrections Resolution
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
-          THINKING_LEVEL: ${{ inputs.thinking_level }}
+          GEMINI_COUNCIL: ${{ github.event.inputs.gemini_council || env.DEFAULT_GEMINI_COUNCIL }}
+          THINKING_LEVEL: ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }}
         run: |
           echo "=============================================="
           echo "  PHASE 7: NLO CORRECTIONS RIGORIZATION"
@@ -572,14 +580,14 @@ jobs:
             --output outputs/gap_resolution/nlo_resolution.json
       
       - name: Gemini Council Checkpoint
-        if: inputs.gemini_council == true
+        if: github.event.inputs.gemini_council == 'true' || github.event_name == 'schedule'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python3 scripts/gap_resolution/gemini_council.py \
             --phase "nlo" \
             --input outputs/gap_resolution/nlo_resolution.json \
-            --thinking-level ${{ inputs.thinking_level }} \
+            --thinking-level ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }} \
             --output outputs/gap_resolution/nlo_council.json
       
       - name: Upload Phase 7 results
@@ -633,7 +641,7 @@ jobs:
             --generate-markdown outputs/gap_resolution/GAP_RESOLUTION_REPORT.md
       
       - name: Gemini Final Council
-        if: inputs.gemini_council == true
+        if: github.event.inputs.gemini_council == 'true' || github.event_name == 'schedule'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
@@ -643,7 +651,7 @@ jobs:
           python3 scripts/gap_resolution/gemini_council.py \
             --phase "final_synthesis" \
             --input outputs/gap_resolution/synthesis_report.json \
-            --thinking-level ${{ inputs.thinking_level }} \
+            --thinking-level ${{ github.event.inputs.thinking_level || env.DEFAULT_THINKING_LEVEL }} \
             --output outputs/gap_resolution/final_council.json \
             --generate-recommendations
       

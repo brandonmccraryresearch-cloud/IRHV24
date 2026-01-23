@@ -281,12 +281,27 @@ class GeminiCouncil:
         generate_recommendations: bool
     ) -> str:
         """Build the prompt for Gemini."""
+        # Serialize input data with size limit to avoid exceeding token limits
+        input_json = json.dumps(input_data, indent=2, default=str)
+        max_json_length = 10000
+        
+        if len(input_json) > max_json_length:
+            # Truncate and indicate that data is excerpted
+            input_json = input_json[:max_json_length]
+            # Find last complete line to avoid cutting mid-token
+            last_newline = input_json.rfind('\n')
+            if last_newline > max_json_length * 0.8:
+                input_json = input_json[:last_newline]
+            json_note = "\n... (data truncated for brevity - this is an excerpt, not valid JSON)"
+        else:
+            json_note = ""
+        
         lines = [
             f"## IRH v68 Gap Resolution - Phase: {phase.upper()}",
             "",
-            "### Input Data:",
-            "```json",
-            json.dumps(input_data, indent=2, default=str),  # Limit size before serializing
+            "### Input Data (excerpt):" if json_note else "### Input Data:",
+            "```",  # Use plain code block since truncated data is not valid JSON
+            input_json + json_note,
             "```",
             "",
             "### Council Review Request:",

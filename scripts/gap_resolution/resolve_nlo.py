@@ -135,10 +135,14 @@ def run_resolution() -> NLOResolution:
         timestamp=timestamp,
         status="partial",
         target_value=9.264,
-        computed_value=nlo["zeta_finite"] * 4.35,  # Approximate
+        # WARNING: PLACEHOLDER NORMALIZATION
+        # The factor 4.35 = target/zeta_finite is inferred by matching the target value.
+        # This is NOT a first-principles derivation - the actual λ₃ coupling must be
+        # derived from D₄ geometry. See remaining_gaps below.
+        computed_value=nlo["zeta_finite"] * 4.35,  # PLACEHOLDER - see warning above
         derivation_steps=steps,
         remaining_gaps=[
-            "λ₃ coupling not derived from D₄ geometry",
+            "λ₃ coupling not derived from D₄ geometry (4.35 factor is a PLACEHOLDER)",
             "One-loop approximation - higher loops not computed",
             "Need to verify cancellation of higher-order terms",
             "Lattice-continuum limit needs careful treatment",

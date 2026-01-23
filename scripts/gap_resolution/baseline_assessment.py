@@ -16,7 +16,6 @@ Author: IRH Computational Research Team
 
 import argparse
 import json
-import os
 import sys
 from dataclasses import dataclass
 from datetime import datetime

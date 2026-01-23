@@ -108,8 +108,8 @@ def d4_dynkin_analysis():
     # From Author Response: 6/27 = 2/9 arises from specific combinatorics
     
     # This is the PHENOMENOLOGICAL derivation we're trying to replace
-    delta = 3  # Correction factor (needs topological derivation)
-    theta_heuristic = T_8v / (h_dual * (1 + delta/h_dual))
+    # delta = 3 correction factor needs topological derivation
+    # theta_heuristic = T(8_v) / (h∨ + δ) = 1/9 ≠ 2/9
     
     return {
         "h_dual": h_dual,

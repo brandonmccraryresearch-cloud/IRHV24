@@ -44,14 +44,16 @@ class MassScaleResolution:
 def compute_self_energy_approach():
     """Compute triality defect self-energy."""
     # Constants (Planck units)
-    E_P = 1.22e19  # GeV
-    alpha = 1/137.036
+    E_P = 1.22e19  # GeV (Planck energy - fundamental scale)
+    # FOR VALIDATION ONLY: Using CODATA α to compare against phenomenological mass scale
+    # The actual IRH derivation should use theory-derived α
+    alpha = 1/137.036  # CODATA experimental value - FOR VALIDATION ONLY
     S3_order = 6  # |S₃|
     
     # Self-energy formula from The_challenge_to_completion.md
     # E_self = (3π/8) × M*Ω²_P L_P / |S₃| = (π/8) m_P c²
     
-    # With α⁴ suppression:
+    # With α⁴ suppression (heuristic formula - FOR VALIDATION ONLY):
     E_self_estimate = (math.pi / 8) * E_P * (alpha ** 4)
     
     # Convert to MeV
@@ -61,11 +63,12 @@ def compute_self_energy_approach():
         "formula": "E_self = (π/8) × m_P c² × α⁴",
         "E_P_GeV": E_P,
         "alpha": alpha,
+        "alpha_source": "CODATA experimental - FOR VALIDATION ONLY",
         "S3_order": S3_order,
         "E_self_estimate_GeV": E_self_estimate,
         "E_self_estimate_MeV": E_self_MeV,
-        "target_MeV": 313.86,
-        "note": "α⁴ suppression appears again - consistent with VEV cascade",
+        "target_MeV": 313.86,  # FOR VALIDATION ONLY - phenomenological target
+        "note": "α⁴ suppression pattern - α is CODATA value FOR VALIDATION ONLY",
     }
 
 

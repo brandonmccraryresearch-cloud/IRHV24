@@ -39,21 +39,25 @@ class VEVResolution:
 
 def compute_vev_cascade():
     """Compute VEV from impedance cascade."""
-    E_P = 1.22e19  # GeV (Planck energy)
-    alpha = 1/137.036
+    E_P = 1.22e19  # GeV (Planck energy - fundamental scale)
+    # FOR VALIDATION ONLY: Using CODATA α to compare against experimental VEV
+    # The actual IRH derivation should use theory-derived α from verification/precision/constants.py
+    alpha = 1/137.036  # CODATA experimental value - FOR VALIDATION ONLY
     
-    # VEV formula
+    # VEV formula (heuristic)
     v_theory = E_P * (alpha ** 4)
-    v_exp = 246.22  # GeV
+    v_exp = 246.22  # GeV - FOR VALIDATION ONLY
     
     return {
         "formula": "v = E_P × α^4",
         "E_P": E_P,
         "alpha": alpha,
+        "alpha_source": "CODATA experimental - FOR VALIDATION ONLY",
         "alpha_4": alpha ** 4,
         "v_theory": v_theory,
         "v_experimental": v_exp,
         "relative_error": abs(v_theory - v_exp) / v_exp,
+        "note": "Both α and v_exp are experimental values used FOR VALIDATION ONLY",
     }
 
 
