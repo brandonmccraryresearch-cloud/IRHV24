@@ -63,7 +63,7 @@ def compute_retracted_formula():
     rho_P_GeV4 = 2.4e112  # Approximate
     
     # Retracted formula
-    Lambda_retracted = rho_P_GeV4 * (mp.exp(-2/alpha) if mp else 2.7182818**(-2/alpha))
+    Lambda_retracted = rho_P_GeV4 * (mp.exp(-2/alpha) if mp else math.exp(-2/alpha))
     
     # Observed value
     Lambda_observed = 2.9e-47  # GeV^4
