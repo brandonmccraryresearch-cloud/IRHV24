@@ -48,7 +48,7 @@ def load_phase_results(input_dir: Path) -> Dict[str, Dict]:
     
     for phase_id, pattern in phase_files.items():
         for json_file in input_dir.rglob(pattern):
-            if "council" not in str(json_file):  # Skip council files
+            if "council" in json_file.name:  # Skip council files
                 try:
                     with open(json_file) as f:
                         results[phase_id] = json.load(f)
