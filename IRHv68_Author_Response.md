@@ -949,7 +949,7 @@ The following calculations can be verified with computer algebra:
 # Koide formula verification (pure Python)
 import math
 
-theta_0 = 2/9  # radians (derived from D₄ geometry)
+theta_0 = 2/9  # radians (phenomenologically determined from Koide relation)
 
 # Correct generation assignment: e→n=1, μ→n=2, τ→n=0
 def sqrt_m_factor(n):
