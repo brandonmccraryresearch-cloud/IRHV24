@@ -1,0 +1,682 @@
+name: IRH v68 Gap Resolution Pipeline
+
+# ==============================================================================
+# IRH v68 Gap Resolution Pipeline with Gemini AI Council
+# ==============================================================================
+#
+# This workflow addresses the gaps identified in KimiAudit.md and 
+# IRHv68_Author_Response.md through a multi-stage pipeline with Gemini AI
+# mid-stream council checkpoints at each phase.
+#
+# Gaps to Address (from The_challenge_to_completion.md):
+# 1. θ₀ = 2/9 derivation (currently phenomenological)
+# 2. Cosmological constant (retracted - 40 orders of magnitude off)
+# 3. VEV cascade derivation (heuristic)
+# 4. CKM/PMNS matrix completion
+# 5. Dark matter CMB acoustic peaks
+# 6. Mass scale derivation from D₄
+# 7. NLO corrections rigorization
+#
+# Author: IRH Computational Research Team
+# Reference: IRHv68.md, KimiAudit.md, IRHv68_Author_Response.md
+# ==============================================================================
+
+on:
+  workflow_dispatch:
+    inputs:
+      resolution_phases:
+        description: 'Phases to run (all, theta0, cosmological, vev, ckm, dark_matter, mass_scale, nlo)'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - theta0
+          - cosmological
+          - vev
+          - ckm
+          - dark_matter
+          - mass_scale
+          - nlo
+      gemini_council:
+        description: 'Enable Gemini AI council at each phase'
+        required: false
+        default: true
+        type: boolean
+      thinking_level:
+        description: 'Gemini thinking level (LOW, MEDIUM, HIGH)'
+        required: false
+        default: 'HIGH'
+        type: choice
+        options:
+          - LOW
+          - MEDIUM
+          - HIGH
+      max_iterations:
+        description: 'Maximum iterations per resolution phase'
+        required: false
+        default: '3'
+        type: string
+  schedule:
+    # Run weekly on Sundays at midnight UTC
+    - cron: '0 0 * * 0'
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ============================================================================
+  # Phase 0: Setup and Baseline Assessment
+  # ============================================================================
+  setup-baseline:
+    name: Setup & Baseline Assessment
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      baseline_score: ${{ steps.baseline.outputs.score }}
+      gaps_identified: ${{ steps.baseline.outputs.gaps }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+      
+      - name: Set up Python
+        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236  # v4.7.1
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mpmath==1.3.0 numpy==2.0.0 scipy==1.13.1
+          pip install sympy==1.12 matplotlib==3.8.0 pandas==2.2.0
+          pip install google-genai==0.3.0 || echo "google-genai not available"
+          echo "✅ Dependencies installed"
+      
+      - name: Compute Baseline Assessment
+        id: baseline
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python3 scripts/gap_resolution/baseline_assessment.py \
+            --output outputs/gap_resolution/baseline.json
+          
+          # Extract outputs for next jobs
+          if [ -f outputs/gap_resolution/baseline.json ]; then
+            SCORE=$(python3 -c "import json; d=json.load(open('outputs/gap_resolution/baseline.json')); print(d.get('overall_score', 0))")
+            GAPS=$(python3 -c "import json; d=json.load(open('outputs/gap_resolution/baseline.json')); print(','.join(d.get('gaps', [])))")
+            echo "score=$SCORE" >> $GITHUB_OUTPUT
+            echo "gaps=$GAPS" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Upload baseline results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: baseline-assessment
+          path: outputs/gap_resolution/
+          retention-days: 90
+
+  # ============================================================================
+  # Phase 1: θ₀ = 2/9 Topological Derivation
+  # ============================================================================
+  phase-theta0:
+    name: Phase 1 - θ₀ Derivation
+    needs: setup-baseline
+    if: contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'theta0')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+      
+      - name: Set up Python
+        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236  # v4.7.1
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mpmath==1.3.0 numpy==2.0.0 scipy==1.13.1 sympy==1.12
+          pip install google-genai==0.3.0 || echo "google-genai not available"
+      
+      - name: Run θ₀ Derivation Resolution
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
+          THINKING_LEVEL: ${{ inputs.thinking_level }}
+          MAX_ITERATIONS: ${{ inputs.max_iterations }}
+        run: |
+          echo "=============================================="
+          echo "  PHASE 1: θ₀ = 2/9 TOPOLOGICAL DERIVATION"
+          echo "=============================================="
+          echo ""
+          echo "Current Status: Phenomenological (force-fit from 6/27)"
+          echo "Target: Derive from Reidemeister torsion of D₄ knot complement"
+          echo ""
+          
+          python3 scripts/gap_resolution/resolve_theta0.py \
+            --gemini-council $GEMINI_COUNCIL \
+            --thinking-level $THINKING_LEVEL \
+            --max-iterations $MAX_ITERATIONS \
+            --output outputs/gap_resolution/theta0_resolution.json
+      
+      - name: Gemini Council Checkpoint
+        if: inputs.gemini_council == true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          echo ""
+          echo "🧠 GEMINI COUNCIL CHECKPOINT - PHASE 1"
+          echo ""
+          python3 scripts/gap_resolution/gemini_council.py \
+            --phase "theta0" \
+            --input outputs/gap_resolution/theta0_resolution.json \
+            --thinking-level ${{ inputs.thinking_level }} \
+            --output outputs/gap_resolution/theta0_council.json
+      
+      - name: Upload Phase 1 results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: phase1-theta0
+          path: outputs/gap_resolution/*theta0*
+          retention-days: 90
+
+  # ============================================================================
+  # Phase 2: Cosmological Constant Resolution
+  # ============================================================================
+  phase-cosmological:
+    name: Phase 2 - Cosmological Constant
+    needs: [setup-baseline, phase-theta0]
+    if: always() && (contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'cosmological'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+      
+      - name: Set up Python
+        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236  # v4.7.1
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mpmath==1.3.0 numpy==2.0.0 scipy==1.13.1 sympy==1.12
+          pip install google-genai==0.3.0 || echo "google-genai not available"
+      
+      - name: Run Cosmological Constant Resolution
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
+          THINKING_LEVEL: ${{ inputs.thinking_level }}
+          MAX_ITERATIONS: ${{ inputs.max_iterations }}
+        run: |
+          echo "=============================================="
+          echo "  PHASE 2: COSMOLOGICAL CONSTANT RESOLUTION"
+          echo "=============================================="
+          echo ""
+          echo "Current Status: RETRACTED (40 orders of magnitude off)"
+          echo "Target: Supersymmetric D₄ + instanton calculation"
+          echo ""
+          echo "Solution Path (from The_challenge_to_completion.md):"
+          echo "  1. Supersymmetric D₄: Add fermionic partners to lattice nodes"
+          echo "  2. Soft SUSY breaking at M_SUSY ~ E_P × α ~ 10^17 GeV"
+          echo "  3. Residual: Λ ~ M_SUSY^4 × e^(-S_inst) ~ 10^-47 GeV^4"
+          echo ""
+          
+          python3 scripts/gap_resolution/resolve_cosmological.py \
+            --gemini-council $GEMINI_COUNCIL \
+            --thinking-level $THINKING_LEVEL \
+            --max-iterations $MAX_ITERATIONS \
+            --output outputs/gap_resolution/cosmological_resolution.json
+      
+      - name: Gemini Council Checkpoint
+        if: inputs.gemini_council == true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          echo ""
+          echo "🧠 GEMINI COUNCIL CHECKPOINT - PHASE 2"
+          echo ""
+          python3 scripts/gap_resolution/gemini_council.py \
+            --phase "cosmological" \
+            --input outputs/gap_resolution/cosmological_resolution.json \
+            --thinking-level ${{ inputs.thinking_level }} \
+            --output outputs/gap_resolution/cosmological_council.json
+      
+      - name: Upload Phase 2 results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: phase2-cosmological
+          path: outputs/gap_resolution/*cosmological*
+          retention-days: 90
+
+  # ============================================================================
+  # Phase 3: VEV Cascade Derivation
+  # ============================================================================
+  phase-vev:
+    name: Phase 3 - VEV Cascade
+    needs: [setup-baseline, phase-cosmological]
+    if: always() && (contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'vev'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+      
+      - name: Set up Python
+        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236  # v4.7.1
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mpmath==1.3.0 numpy==2.0.0 scipy==1.13.1 sympy==1.12
+          pip install google-genai==0.3.0 || echo "google-genai not available"
+      
+      - name: Run VEV Cascade Resolution
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
+          THINKING_LEVEL: ${{ inputs.thinking_level }}
+        run: |
+          echo "=============================================="
+          echo "  PHASE 3: VEV CASCADE DERIVATION"
+          echo "=============================================="
+          echo ""
+          echo "Current Status: Heuristic (v = E_P × α^4)"
+          echo "Target: Rigorous derivation from SO(8) → SM symmetry breaking"
+          echo ""
+          
+          python3 scripts/gap_resolution/resolve_vev.py \
+            --gemini-council $GEMINI_COUNCIL \
+            --thinking-level $THINKING_LEVEL \
+            --output outputs/gap_resolution/vev_resolution.json
+      
+      - name: Gemini Council Checkpoint
+        if: inputs.gemini_council == true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python3 scripts/gap_resolution/gemini_council.py \
+            --phase "vev" \
+            --input outputs/gap_resolution/vev_resolution.json \
+            --thinking-level ${{ inputs.thinking_level }} \
+            --output outputs/gap_resolution/vev_council.json
+      
+      - name: Upload Phase 3 results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: phase3-vev
+          path: outputs/gap_resolution/*vev*
+          retention-days: 90
+
+  # ============================================================================
+  # Phase 4: CKM/PMNS Matrix Completion
+  # ============================================================================
+  phase-ckm:
+    name: Phase 4 - CKM/PMNS Matrix
+    needs: [setup-baseline, phase-vev]
+    if: always() && (contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'ckm'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+      
+      - name: Set up Python
+        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236  # v4.7.1
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mpmath==1.3.0 numpy==2.0.0 scipy==1.13.1 sympy==1.12
+          pip install google-genai==0.3.0 || echo "google-genai not available"
+      
+      - name: Run CKM/PMNS Resolution
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
+          THINKING_LEVEL: ${{ inputs.thinking_level }}
+        run: |
+          echo "=============================================="
+          echo "  PHASE 4: CKM/PMNS MATRIX COMPLETION"
+          echo "=============================================="
+          echo ""
+          echo "Current Status: δ_CKM ≈ 60° (exp: 69° ± 4°)"
+          echo "Target: Complete derivation of all 4 CKM + 6 PMNS parameters"
+          echo ""
+          echo "From triality overlap integrals:"
+          echo "  - Derive mixing angles θ₁₂, θ₂₃, θ₁₃"
+          echo "  - Derive CP-violating phases"
+          echo "  - Predict Jarlskog invariant J ~ 3×10⁻⁵"
+          echo ""
+          
+          python3 scripts/gap_resolution/resolve_ckm_pmns.py \
+            --gemini-council $GEMINI_COUNCIL \
+            --thinking-level $THINKING_LEVEL \
+            --output outputs/gap_resolution/ckm_resolution.json
+      
+      - name: Gemini Council Checkpoint
+        if: inputs.gemini_council == true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python3 scripts/gap_resolution/gemini_council.py \
+            --phase "ckm" \
+            --input outputs/gap_resolution/ckm_resolution.json \
+            --thinking-level ${{ inputs.thinking_level }} \
+            --output outputs/gap_resolution/ckm_council.json
+      
+      - name: Upload Phase 4 results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: phase4-ckm
+          path: outputs/gap_resolution/*ckm*
+          retention-days: 90
+
+  # ============================================================================
+  # Phase 5: Dark Matter CMB Acoustic Peaks
+  # ============================================================================
+  phase-dark-matter:
+    name: Phase 5 - Dark Matter CMB
+    needs: [setup-baseline, phase-ckm]
+    if: always() && (contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'dark_matter'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+      
+      - name: Set up Python
+        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236  # v4.7.1
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mpmath==1.3.0 numpy==2.0.0 scipy==1.13.1 sympy==1.12
+          pip install google-genai==0.3.0 || echo "google-genai not available"
+      
+      - name: Run Dark Matter Resolution
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
+          THINKING_LEVEL: ${{ inputs.thinking_level }}
+        run: |
+          echo "=============================================="
+          echo "  PHASE 5: DARK MATTER CMB ACOUSTIC PEAKS"
+          echo "=============================================="
+          echo ""
+          echo "Current Status: Reproduces MOND, but no CMB derivation"
+          echo "Target: Derive CMB acoustic peaks from torsional modes"
+          echo ""
+          echo "Solution Path:"
+          echo "  1. Torsional wave equation: ω_T² = c_T² k² + κ_T²"
+          echo "  2. Photon coupling to torsion via triality shear stress"
+          echo "  3. Modified acoustic horizon: r_s with c_T ≈ c/2"
+          echo "  4. Peak positions shift <2% (consistent with Planck)"
+          echo ""
+          
+          python3 scripts/gap_resolution/resolve_dark_matter.py \
+            --gemini-council $GEMINI_COUNCIL \
+            --thinking-level $THINKING_LEVEL \
+            --output outputs/gap_resolution/dark_matter_resolution.json
+      
+      - name: Gemini Council Checkpoint
+        if: inputs.gemini_council == true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python3 scripts/gap_resolution/gemini_council.py \
+            --phase "dark_matter" \
+            --input outputs/gap_resolution/dark_matter_resolution.json \
+            --thinking-level ${{ inputs.thinking_level }} \
+            --output outputs/gap_resolution/dark_matter_council.json
+      
+      - name: Upload Phase 5 results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: phase5-dark-matter
+          path: outputs/gap_resolution/*dark_matter*
+          retention-days: 90
+
+  # ============================================================================
+  # Phase 6: Mass Scale Derivation from D₄
+  # ============================================================================
+  phase-mass-scale:
+    name: Phase 6 - Mass Scale
+    needs: [setup-baseline, phase-dark-matter]
+    if: always() && (contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'mass_scale'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+      
+      - name: Set up Python
+        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236  # v4.7.1
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mpmath==1.3.0 numpy==2.0.0 scipy==1.13.1 sympy==1.12
+          pip install google-genai==0.3.0 || echo "google-genai not available"
+      
+      - name: Run Mass Scale Resolution
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
+          THINKING_LEVEL: ${{ inputs.thinking_level }}
+        run: |
+          echo "=============================================="
+          echo "  PHASE 6: MASS SCALE DERIVATION FROM D₄"
+          echo "=============================================="
+          echo ""
+          echo "Current Status: Phenomenological (m_scale ≈ 313 MeV from fit)"
+          echo "Target: Derive from D₄ self-energy of triality defect"
+          echo ""
+          echo "Calculation:"
+          echo "  E_self = ∫ ρ_triality G_D4 ρ_triality d⁴x"
+          echo "  E_self = (3π/8) × M*Ω²_P L_P / |S₃|"
+          echo "  Result: E_self ~ 5×10¹⁷ GeV × α⁴ ~ 300 MeV"
+          echo ""
+          
+          python3 scripts/gap_resolution/resolve_mass_scale.py \
+            --gemini-council $GEMINI_COUNCIL \
+            --thinking-level $THINKING_LEVEL \
+            --output outputs/gap_resolution/mass_scale_resolution.json
+      
+      - name: Gemini Council Checkpoint
+        if: inputs.gemini_council == true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python3 scripts/gap_resolution/gemini_council.py \
+            --phase "mass_scale" \
+            --input outputs/gap_resolution/mass_scale_resolution.json \
+            --thinking-level ${{ inputs.thinking_level }} \
+            --output outputs/gap_resolution/mass_scale_council.json
+      
+      - name: Upload Phase 6 results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: phase6-mass-scale
+          path: outputs/gap_resolution/*mass_scale*
+          retention-days: 90
+
+  # ============================================================================
+  # Phase 7: NLO Corrections Rigorization
+  # ============================================================================
+  phase-nlo:
+    name: Phase 7 - NLO Corrections
+    needs: [setup-baseline, phase-mass-scale]
+    if: always() && (contains(inputs.resolution_phases, 'all') || contains(inputs.resolution_phases, 'nlo'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+      
+      - name: Set up Python
+        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236  # v4.7.1
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mpmath==1.3.0 numpy==2.0.0 scipy==1.13.1 sympy==1.12
+          pip install google-genai==0.3.0 || echo "google-genai not available"
+      
+      - name: Run NLO Corrections Resolution
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_COUNCIL: ${{ inputs.gemini_council }}
+          THINKING_LEVEL: ${{ inputs.thinking_level }}
+        run: |
+          echo "=============================================="
+          echo "  PHASE 7: NLO CORRECTIONS RIGORIZATION"
+          echo "=============================================="
+          echo ""
+          echo "Current Status: Hand-waved as 'anharmonicity + multi-loop'"
+          echo "Target: Full lattice perturbation theory derivation"
+          echo ""
+          echo "From lattice Dyson-Schwinger equation:"
+          echo "  H_int = (λ₃/2) φ_ARO (∇u)²"
+          echo "  Σ(k) = λ₃² ∫ d⁴p / [(2π)⁴ p²(k-p)²]"
+          echo "  δ_NLO = λ₃²/(4π²) × ζ_D4(1) ≈ 9.264"
+          echo ""
+          
+          python3 scripts/gap_resolution/resolve_nlo.py \
+            --gemini-council $GEMINI_COUNCIL \
+            --thinking-level $THINKING_LEVEL \
+            --output outputs/gap_resolution/nlo_resolution.json
+      
+      - name: Gemini Council Checkpoint
+        if: inputs.gemini_council == true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python3 scripts/gap_resolution/gemini_council.py \
+            --phase "nlo" \
+            --input outputs/gap_resolution/nlo_resolution.json \
+            --thinking-level ${{ inputs.thinking_level }} \
+            --output outputs/gap_resolution/nlo_council.json
+      
+      - name: Upload Phase 7 results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: phase7-nlo
+          path: outputs/gap_resolution/*nlo*
+          retention-days: 90
+
+  # ============================================================================
+  # Final Synthesis and Report
+  # ============================================================================
+  final-synthesis:
+    name: Final Synthesis & Report
+    needs: [phase-theta0, phase-cosmological, phase-vev, phase-ckm, phase-dark-matter, phase-mass-scale, phase-nlo]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+      
+      - name: Set up Python
+        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236  # v4.7.1
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mpmath==1.3.0 numpy==2.0.0 scipy==1.13.1
+          pip install google-genai==0.3.0 || echo "google-genai not available"
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427  # v4.1.4
+        with:
+          path: outputs/gap_resolution/
+      
+      - name: Generate Synthesis Report
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          echo "=============================================="
+          echo "  FINAL SYNTHESIS REPORT"
+          echo "=============================================="
+          
+          python3 scripts/gap_resolution/final_synthesis.py \
+            --input-dir outputs/gap_resolution/ \
+            --output outputs/gap_resolution/synthesis_report.json \
+            --generate-markdown outputs/gap_resolution/GAP_RESOLUTION_REPORT.md
+      
+      - name: Gemini Final Council
+        if: inputs.gemini_council == true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          echo ""
+          echo "🧠 GEMINI FINAL COUNCIL"
+          echo ""
+          python3 scripts/gap_resolution/gemini_council.py \
+            --phase "final_synthesis" \
+            --input outputs/gap_resolution/synthesis_report.json \
+            --thinking-level ${{ inputs.thinking_level }} \
+            --output outputs/gap_resolution/final_council.json \
+            --generate-recommendations
+      
+      - name: Upload Final Report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: gap-resolution-final-report
+          path: |
+            outputs/gap_resolution/synthesis_report.json
+            outputs/gap_resolution/GAP_RESOLUTION_REPORT.md
+            outputs/gap_resolution/final_council.json
+          retention-days: 90
+      
+      - name: Display Summary
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "# IRH v68 Gap Resolution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f outputs/gap_resolution/GAP_RESOLUTION_REPORT.md ]; then
+            cat outputs/gap_resolution/GAP_RESOLUTION_REPORT.md >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Report generation in progress. Check artifacts for results." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "- Baseline assessment" >> $GITHUB_STEP_SUMMARY
+          echo "- Phase 1: θ₀ derivation" >> $GITHUB_STEP_SUMMARY
+          echo "- Phase 2: Cosmological constant" >> $GITHUB_STEP_SUMMARY
+          echo "- Phase 3: VEV cascade" >> $GITHUB_STEP_SUMMARY
+          echo "- Phase 4: CKM/PMNS matrix" >> $GITHUB_STEP_SUMMARY
+          echo "- Phase 5: Dark matter CMB" >> $GITHUB_STEP_SUMMARY
+          echo "- Phase 6: Mass scale" >> $GITHUB_STEP_SUMMARY
+          echo "- Phase 7: NLO corrections" >> $GITHUB_STEP_SUMMARY
+          echo "- Final synthesis report" >> $GITHUB_STEP_SUMMARY
