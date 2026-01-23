@@ -21,7 +21,7 @@ import sys
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 # Note: This script is designed to run standalone from the repository root.
 # If importing from within the package, use relative imports instead.
