@@ -134,7 +134,7 @@ def instanton_calculation():
     alpha = 1/137.036
     
     # Standard EM instanton action
-    S_inst_standard = 2 * 3.14159 / alpha  # ~ 860
+    S_inst_standard = 2 * math.pi / alpha  # ~ 860
     
     # This gives e^(-860) ~ 10^(-374), way too small
     
