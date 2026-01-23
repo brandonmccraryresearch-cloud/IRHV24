@@ -73,8 +73,8 @@ def compute_retracted_formula():
         "alpha": alpha,
         "rho_P": rho_P_GeV4,
         "suppression_factor": float(-2/alpha),
-        # Fallback: retracted formula gives ~10^-7 GeV^4 (40 orders off from observed)
-        "Lambda_retracted": float(Lambda_retracted) if isinstance(Lambda_retracted, (int, float)) else LAMBDA_RETRACTED_ESTIMATE,
+        # Retracted formula gives ~10^-7 GeV^4 (40 orders off from observed)
+        "Lambda_retracted": float(Lambda_retracted),
         "Lambda_observed": Lambda_observed,
         "discrepancy_orders": 40,  # 10^-7 vs 10^-47
     }
