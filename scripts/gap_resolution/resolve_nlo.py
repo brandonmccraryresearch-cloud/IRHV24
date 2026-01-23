@@ -104,11 +104,11 @@ def compute_delta_nlo():
     zeta = epstein_zeta_evaluation()
     finite_part = zeta["finite_part"]  # ≈ 2.127
     
-    # The remaining factor comes from λ₃² normalization
-    # Need: λ₃²/(4π²) × 2.127 ≈ 9.264
-    # So: λ₃²/(4π²) ≈ 4.35
-    # λ₃² ≈ 4.35 × 4π² ≈ 172
-    # λ₃ ≈ 13.1
+    # Need: λ₃²/(4π²) × finite_part ≈ target
+    # So: λ₃²/(4π²) ≈ target / finite_part
+    lambda_3_sq_norm_factor = target / finite_part  # ≈ 4.35
+    lambda_3_sq = lambda_3_sq_norm_factor * 4 * math.pi**2  # ≈ 172
+    lambda_3 = math.sqrt(lambda_3_sq)  # ≈ 13.1
     
     return {
         "target": target,
