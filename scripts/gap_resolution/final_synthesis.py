@@ -52,7 +52,7 @@ def load_phase_results(input_dir: Path) -> Dict[str, Dict]:
                 try:
                     with open(json_file) as f:
                         results[phase_id] = json.load(f)
-                except Exception as e:
+                except (json.JSONDecodeError, FileNotFoundError) as e:
                     print(f"⚠️  Could not load {json_file}: {e}")
     
     return results
