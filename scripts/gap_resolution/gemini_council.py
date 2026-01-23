@@ -286,7 +286,7 @@ class GeminiCouncil:
             "",
             "### Input Data:",
             "```json",
-            json.dumps(input_data, indent=2, default=str)[:10000],  # Limit size
+            json.dumps(input_data, indent=2, default=str),  # Limit size before serializing
             "```",
             "",
             "### Council Review Request:",
