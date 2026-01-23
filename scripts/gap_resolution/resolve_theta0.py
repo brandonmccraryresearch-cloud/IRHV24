@@ -116,7 +116,7 @@ def d4_dynkin_analysis():
         "h_dual": h_dual,
         "T_8v": T_8v,
         "S3_order": S3_order,
-        "heuristic_formula": f"T(8_v) / (h∨ × (h∨ + δ)/h∨) = 1/(6×4.5) = 2/27 ≠ 2/9",
+        "heuristic_formula": f"T(8_v) / (h∨ + δ) with h∨=6, δ=3 ⇒ 1/(6+3) = 1/9 ≠ 2/9",
         "correction_needed": "The 6/27 derivation is contrived - need topological approach",
         "status": "phenomenological",
     }
