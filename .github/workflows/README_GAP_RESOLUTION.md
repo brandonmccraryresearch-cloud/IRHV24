@@ -5,10 +5,10 @@ This document describes the GitHub Actions workflow designed to systematically r
 ## Overview
 
 The **IRH v68 Gap Resolution Pipeline** is a comprehensive, multi-phase workflow that addresses gaps identified in:
-- [IRHv68.md](../IRHv68.md) - The main theory document
-- [KimiAudit.md](../KimiAudit.md) - Critical review
-- [IRHv68_Author_Response.md](../IRHv68_Author_Response.md) - Author's point-by-point response
-- [The_challenge_to_completion.md](../The_challenge_to_completion.md) - Roadmap to 100%
+- [IRHv68.md](../../IRHv68.md) - The main theory document
+- [KimiAudit.md](../../KimiAudit.md) - Critical review
+- [IRHv68_Author_Response.md](../../IRHv68_Author_Response.md) - Author's point-by-point response
+- [The_challenge_to_completion.md](../../The_challenge_to_completion.md) - Roadmap to 100%
 
 ## Gaps Addressed
 
