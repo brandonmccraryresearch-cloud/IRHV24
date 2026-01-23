@@ -66,21 +66,27 @@ def cmb_peak_analysis():
     # Standard ΛCDM peaks (Planck 2018)
     peaks_lambdacdm = [220, 537, 810]  # Multipole ℓ for first 3 peaks
     
-    # Torsional modification
-    c_T_ratio = 0.5  # c_T/c
+    # Torsional modification: use a single source of truth from the dispersion relation
+    torsion_result = torsion_dispersion_relation()
+    # Prefer an explicit c_T_ratio from the torsion model if present; otherwise,
+    # fall back to c_T (natural units c = 1) or 1.0 as a safe default.
+    c_T_ratio = torsion_result.get("c_T_ratio")
+    if c_T_ratio is None:
+        c_T = torsion_result.get("c_T")
+        c_T_ratio = c_T if c_T is not None else 1.0
     
     # Modified acoustic horizon
     # r_s = ∫ c_T / √(3(1+R)) dt
     # Peak positions scale as ℓ ~ π/θ_s where θ_s ~ r_s/D_A
-    
-    peak_shift = (1 - c_T_ratio) * 0.1  # ~5% shift for c_T = c/2
+    # Here we model a heuristic fractional shift proportional to (1 - c_T_ratio).
+    peak_shift = (1 - c_T_ratio) * 0.1
     
     return {
         "peaks_standard": peaks_lambdacdm,
         "c_T_ratio": c_T_ratio,
         "predicted_shift": f"{peak_shift*100:.1f}%",
         "planck_tolerance": "~1% precision",
-        "status": "Potentially consistent if c_T carefully tuned",
+        "status": "Uses torsion-derived c_T; full Boltzmann code still required",
         "required_calculation": "Full Boltzmann code with torsion coupling",
     }
 
